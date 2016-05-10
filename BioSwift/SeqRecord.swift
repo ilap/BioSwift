@@ -56,6 +56,12 @@ public class SeqRecord {
         }
     }
     
+    public var hash: Int {
+        get {
+            return seq.sequence.hash
+        }
+    }
+    
     //TODO: Should be updated when sequence modified
     public var bases : [String:Int]? {
         get {
@@ -63,7 +69,8 @@ public class SeqRecord {
                 return nil
             }
             if _bases == nil {
-                _bases =  seq.sequence.baseContents
+                //_bases =  seq.sequence.baseContents
+                _bases = seq.baseContents
             }
             return _bases!
         }
@@ -75,10 +82,12 @@ public class SeqRecord {
     }
     
     func append (sequence: String) {
+        
         seq.sequence += sequence
     }
     
-    func getPAMs(pam: String, start: Int, end: Int) -> [String:[Int]]?{
+    
+    func getPAMs(pam: [String], start: Int, end: Int) -> [String:[Int]]?{
         var d: [String:[Int]] = [:]
         
         // or strdup(seq.sequence)
@@ -94,5 +103,13 @@ public class SeqRecord {
          c += 1
          }*/
         return d
+    }
+    
+    public subscript (i: Int) -> Character {
+        return seq[i]
+    }
+    
+    public subscript (i: Int) -> String {
+        return String(self[i] as Character)
     }
 }

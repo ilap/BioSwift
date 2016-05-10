@@ -21,9 +21,36 @@ class BioSwiftTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testOnTargetsInSequence() {
+                              // 0123456789012345678901
+        var seq = Seq(sequence: "ACGTACGTACGGGCTGAGACGT")
+        var pam = ["NGG", "NAG"]
+        
+        if let res = seq.getOnTargets(pam, start: 0, end: Int(seq.length)) {
+            assert (res == [9, 10, 15])
+        }
+        
+                          // 012345678901234567
+        seq = Seq(sequence: "ATTCCAGAGCAATCCCGT")
+        pams = ["NTTNNA", "ANNAAT", "GCNNTC"]
+        
+        if let res = seq.getOnTargets(pams, start: 0, end: Int(seq.length)) {
+            assert (res == [0, 7, 8])
+        }
+    
+        
+                          // 0123456789012345678901
+        seq = Seq(sequence: "ACGTACGTACATACTGATACGT")
+        let res = seq.getOnTargets(pam, start: 0, end: Int(seq.length))
+        assert(res == nil)
+    }
+    
+    func testSequenceSubscript() {
+        let seq = Seq(sequence: "ACGTACGTACGGGCTGAGACGT")
+        
+        assert( seq[0] == "A")
+        assert( seq[1] == Character("C"))
+        assert( seq[0...2] == "ACG")
     }
     
     func testPerformanceExample() {

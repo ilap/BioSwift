@@ -22,12 +22,13 @@
 import Foundation
 
 public class SeqIO {
-    public static var records : [SeqRecord?]? = []
     
-    public static func parse(path: String?) -> [SeqRecord?]? {
+    
+    public static func parse(path: String?) throws -> [SeqRecord?]? {
         
         guard let _ = path, let contents = try? String(contentsOfFile: path!,  encoding: NSASCIIStringEncoding) else { return nil }
         
+        var records : [SeqRecord?] = []
         var seqRecord : SeqRecord?
         var newFasta = true
         
@@ -44,17 +45,17 @@ public class SeqIO {
                 let id = line[line.startIndex.successor() ..< idx!]
                 
                 if hasRecord {
-                    (records!.last! as SeqRecord?)!.initialised = true
+                    (records.last! as SeqRecord?)!.initialised = true
                 } else {
                     hasRecord = true
                 }
                 
                 // Process the existing record if there is any
                 //
-                let lastRecord = records!.last
+                //let lastRecord = records!.last
                 
                 seqRecord = SeqRecord(id: id)
-                records!.append(seqRecord!)
+                records.append(seqRecord!)
                 
                 
             } else {
@@ -65,11 +66,14 @@ public class SeqIO {
                 seqRecord!.append(tline)
             }
         }
-        // It it has at least one SeqRecord
+        
+        // It has at least one SeqRecord
         if hasRecord {
-            (records!.last! as SeqRecord?)!.initialised = true
+            (records.last! as SeqRecord?)!.initialised = true
+        } else {
+            throw BioError.FastaError("No any FASTA sequence found int the sequence file: \(path)")
         }
         
         return records
-    }
+    }    
 }

@@ -21,6 +21,11 @@
 
 import Foundation
 
+enum BioError: ErrorType {
+    case FastaError(String)
+    case NucleotideError(String)
+}
+
 /*extension SeqIO : SequenceType {
  public func generate() -> AnyGenerator<[SeqRecord]> {
  return AnyGenerator {
@@ -28,6 +33,64 @@ import Foundation
  }
  }
  }*/
+
+protocol NucleotideType {
+    var base: String { get }
+    var baseASCII: UInt8 { get }
+}
+
+enum Bases: NucleotideType {
+    case A, C, G, T, /* TODO: Not supported yetR, W,*/ N
+    var base: String {
+        switch self {
+            case A: return "A"
+            case C: return "C"
+            case G: return "G"
+            case T: return "T"
+            // TODO: not supported yet case R: return "R"
+            // TODO: not supported yet case W: return "W"
+            case N: return "N"
+        }
+    }
+    
+    static let allValues = [A, C, G, T,/* TODO: not suppoerted yet R, W, */ N]
+
+    
+    var baseASCII: UInt8 {
+        switch self {
+        case A: return 65
+        case C: return 67
+        case G: return 71
+        case T: return 84
+        // TODO: not supported yet case R: return 82
+        // TODO: not supported yet case W: return 87
+        case N: return 78
+        }
+    }
+    var baseBinary: UInt8 {
+        switch self {
+        case A: return 0b01000001 // Mask out 1
+        case C: return 0b01000011 // Mask out 2
+        case G: return 0b01000111 // Mask out 4
+        case T: return 0b01000100 // Mask out 0
+        // TODO: not supported yet case R: return 0b01000010 // Mask out 2
+        // TODO: not supported yet case W: return 0b01000111 // Mask out 4
+        case N: return 0b01001110 // Maks out 8
+        }
+    }
+    var baseHexa: UInt8 {
+        switch self {
+        case A: return 0x41
+        case C: return 0x43
+        case G: return 0x47
+        case T: return 0x54
+        // TODO: not supported yet case R: return 0x52
+        // TODO: not supported yet case W: return 0x57
+        case N: return 0x4e
+        }
+    }
+
+}
 
 extension String {
     
@@ -43,21 +106,6 @@ extension String {
         let start = startIndex.advancedBy(r.startIndex)
         let end = start.advancedBy(r.endIndex - r.startIndex)
         return self[Range(start ..< end)]
-    }
-    
-    // ~5sec for 4 million bases
-    public var baseContents: [String:Int] {
-        var d: [String:Int] = [:]
-        
-        var cstr = (self  as NSString).UTF8String
-        var c = 0
-        var ch = ""
-        while cstr[c] != 0 {
-            ch = String(UnicodeScalar(UInt8(cstr[c])))
-            d[ch] = (d[ch] ?? 0) + 1
-            c += 1
-        }
-        return d
     }
     
    /* // ~16sec for 4 million bases
