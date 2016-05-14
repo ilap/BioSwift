@@ -26,35 +26,28 @@ enum BioError: ErrorType {
     case NucleotideError(String)
 }
 
-/*extension SeqIO : SequenceType {
- public func generate() -> AnyGenerator<[SeqRecord]> {
- return AnyGenerator {
- return self.getRecords()
- }
- }
- }*/
+enum Bases: Character {
+    case A = "A"
+    case C = "C"
+    case G = "G"
+    case T = "T"
+    // TODO: not supported yet case R: return "R"
+    // TODO: not supported yet case W: return "W"
+    case N = "N"
 
-protocol NucleotideType {
-    var base: String { get }
-    var baseASCII: UInt8 { get }
-}
 
-enum Bases: NucleotideType {
-    case A, C, G, T, /* TODO: Not supported yetR, W,*/ N
-    var base: String {
+    var complement: Bases {
         switch self {
-            case A: return "A"
-            case C: return "C"
-            case G: return "G"
-            case T: return "T"
+        case A: return T
+        case C: return G
+        case G: return C
+        case T: return A
             // TODO: not supported yet case R: return "R"
-            // TODO: not supported yet case W: return "W"
-            case N: return "N"
+        // TODO: not supported yet case W: return "W"
+        case N: return N
         }
     }
-    
     static let allValues = [A, C, G, T,/* TODO: not suppoerted yet R, W, */ N]
-
     
     var baseASCII: UInt8 {
         switch self {
@@ -93,6 +86,25 @@ enum Bases: NucleotideType {
 }
 
 extension String {
+
+    func reverseComplement() -> String {
+        let result = self.characters.reverse().map { _complement($0)! }
+        return String(result)
+    }
+
+
+    func complement() -> String {
+        let result = self.characters.map { _complement($0)! }
+        return String(result)
+    }
+
+    func _complement(nucleotide: Character?) -> Character? {
+
+        let result = Bases(rawValue: nucleotide!)
+        assert (result != nil)
+
+        return result!.complement.rawValue
+    }
     
     subscript (i: Int) -> Character {
         return self[self.startIndex.advancedBy(i)]
@@ -107,6 +119,7 @@ extension String {
         let end = start.advancedBy(r.endIndex - r.startIndex)
         return self[Range(start ..< end)]
     }
+
     
    /* // ~16sec for 4 million bases
    public var baseContents: [String:Int] {

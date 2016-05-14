@@ -87,7 +87,7 @@ public class SeqRecord {
     }
     
     
-    func getPAMs(pam: [String], start: Int, end: Int) -> [String:[Int]]?{
+    /*public func getPAMs(pam: [String], start: Int, end: Int) -> [String:[Int]]?{
         var d: [String:[Int]] = [:]
         
         // or strdup(seq.sequence)
@@ -103,7 +103,7 @@ public class SeqRecord {
          c += 1
          }*/
         return d
-    }
+    }*/
     
     public subscript (i: Int) -> Character {
         return seq[i]

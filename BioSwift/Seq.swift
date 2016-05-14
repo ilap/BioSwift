@@ -115,9 +115,9 @@ public class Seq {
         return d
     }
     
-    func getPAMsMask(pamSequences: [String]) -> [(String, Int, Int)] {
+    func getPAMsMask(pamSequences: [String], senseStrand: Bool = true) -> [(String, Int, Int, Bool)] {
 
-        var result: [(String, Int,Int)] = []
+        var result: [(String, Int,Int, Bool)] = []
         
         // Temporary buffer
         let maskBuf = UnsafeMutablePointer<UInt8>.alloc(8)
@@ -153,13 +153,13 @@ public class Seq {
             memcpy(pamBuf, maskedPAM, i)
             memcpy(maskBuf, pamMask, i)
             
-            result.append((pamSequence, UnsafeMutablePointer<Int>(pamBuf)[0], UnsafeMutablePointer<Int>(maskBuf)[0]))
+            result.append((pamSequence, UnsafeMutablePointer<Int>(pamBuf)[0], UnsafeMutablePointer<Int>(maskBuf)[0], senseStrand))
         }
         
         return result
     }
     
-    func getOnTargets(pamSequences: [String], start: Int, end: Int) -> [Int]? {
+    public func getOnTargets(pamSequences: [String], start: Int, end: Int) -> [Int]? {
         
         guard let seq = self.cSequence else { return nil }
         let pamLength = pamSequences.first?.characters.count
@@ -175,15 +175,16 @@ public class Seq {
         UnsafeMutablePointer<Int>(buf)[0] = 0x0
         
 
-        let maskedPAMs = getPAMsMask(pamSequences)
+        let maskedPAMs = getPAMsMask(pamSequences) +
+            getPAMsMask(pamSequences.map { $0.reverseComplement() }, senseStrand: false)
         
- 
+        var location = 0
         for i in start...(end - pamLength!) {
             let seq = seq + i
             // 1. Get the potential PAM from the sequence
             strncpy(UnsafeMutablePointer<Int8>(buf), seq, pamLength!)
             // 2. Go through all the masked PAMs
-            for (pam, maskedPam, mask) in maskedPAMs {
+            for (pam, maskedPam, mask, senseStrand) in maskedPAMs {
                 // 3. The the NOT XOR to check whether it's PAM or not. For exammple
                 // maskedPam ("NAG") -> "AG"
                 // mask -> "0x00FFFF"
@@ -193,7 +194,12 @@ public class Seq {
                 //print ("MASK: \(String(mask,radix:16)), BUF: \(String(buf[0],radix:16)), OUTBITS: \(String(outBits,radix:16))")
                 if seqBits == maskedPam {
                     // TODO: debugPrint ("HEUREKA: location: \(i) PAM: \(pam), Result: \(String.fromCString(UnsafeMutablePointer<Int8>(buf)))")
-                    onTargets?.append(Int(i))
+                    if senseStrand {
+                        location = i
+                    } else {
+                        location = -i
+                    }
+                    onTargets?.append(Int(location))
                     
                 }    
             }
@@ -206,21 +212,25 @@ public class Seq {
         }
 
     }
+
+    public func reverseComplement() {
+
+    }
     
-    subscript (i: Int) -> Character {
+    public subscript (i: Int) -> Character {
         guard let ch = self.cSequence else { return Character(UnicodeScalar(0)) }
         return Character(UnicodeScalar(UInt8(ch[i])))
     }
     
-    subscript (i: Int) -> String {
+    public subscript (i: Int) -> String {
         return String(self[i] as Character)
     }
     
-    subscript (r: Range<Int>) -> String {
+    public subscript (r: Range<Int>) -> String {
         let start = r.startIndex
         let end = start.advancedBy(r.endIndex - r.startIndex)
         return self.sequence[Range(start ..< end)]
+
     }
-    
 }
 

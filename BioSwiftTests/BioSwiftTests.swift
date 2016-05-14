@@ -24,25 +24,29 @@ class BioSwiftTests: XCTestCase {
     func testOnTargetsInSequence() {
                               // 0123456789012345678901
         var seq = Seq(sequence: "ACGTACGTACGGGCTGAGACGT")
-        var pam = ["NGG", "NAG"]
+        var pams = ["NGG", "NAG"]
         
-        if let res = seq.getOnTargets(pam, start: 0, end: Int(seq.length)) {
-            assert (res == [9, 10, 15])
-        }
+        var res = seq.getOnTargets(pams, start: 0, end: Int(seq.length))
+
+        assert (res == nil || res!.sort() == [9, 10, 15, -13].sort())
+
+        res = seq.getOnTargets(pams.map { $0.reverseComplement() }, start: 0, end: Int(seq.length))
+        assert (res == nil || res!.sort() == [-9, -10, -15, 13].sort())
         
                           // 012345678901234567
         seq = Seq(sequence: "ATTCCAGAGCAATCCCGT")
         pams = ["NTTNNA", "ANNAAT", "GCNNTC"]
         
-        if let res = seq.getOnTargets(pams, start: 0, end: Int(seq.length)) {
-            assert (res == [0, 7, 8])
-        }
-    
+        res = seq.getOnTargets(pams, start: 0, end: Int(seq.length))
+        print ("RES: \(res)")
+        assert (res == nil || res!.sort() == [0, 7, 8])
+
         
                           // 0123456789012345678901
         seq = Seq(sequence: "ACGTACGTACATACTGATACGT")
-        let res = seq.getOnTargets(pam, start: 0, end: Int(seq.length))
+        res = seq.getOnTargets(pams, start: 0, end: Int(seq.length))
         assert(res == nil)
+
     }
     
     func testSequenceSubscript() {
@@ -51,6 +55,17 @@ class BioSwiftTests: XCTestCase {
         assert( seq[0] == "A")
         assert( seq[1] == Character("C"))
         assert( seq[0...2] == "ACG")
+        assert( seq[0...2].reverseComplement() == "CGT")
+        assert( seq[0...2].complement() == "TGC")
+    }
+
+    func testSequenceReverseComplement() {
+
+        let pams = ["NTTNNA", "ANNAAT", "GCNNTC"]
+        let reversePams = pams.map { $0.reverseComplement() }
+
+        assert(reversePams == ["TNNAAN", "ATTNNT", "GANNGC"])
+
     }
     
     func testPerformanceExample() {
