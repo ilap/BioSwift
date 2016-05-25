@@ -22,7 +22,6 @@
 		EE7621141CF218CA00F13281 /* SeqRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7621031CF1A42A00F13281 /* SeqRecord.swift */; };
 		EE7621151CF218CD00F13281 /* SeqIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7621041CF1A42A00F13281 /* SeqIO.swift */; };
 		EE7621161CF218D100F13281 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE76210B1CF1A54F00F13281 /* FileUtils.swift */; };
-		EE83072F1CF641B800D16FA4 /* TestParsers in Resources */ = {isa = PBXBuildFile; fileRef = EE83072E1CF641B800D16FA4 /* TestParsers */; };
 		EE8503521CF4C6BF00554115 /* ScoreParserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503511CF4C6BF00554115 /* ScoreParserFactory.swift */; };
 		EE8503531CF4C6BF00554115 /* ScoreParserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503511CF4C6BF00554115 /* ScoreParserFactory.swift */; };
 		EE8503581CF4E18900554115 /* BioSwiftParseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503571CF4E18900554115 /* BioSwiftParseTest.swift */; };
@@ -38,6 +37,7 @@
 		EE8503691CF4EE3000554115 /* BowtieOutputParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503671CF4EE3000554115 /* BowtieOutputParser.swift */; };
 		EE85036B1CF4EE7E00554115 /* CasOffinderOutputParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85036A1CF4EE7E00554115 /* CasOffinderOutputParser.swift */; };
 		EE85036C1CF4EE7E00554115 /* CasOffinderOutputParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85036A1CF4EE7E00554115 /* CasOffinderOutputParser.swift */; };
+		EEA7B4CD1CF646A30068138A /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = EEA7B4CC1CF646A30068138A /* Resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,7 +63,6 @@
 		EE7621041CF1A42A00F13281 /* SeqIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SeqIO.swift; path = Core/SeqIO.swift; sourceTree = "<group>"; };
 		EE76210B1CF1A54F00F13281 /* FileUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileUtils.swift; path = Utils/FileUtils.swift; sourceTree = "<group>"; };
 		EE76210F1CF2078E00F13281 /* CrisprUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CrisprUtils.swift; path = Utils/CrisprUtils.swift; sourceTree = "<group>"; };
-		EE83072E1CF641B800D16FA4 /* TestParsers */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestParsers; path = ../../DesignGuide/Utils/BioTools/TestParsers; sourceTree = "<group>"; };
 		EE8503511CF4C6BF00554115 /* ScoreParserFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreParserFactory.swift; path = Crispr/ScoreParserFactory.swift; sourceTree = "<group>"; };
 		EE8503571CF4E18900554115 /* BioSwiftParseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioSwiftParseTest.swift; sourceTree = "<group>"; };
 		EE85035A1CF4E21E00554115 /* ScoreParseManagerFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreParseManagerFacade.swift; path = Crispr/ScoreParseManagerFacade.swift; sourceTree = "<group>"; };
@@ -72,6 +71,7 @@
 		EE8503641CF4EDE600554115 /* GenericParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GenericParser.swift; path = Parsers/GenericParser.swift; sourceTree = "<group>"; };
 		EE8503671CF4EE3000554115 /* BowtieOutputParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BowtieOutputParser.swift; path = Parsers/BowtieOutputParser.swift; sourceTree = "<group>"; };
 		EE85036A1CF4EE7E00554115 /* CasOffinderOutputParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CasOffinderOutputParser.swift; path = Parsers/CasOffinderOutputParser.swift; sourceTree = "<group>"; };
+		EEA7B4CC1CF646A30068138A /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,7 +126,7 @@
 		EE31966D1CC288650038756C /* BioSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				EE83072E1CF641B800D16FA4 /* TestParsers */,
+				EEA7B4CC1CF646A30068138A /* Resources */,
 				EE31966E1CC288650038756C /* BioSwiftTests.swift */,
 				EE3196701CC288650038756C /* Info.plist */,
 				EE8503571CF4E18900554115 /* BioSwiftParseTest.swift */,
@@ -274,7 +274,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE83072F1CF641B800D16FA4 /* TestParsers in Resources */,
+				EEA7B4CD1CF646A30068138A /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

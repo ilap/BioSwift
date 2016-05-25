@@ -40,7 +40,7 @@ class BioSwiftParserTests: XCTestCase {
 
     func testParsingCasOffinderOutput() {
         //let filePath = testBundle.resourcePath
-        let fileName = testBundle.pathForResource("TestParsers/result", ofType: "bwt")
+        let fileName = testBundle.pathForResource("Resources/ParsersTest/result", ofType: "bwt")
 
         // FileParserFacade facade = new FileParserFacade();
         let facade = ScoreParseManager()
