@@ -25,15 +25,17 @@ import XCTest
 @testable import BioSwift
 
 
-public class BioSwiftTaskTests: XCTestCase {
+public class BioSwiftParserTests: XCTestCase {
 
 #if os(Linux)
     public var allTests: [(String, () throws -> Void)] {
     return [
-    ("testTaskPattern", testTaskPattern),
+    ("testParsingCasOffinderOutput", testParsingCasOffinderOutput),
     ]
     }
 #else
+
+    let testBundle = NSBundle(forClass: BioSwiftParserTests.self)
 
     override func setUp() {
         super.setUp()
@@ -47,16 +49,33 @@ public class BioSwiftTaskTests: XCTestCase {
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
+
         self.measureBlock {
             // Put the code you want to measure the time of here.
         }
     }
+
+
 #endif
 
-    func testTaskPattern() {
+    func testParsingCasOffinderOutput() {
+#if !os(Linux)
+        let fileName = testBundle.pathForResource("Resources/ParsersTest/result", ofType: "bwt")
+#else
+        let fileName = "./Resources/ParsersTest/result.bwt"
+#endif
+        // FileParserFacade facade = new FileParserFacade();
+        let facade = OffTargetParserManagerFacade<OfftargetProtocol>()
 
-        let taskMediator = TaskMediator(task: LongTaskForUnitTest())
+        do {
+            try facade.parseFile(fileName)
+            for result in (facade.parser?.results)! {
+                print("ITEM: \(result.guideRNA)")
+            }
+        } catch let error {
+            print ("BIOSWIFT ERROR:: \(error)")
+        }
 
-        taskMediator.initWorkerAndRunTask()
     }
 }
+
