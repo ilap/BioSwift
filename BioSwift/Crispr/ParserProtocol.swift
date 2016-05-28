@@ -18,30 +18,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+///
+/// Parser using design patterns.
+/// Ideas from
+/// http://programmers.stackexchange.com/questions/187464/generic-file-parser-design-in-java-using-the-strategy-pattern
+/// https://code.msdn.microsoft.com/File-parser-using-design-81632e92
+///
 
-
-public protocol OfftargetProtocol {
-    var guideRNA: String? { get set }
-    var modelOrganism: String? { get set }
-    var rnaPosition: Int? { get set }
-    var direction: String? { get set }
-    var mismatches: Int? { get set }
-    var score: Float? { get set }
-}
-
-
-protocol OfftargetResultProtocol: OfftargetProtocol {
-    var errorMessages: [String] { get set }
-}
-
-
-class Offtarget: OfftargetResultProtocol {
-    var guideRNA: String? = nil
-    var modelOrganism: String? = nil
-    var rnaPosition: Int? = nil
-    var direction: String? = nil
-    var mismatches: Int? = nil
-    var score: Float? = nil
-
-    var errorMessages: [String] = []
+///
+/// ParseProtocol
+///
+protocol ParserProtocol {
+    func parse(fileName: String?)
 }

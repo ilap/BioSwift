@@ -19,29 +19,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Foundation
 
-public protocol OfftargetProtocol {
-    var guideRNA: String? { get set }
-    var modelOrganism: String? { get set }
-    var rnaPosition: Int? { get set }
-    var direction: String? { get set }
-    var mismatches: Int? { get set }
-    var score: Float? { get set }
+///
+/// Command Design Pattern implelmented in Swift
+///
+protocol Command {
+    // TODO: Enhance the pattern.
+    func execute() -> Void
+    //func undo() -> Void
 }
 
+typealias CommandClosure = () -> Void
+///
+/// TODO: Implements this
+/// http://audreyli.me/2015/07/03/a-design-pattern-story-in-swift-chapter-6-command/
+///
+class RelayCommand: Command {
+    var action: CommandClosure
+    var canExecute: Bool
 
-protocol OfftargetResultProtocol: OfftargetProtocol {
-    var errorMessages: [String] { get set }
-}
+    init(action: CommandClosure, canExecute: Bool = true) {
+        self.action = action
+        self.canExecute = canExecute
+    }
 
+    func execute() {
+        if canExecute {
+            self.action()
+        }
 
-class Offtarget: OfftargetResultProtocol {
-    var guideRNA: String? = nil
-    var modelOrganism: String? = nil
-    var rnaPosition: Int? = nil
-    var direction: String? = nil
-    var mismatches: Int? = nil
-    var score: Float? = nil
-
-    var errorMessages: [String] = []
+    }
 }
