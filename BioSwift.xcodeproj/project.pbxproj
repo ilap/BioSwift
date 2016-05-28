@@ -22,15 +22,17 @@
 		EE7621141CF218CA00F13281 /* SeqRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7621031CF1A42A00F13281 /* SeqRecord.swift */; };
 		EE7621151CF218CD00F13281 /* SeqIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7621041CF1A42A00F13281 /* SeqIO.swift */; };
 		EE7621161CF218D100F13281 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE76210B1CF1A54F00F13281 /* FileUtils.swift */; };
-		EE8503521CF4C6BF00554115 /* ScoreParserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503511CF4C6BF00554115 /* ScoreParserFactory.swift */; };
-		EE8503531CF4C6BF00554115 /* ScoreParserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503511CF4C6BF00554115 /* ScoreParserFactory.swift */; };
+		EE7A0A071CF8B81D00E5CBF4 /* ParserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A0A061CF8B81D00E5CBF4 /* ParserProtocol.swift */; };
+		EE7A0A081CF8B81D00E5CBF4 /* ParserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A0A061CF8B81D00E5CBF4 /* ParserProtocol.swift */; };
+		EE8503521CF4C6BF00554115 /* OffTargetParserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503511CF4C6BF00554115 /* OffTargetParserFactory.swift */; };
+		EE8503531CF4C6BF00554115 /* OffTargetParserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503511CF4C6BF00554115 /* OffTargetParserFactory.swift */; };
 		EE8503581CF4E18900554115 /* BioSwiftParseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503571CF4E18900554115 /* BioSwiftParseTest.swift */; };
-		EE85035B1CF4E21E00554115 /* ScoreParseManagerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85035A1CF4E21E00554115 /* ScoreParseManagerFacade.swift */; };
-		EE85035C1CF4E21E00554115 /* ScoreParseManagerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85035A1CF4E21E00554115 /* ScoreParseManagerFacade.swift */; };
+		EE85035B1CF4E21E00554115 /* OffTargetParserManagerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85035A1CF4E21E00554115 /* OffTargetParserManagerFacade.swift */; };
+		EE85035C1CF4E21E00554115 /* OffTargetParserManagerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85035A1CF4E21E00554115 /* OffTargetParserManagerFacade.swift */; };
 		EE85035F1CF4ED0E00554115 /* Offtarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85035E1CF4ED0E00554115 /* Offtarget.swift */; };
 		EE8503601CF4ED0E00554115 /* Offtarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85035E1CF4ED0E00554115 /* Offtarget.swift */; };
-		EE8503621CF4ED6400554115 /* ScoreParserProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503611CF4ED6400554115 /* ScoreParserProtocols.swift */; };
-		EE8503631CF4ED6400554115 /* ScoreParserProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503611CF4ED6400554115 /* ScoreParserProtocols.swift */; };
+		EE8503621CF4ED6400554115 /* OffTargetParserProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503611CF4ED6400554115 /* OffTargetParserProvider.swift */; };
+		EE8503631CF4ED6400554115 /* OffTargetParserProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503611CF4ED6400554115 /* OffTargetParserProvider.swift */; };
 		EE8503651CF4EDE600554115 /* GenericParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503641CF4EDE600554115 /* GenericParser.swift */; };
 		EE8503661CF4EDE600554115 /* GenericParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503641CF4EDE600554115 /* GenericParser.swift */; };
 		EE8503681CF4EE3000554115 /* BowtieOutputParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503671CF4EE3000554115 /* BowtieOutputParser.swift */; };
@@ -38,6 +40,19 @@
 		EE85036B1CF4EE7E00554115 /* CasOffinderOutputParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85036A1CF4EE7E00554115 /* CasOffinderOutputParser.swift */; };
 		EE85036C1CF4EE7E00554115 /* CasOffinderOutputParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE85036A1CF4EE7E00554115 /* CasOffinderOutputParser.swift */; };
 		EEA7B4CD1CF646A30068138A /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = EEA7B4CC1CF646A30068138A /* Resources */; };
+		EEE4D3531CF70237006A979F /* TaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3521CF70237006A979F /* TaskProtocol.swift */; };
+		EEE4D3551CF70D9A006A979F /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3541CF70D9A006A979F /* Command.swift */; };
+		EEE4D3561CF70D9A006A979F /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3541CF70D9A006A979F /* Command.swift */; };
+		EEE4D3581CF70E46006A979F /* TaskMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3571CF70E46006A979F /* TaskMediator.swift */; };
+		EEE4D3591CF70E46006A979F /* TaskMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3571CF70E46006A979F /* TaskMediator.swift */; };
+		EEE4D35A1CF7102C006A979F /* TaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3521CF70237006A979F /* TaskProtocol.swift */; };
+		EEE4D35C1CF724A5006A979F /* BioSwiftTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D35B1CF724A5006A979F /* BioSwiftTaskTests.swift */; };
+		EEE4D35E1CF730EB006A979F /* SandboxAsyncWorkerTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D35D1CF730EB006A979F /* SandboxAsyncWorkerTask.swift */; };
+		EEE4D35F1CF730EB006A979F /* SandboxAsyncWorkerTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D35D1CF730EB006A979F /* SandboxAsyncWorkerTask.swift */; };
+		EEE4D3611CF78BBE006A979F /* AsyncWorkerThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3601CF78BBE006A979F /* AsyncWorkerThread.swift */; };
+		EEE4D3621CF78BBE006A979F /* AsyncWorkerThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3601CF78BBE006A979F /* AsyncWorkerThread.swift */; };
+		EEE4D3651CF7A43B006A979F /* ScoreFunctionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3641CF7A43B006A979F /* ScoreFunctionTask.swift */; };
+		EEE4D3661CF7A43B006A979F /* ScoreFunctionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D3641CF7A43B006A979F /* ScoreFunctionTask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,15 +78,23 @@
 		EE7621041CF1A42A00F13281 /* SeqIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SeqIO.swift; path = Core/SeqIO.swift; sourceTree = "<group>"; };
 		EE76210B1CF1A54F00F13281 /* FileUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileUtils.swift; path = Utils/FileUtils.swift; sourceTree = "<group>"; };
 		EE76210F1CF2078E00F13281 /* CrisprUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CrisprUtils.swift; path = Utils/CrisprUtils.swift; sourceTree = "<group>"; };
-		EE8503511CF4C6BF00554115 /* ScoreParserFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreParserFactory.swift; path = Crispr/ScoreParserFactory.swift; sourceTree = "<group>"; };
+		EE7A0A061CF8B81D00E5CBF4 /* ParserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParserProtocol.swift; path = Crispr/ParserProtocol.swift; sourceTree = "<group>"; };
+		EE8503511CF4C6BF00554115 /* OffTargetParserFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OffTargetParserFactory.swift; path = Crispr/OffTargetParserFactory.swift; sourceTree = "<group>"; };
 		EE8503571CF4E18900554115 /* BioSwiftParseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioSwiftParseTest.swift; sourceTree = "<group>"; };
-		EE85035A1CF4E21E00554115 /* ScoreParseManagerFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreParseManagerFacade.swift; path = Crispr/ScoreParseManagerFacade.swift; sourceTree = "<group>"; };
+		EE85035A1CF4E21E00554115 /* OffTargetParserManagerFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OffTargetParserManagerFacade.swift; path = Crispr/OffTargetParserManagerFacade.swift; sourceTree = "<group>"; };
 		EE85035E1CF4ED0E00554115 /* Offtarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Offtarget.swift; sourceTree = "<group>"; };
-		EE8503611CF4ED6400554115 /* ScoreParserProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreParserProtocols.swift; path = Parsers/ScoreParserProtocols.swift; sourceTree = "<group>"; };
+		EE8503611CF4ED6400554115 /* OffTargetParserProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OffTargetParserProvider.swift; path = Parsers/OffTargetParserProvider.swift; sourceTree = "<group>"; };
 		EE8503641CF4EDE600554115 /* GenericParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GenericParser.swift; path = Parsers/GenericParser.swift; sourceTree = "<group>"; };
 		EE8503671CF4EE3000554115 /* BowtieOutputParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BowtieOutputParser.swift; path = Parsers/BowtieOutputParser.swift; sourceTree = "<group>"; };
 		EE85036A1CF4EE7E00554115 /* CasOffinderOutputParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CasOffinderOutputParser.swift; path = Parsers/CasOffinderOutputParser.swift; sourceTree = "<group>"; };
 		EEA7B4CC1CF646A30068138A /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
+		EEE4D3521CF70237006A979F /* TaskProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskProtocol.swift; path = TaskPattern/TaskProtocol.swift; sourceTree = "<group>"; };
+		EEE4D3541CF70D9A006A979F /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Command.swift; path = TaskPattern/Command.swift; sourceTree = "<group>"; };
+		EEE4D3571CF70E46006A979F /* TaskMediator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskMediator.swift; path = TaskPattern/TaskMediator.swift; sourceTree = "<group>"; };
+		EEE4D35B1CF724A5006A979F /* BioSwiftTaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioSwiftTaskTests.swift; sourceTree = "<group>"; };
+		EEE4D35D1CF730EB006A979F /* SandboxAsyncWorkerTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SandboxAsyncWorkerTask.swift; path = TaskPattern/SandboxAsyncWorkerTask.swift; sourceTree = "<group>"; };
+		EEE4D3601CF78BBE006A979F /* AsyncWorkerThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AsyncWorkerThread.swift; path = TaskPattern/AsyncWorkerThread.swift; sourceTree = "<group>"; };
+		EEE4D3641CF7A43B006A979F /* ScoreFunctionTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreFunctionTask.swift; path = Crispr/ScoreFunctionTask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +153,7 @@
 				EE31966E1CC288650038756C /* BioSwiftTests.swift */,
 				EE3196701CC288650038756C /* Info.plist */,
 				EE8503571CF4E18900554115 /* BioSwiftParseTest.swift */,
+				EEE4D35B1CF724A5006A979F /* BioSwiftTaskTests.swift */,
 			);
 			path = BioSwiftTests;
 			sourceTree = "<group>";
@@ -137,12 +161,11 @@
 		EE614A641CF32FE400EE89EB /* Crispr */ = {
 			isa = PBXGroup;
 			children = (
+				EEE4D3501CF6FAB3006A979F /* ScoreFunctions */,
 				EE76210F1CF2078E00F13281 /* CrisprUtils.swift */,
-				EE85035A1CF4E21E00554115 /* ScoreParseManagerFacade.swift */,
-				EE8503511CF4C6BF00554115 /* ScoreParserFactory.swift */,
-				EE8503611CF4ED6400554115 /* ScoreParserProtocols.swift */,
 				EE85035E1CF4ED0E00554115 /* Offtarget.swift */,
-				EE85035D1CF4EC8200554115 /* Parsers */,
+				EE85035D1CF4EC8200554115 /* OffTargetParsers */,
+				EE7A0A061CF8B81D00E5CBF4 /* ParserProtocol.swift */,
 			);
 			name = Crispr;
 			sourceTree = "<group>";
@@ -150,6 +173,8 @@
 		EE7620FF1CF1A41100F13281 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				EEE4D3631CF79F2C006A979F /* Saved */,
+				EEE4D3511CF70192006A979F /* TaskPattern */,
 				EE7621011CF1A42A00F13281 /* Extensions.swift */,
 				EE7621021CF1A42A00F13281 /* Seq.swift */,
 				EE7621031CF1A42A00F13281 /* SeqRecord.swift */,
@@ -166,14 +191,44 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
-		EE85035D1CF4EC8200554115 /* Parsers */ = {
+		EE85035D1CF4EC8200554115 /* OffTargetParsers */ = {
 			isa = PBXGroup;
 			children = (
+				EE8503611CF4ED6400554115 /* OffTargetParserProvider.swift */,
+				EE85035A1CF4E21E00554115 /* OffTargetParserManagerFacade.swift */,
+				EE8503511CF4C6BF00554115 /* OffTargetParserFactory.swift */,
 				EE8503641CF4EDE600554115 /* GenericParser.swift */,
 				EE8503671CF4EE3000554115 /* BowtieOutputParser.swift */,
 				EE85036A1CF4EE7E00554115 /* CasOffinderOutputParser.swift */,
 			);
-			name = Parsers;
+			name = OffTargetParsers;
+			sourceTree = "<group>";
+		};
+		EEE4D3501CF6FAB3006A979F /* ScoreFunctions */ = {
+			isa = PBXGroup;
+			children = (
+				EEE4D3641CF7A43B006A979F /* ScoreFunctionTask.swift */,
+			);
+			name = ScoreFunctions;
+			sourceTree = "<group>";
+		};
+		EEE4D3511CF70192006A979F /* TaskPattern */ = {
+			isa = PBXGroup;
+			children = (
+				EEE4D3521CF70237006A979F /* TaskProtocol.swift */,
+				EEE4D3541CF70D9A006A979F /* Command.swift */,
+				EEE4D3571CF70E46006A979F /* TaskMediator.swift */,
+				EEE4D3601CF78BBE006A979F /* AsyncWorkerThread.swift */,
+			);
+			name = TaskPattern;
+			sourceTree = "<group>";
+		};
+		EEE4D3631CF79F2C006A979F /* Saved */ = {
+			isa = PBXGroup;
+			children = (
+				EEE4D35D1CF730EB006A979F /* SandboxAsyncWorkerTask.swift */,
+			);
+			name = Saved;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,18 +341,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE7621101CF2078E00F13281 /* CrisprUtils.swift in Sources */,
-				EE85035B1CF4E21E00554115 /* ScoreParseManagerFacade.swift in Sources */,
+				EE85035B1CF4E21E00554115 /* OffTargetParserManagerFacade.swift in Sources */,
 				EE7621051CF1A42A00F13281 /* Extensions.swift in Sources */,
-				EE8503621CF4ED6400554115 /* ScoreParserProtocols.swift in Sources */,
+				EE8503621CF4ED6400554115 /* OffTargetParserProvider.swift in Sources */,
 				EE85036B1CF4EE7E00554115 /* CasOffinderOutputParser.swift in Sources */,
+				EEE4D3581CF70E46006A979F /* TaskMediator.swift in Sources */,
 				EE7621061CF1A42A00F13281 /* Seq.swift in Sources */,
 				EE7621071CF1A42A00F13281 /* SeqRecord.swift in Sources */,
 				EE7621081CF1A42A00F13281 /* SeqIO.swift in Sources */,
 				EE8503681CF4EE3000554115 /* BowtieOutputParser.swift in Sources */,
 				EE85035F1CF4ED0E00554115 /* Offtarget.swift in Sources */,
 				EE8503651CF4EDE600554115 /* GenericParser.swift in Sources */,
+				EEE4D35E1CF730EB006A979F /* SandboxAsyncWorkerTask.swift in Sources */,
+				EEE4D3531CF70237006A979F /* TaskProtocol.swift in Sources */,
+				EEE4D3611CF78BBE006A979F /* AsyncWorkerThread.swift in Sources */,
+				EEE4D3651CF7A43B006A979F /* ScoreFunctionTask.swift in Sources */,
 				EE76210C1CF1A54F00F13281 /* FileUtils.swift in Sources */,
-				EE8503521CF4C6BF00554115 /* ScoreParserFactory.swift in Sources */,
+				EE8503521CF4C6BF00554115 /* OffTargetParserFactory.swift in Sources */,
+				EE7A0A071CF8B81D00E5CBF4 /* ParserProtocol.swift in Sources */,
+				EEE4D3551CF70D9A006A979F /* Command.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,19 +369,27 @@
 			files = (
 				EE7621111CF2078E00F13281 /* CrisprUtils.swift in Sources */,
 				EE8503661CF4EDE600554115 /* GenericParser.swift in Sources */,
+				EEE4D35F1CF730EB006A979F /* SandboxAsyncWorkerTask.swift in Sources */,
 				EE7621151CF218CD00F13281 /* SeqIO.swift in Sources */,
+				EEE4D35C1CF724A5006A979F /* BioSwiftTaskTests.swift in Sources */,
 				EE8503581CF4E18900554115 /* BioSwiftParseTest.swift in Sources */,
 				EE85036C1CF4EE7E00554115 /* CasOffinderOutputParser.swift in Sources */,
-				EE8503631CF4ED6400554115 /* ScoreParserProtocols.swift in Sources */,
+				EE8503631CF4ED6400554115 /* OffTargetParserProvider.swift in Sources */,
+				EEE4D3561CF70D9A006A979F /* Command.swift in Sources */,
 				EE7621131CF218C800F13281 /* Seq.swift in Sources */,
 				EE7621121CF218C500F13281 /* Extensions.swift in Sources */,
-				EE8503531CF4C6BF00554115 /* ScoreParserFactory.swift in Sources */,
+				EE8503531CF4C6BF00554115 /* OffTargetParserFactory.swift in Sources */,
 				EE7621141CF218CA00F13281 /* SeqRecord.swift in Sources */,
 				EE7621161CF218D100F13281 /* FileUtils.swift in Sources */,
 				EE8503601CF4ED0E00554115 /* Offtarget.swift in Sources */,
-				EE85035C1CF4E21E00554115 /* ScoreParseManagerFacade.swift in Sources */,
+				EE85035C1CF4E21E00554115 /* OffTargetParserManagerFacade.swift in Sources */,
 				EE31966F1CC288650038756C /* BioSwiftTests.swift in Sources */,
+				EEE4D3661CF7A43B006A979F /* ScoreFunctionTask.swift in Sources */,
+				EE7A0A081CF8B81D00E5CBF4 /* ParserProtocol.swift in Sources */,
+				EEE4D3591CF70E46006A979F /* TaskMediator.swift in Sources */,
 				EE8503691CF4EE3000554115 /* BowtieOutputParser.swift in Sources */,
+				EEE4D35A1CF7102C006A979F /* TaskProtocol.swift in Sources */,
+				EEE4D3621CF78BBE006A979F /* AsyncWorkerThread.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
