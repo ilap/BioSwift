@@ -91,7 +91,7 @@ public class Seq {
         var td: [Int8:Int] = [:]
         if let cstr = self.cSequence { //(self  as NSString).UTF8String
             var c = 0
-            var ch = ""
+            //var ch = ""
             while cstr[c] != 0 {
                 //ch = String(UnicodeScalar(UInt8(cstr[c])))
                 //d[ch] = (d[ch] ?? 0) + 1
@@ -184,7 +184,7 @@ public class Seq {
             // 1. Get the potential PAM from the sequence
             strncpy(UnsafeMutablePointer<Int8>(buf), seq, pamLength!)
             // 2. Go through all the masked PAMs
-            for (pam, maskedPam, mask, senseStrand) in maskedPAMs {
+            for (_, maskedPam, mask, senseStrand) in maskedPAMs {
                 // 3. The the NOT XOR to check whether it's PAM or not. For exammple
                 // maskedPam ("NAG") -> "AG"
                 // mask -> "0x00FFFF"
@@ -210,10 +210,6 @@ public class Seq {
         } else {
             return onTargets
         }
-
-    }
-
-    public func reverseComplement() {
 
     }
     

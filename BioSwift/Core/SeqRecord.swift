@@ -40,6 +40,7 @@ public class SeqRecord {
     
     public var id : String
     public var description : String = ""
+    public var path: String?
     
     public var length : Int {
         get {
@@ -75,10 +76,18 @@ public class SeqRecord {
             return _bases!
         }
     }
-    
-    public init (id: String) {
+
+    public init (id: String, seq: Seq? = nil, path: String? = nil) {
         self.id = id
-        self.seq = Seq()
+        if let _ = seq {
+            self.seq = seq!
+        } else {
+            self.seq = Seq()
+        }
+
+        if let _ = path {
+            self.path = path
+        }
     }
     
     func append (sequence: String) {

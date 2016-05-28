@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import BioSwift
+
 class BioSwiftTaskTests: XCTestCase {
 
     override func setUp() {
@@ -20,9 +22,11 @@ class BioSwiftTaskTests: XCTestCase {
         super.tearDown()
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testTaskPattern() {
+
+        let taskMediator = TaskMediator(task: LongTaskForUnitTest())
+
+        taskMediator.initWorkerAndRunTask()
     }
 
     func testPerformanceExample() {

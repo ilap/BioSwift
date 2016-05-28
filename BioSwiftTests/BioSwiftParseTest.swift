@@ -24,7 +24,6 @@ import XCTest
 
 
 class BioSwiftParserTests: XCTestCase {
-    let mainBundle = NSBundle.mainBundle()
     let testBundle = NSBundle(forClass: BioSwiftParserTests.self)
 
     override func setUp() {
@@ -43,10 +42,10 @@ class BioSwiftParserTests: XCTestCase {
         let fileName = testBundle.pathForResource("Resources/ParsersTest/result", ofType: "bwt")
 
         // FileParserFacade facade = new FileParserFacade();
-        let facade = ScoreParseManager()
+        let facade = OffTargetParserManagerFacade<OfftargetProtocol>()
 
         do {
-            try facade.parseFile(fileName!)
+            try facade.parseFile(fileName)
             for result in (facade.parser?.results)! {
                 print("ITEM: \(result.guideRNA)")
             }

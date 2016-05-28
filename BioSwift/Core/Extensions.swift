@@ -21,9 +21,43 @@
 
 import Foundation
 
-enum BioError: ErrorType {
+public enum FileExtensions: String, CustomStringConvertible {
+    case FastaShort = ".fa"
+    case FastaLong =  ".fasta"
+    //case GenbankShort = ".gb"
+    //case GeneralText = ".txt"
+
+    //static let allValues = [.FastaShort, .FastaLog, GenbankShort, GeneralText]
+    // TODO: Currently support the Fasta file extensions.
+    static let allValues = [FastaShort, FastaLong]
+
+    public var description: String {
+        get {
+            return self.rawValue
+        }
+    }
+}
+
+public enum BioSwiftError: ErrorType, CustomStringConvertible  {
+    case FileError(String)
     case FastaError(String)
     case NucleotideError(String)
+    case ParserError(String)
+
+    public var description: String {
+        get {
+            switch (self) {
+            case .FileError(let message):
+                return message
+            case .FastaError(let message):
+                return message
+            case .NucleotideError(let message):
+                return message
+            case .ParserError(let message):
+                return message
+            }
+        }
+    }
 }
 
 enum Bases: Character {
@@ -31,11 +65,20 @@ enum Bases: Character {
     case C = "C"
     case G = "G"
     case T = "T"
+    case U = "U"
     case R = "R"
     case Y = "Y"
-
-    // TODO: not supported yet case W: return "W"
+    case K = "K"
+    case M = "M"
+    case S = "S"
+    case W = "W"
+    case B = "B"
+    case D = "D"
+    case H = "H"
+    case V = "V"
     case N = "N"
+    case hyphen = "-"
+
 
 
     var complement: Bases {
@@ -46,12 +89,23 @@ enum Bases: Character {
         case T: return A
         case R: return Y
         case Y: return R
-            // TODO: not supported yet case R: return "R"
         // TODO: not supported yet case W: return "W"
+
         case N: return N
+        //FIXME: Add other values
+        default: return N
         }
     }
     static let allValues = [A, C, G, T, R, Y, /* TODO: not suppoerted yet W, */ N]
+
+    static func getBase(baseString: String) -> Bases {
+        switch (baseString) {
+        case "AG": return R
+        case "CT": return Y
+        // FIXME:
+        default:  return N
+        }
+    }
     
     var baseASCII: UInt8 {
         switch self {
@@ -61,9 +115,10 @@ enum Bases: Character {
         case T: return 84
         case R: return 82
         case Y: return 89
-        // TODO: not supported yet case R: return 82
         // TODO: not supported yet case W: return 87
         case N: return 78
+        //FIXME: Add other values
+        default: return 0
         }
     }
     var baseBinary: UInt8 {
@@ -74,9 +129,10 @@ enum Bases: Character {
         case T: return 0b01000100 // Mask out 0
         case R: return 0b01000010 // NO MASK
         case Y: return 0b01001001 // NO MASK
-        // TODO: not supported yet case R: return 0b01000010 // Mask out 2
         // TODO: not supported yet case W: return 0b01000111 // Mask out 4
         case N: return 0b01001110 // Maks out 8
+        //FIXME: Add other values
+        default: return 0
         }
     }
     var baseHexa: UInt8 {
@@ -87,9 +143,10 @@ enum Bases: Character {
         case T: return 0x54
         case R: return 0x52
         case Y: return 0x59
-        // TODO: not supported yet case R: return 0x52
         // TODO: not supported yet case W: return 0x57
         case N: return 0x4e
+        //FIXME: Add other values
+        default: return 0
         }
     }
 

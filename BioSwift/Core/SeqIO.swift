@@ -30,9 +30,6 @@ public class SeqIO {
         
         var records : [SeqRecord?] = []
         var seqRecord : SeqRecord?
-        var newFasta = true
-        
-        var sequence = ""
         
         var hasRecord = false
         for line in contents.componentsSeparatedByString("\n") {
@@ -54,10 +51,9 @@ public class SeqIO {
                 //
                 //let lastRecord = records!.last
                 
-                seqRecord = SeqRecord(id: id)
+                seqRecord = SeqRecord(id: id, path: path)
                 records.append(seqRecord!)
-                
-                
+
             } else {
                 // Remove w
                 // slower let tline = line.stringByReplacingOccurrencesOfString(" ", withString: "")
@@ -71,7 +67,7 @@ public class SeqIO {
         if hasRecord {
             (records.last! as SeqRecord?)!.initialised = true
         } else {
-            throw BioError.FastaError("No any FASTA sequence found int the sequence file: \(path)")
+            throw BioSwiftError.FastaError("No any FASTA sequence found int the sequence file: \(path)")
         }
         
         return records

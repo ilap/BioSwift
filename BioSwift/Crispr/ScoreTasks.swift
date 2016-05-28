@@ -23,7 +23,7 @@ import Foundation
 
 class ScoreTask {
 
-    var parser: ScoreParser
+    var parser: ScoreParserProtocols
 
     var cmd: String
     var args: [String]?
