@@ -26,14 +26,21 @@ import Foundation
 /// patterns
 ///
 
+#if os(OSX)
 private let queue = dispatch_queue_create("task-worker", DISPATCH_QUEUE_SERIAL)
+#endif
+
 infix operator ~> {}
 
 func ~> <T> ( background: () -> T, main: (result: T) -> ()) {
+    #if os(OSX)
     dispatch_async(queue) {
         let result = background()
         dispatch_async(dispatch_get_main_queue(), {main(result: result)})
     }
+    #else
+        assertionFailure("It's not implemented yet.")
+    #endif
 }
 
 

@@ -35,6 +35,9 @@ class AsyncWorkerThread: WorkerThreadProtocol {
 
     func execute() {
         // FIXME: Make it work for Linux
+        #if os(Linux)
+            self.runInBackground()
+        #else
         if #available(OSX 10.10, *) {
             dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
                 self.runInBackground()
@@ -42,6 +45,7 @@ class AsyncWorkerThread: WorkerThreadProtocol {
         } else {
             assertionFailure("FATAL ERROR: It requires OSX 10.10")
         };
+        #endif
     }
 
     func runInBackground() {

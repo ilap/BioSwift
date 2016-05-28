@@ -59,6 +59,7 @@ public class SandboxAsyncWorkerTask<T,V> {
 
         preTask?()
 
+        #if os(OSX)
         if #available(OSX 10.10, *) {
             dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
                 print("ASYNC STARTED")
@@ -70,9 +71,17 @@ public class SandboxAsyncWorkerTask<T,V> {
                     })
                 }
             })
+
         } else {
             assertionFailure("FATAL ERROR: It requires OSX 10.10")
         };
+        #elseif os(Linux)
+            let result = self.backgroundTask!(param: param)
+
+            if let _ = self.postTask {
+                self.postTask?(param: result)
+            }
+        #endif
     }
 }
 
