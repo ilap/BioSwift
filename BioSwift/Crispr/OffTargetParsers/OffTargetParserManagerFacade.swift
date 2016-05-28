@@ -20,6 +20,7 @@
  */
 
 import Foundation
+
 public class OffTargetParserManagerFacade<T> {
     let factory: OffTargetParserFactory<ParserProtocol?>
     var parser: GenericParser<T>? = nil
@@ -36,14 +37,12 @@ public class OffTargetParserManagerFacade<T> {
         if let _ = fileName, let type = self.getParserType(fileName!) {
             self.parser = try factory.getParser(type) as! GenericParser<T>?
             parser!.parse(fileName!)
-
-            print("HEUREKA \(self.parser)")
         }
     }
 
     func getParserType(fileName: String) -> OffTargetParserType? {
 
-        let ext = (fileName as NSString).pathExtension
+        let ext = NSString(string: fileName).pathExtension
 
         if let type = OffTargetParserType.getTypeFromExtension(ext) {
             return type
