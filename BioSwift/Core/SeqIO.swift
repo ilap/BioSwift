@@ -24,22 +24,22 @@ import Foundation
 public class SeqIO {
     
     
-    public static func parse(path: String?) throws -> [SeqRecord?]? {
+    public static func parse(_ path: String?) throws -> [SeqRecord?]? {
         
-        guard let _ = path, let contents = try? String(contentsOfFile: path!,  encoding: NSASCIIStringEncoding) else { return nil }
+        guard let _ = path, let contents = try? String(contentsOfFile: path!,  encoding: String.Encoding.ascii) else { return nil }
         
         var records : [SeqRecord?] = []
         var seqRecord : SeqRecord?
         
         var hasRecord = false
-        for line in contents.componentsSeparatedByString("\n") {
+        for line in contents.components(separatedBy: "\n") {
             if line.isEmpty {
                 continue
             }
             
             if line[0] == ">" {
-                let idx = line.characters.indexOf(" ")
-                let id = line[line.startIndex.successor() ..< idx!]
+                let idx = line.characters.index(of: " ")
+                let id = line[line.characters.index(after: line.startIndex) ..< idx!]
                 
                 if hasRecord {
                     (records.last! as SeqRecord?)!.initialised = true
@@ -55,9 +55,8 @@ public class SeqIO {
                 records.append(seqRecord!)
 
             } else {
-                // Remove w
                 // slower let tline = line.stringByReplacingOccurrencesOfString(" ", withString: "")
-                let tline = line.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).uppercaseString
+                let tline = line.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
                 
                 seqRecord!.append(tline)
             }
@@ -67,7 +66,7 @@ public class SeqIO {
         if hasRecord {
             (records.last! as SeqRecord?)!.initialised = true
         } else {
-            throw BioSwiftError.FastaError("No any FASTA sequence found int the sequence file: \(path)")
+            throw BioSwiftError.fastaError("No any FASTA sequence found int the sequence file: \(path)")
         }
         
         return records

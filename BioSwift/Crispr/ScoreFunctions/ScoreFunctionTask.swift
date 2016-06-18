@@ -22,6 +22,7 @@
 import Foundation
 
 class ScoreFunctionTask: TaskProtocol {
+    var name: String = "ScoreFunctionTask"
     var progress: Int = 0
     var messages: [String] = []
 
@@ -29,70 +30,52 @@ class ScoreFunctionTask: TaskProtocol {
     var failCommand: Command? = nil
     var progressCommand: Command? = nil
 
+
+    var parameters: ScoreCommandParameterProtocol
+    
     func run() {
-        let to=40000000.0
-        let mod=400000
-        var sum = 0.0
-        var p = 0
-        for i in 0...Int(to) {
-            if i % mod == 0 {
-                p = Int(100*Float(i) / Float(to))
-                self.progress = p
-                self.progressCommand?.execute()
-            }
-            sum += 10 * 2
-        }
-        self.successCommand?.execute()
+        print("PRINT COMMANDS AND ARGS")
+        print("=======================")
+        print("VAR SF: ", self.parameters.sourceFile)
+        print("VAR OF: ", self.parameters.outputFile)
+        print("VAR IF: ", self.parameters.inputFile)
+        print("VAR AC: ", self.parameters.alignCommand)
+        print("VAR AA: ", self.parameters.alignArgs)
+        print("VAR BC: ", self.parameters.buildCommand)
+        print("VAR BA: ", self.parameters.buildArgs)
     }
 
-
-
-    var parser: ParserProtocol
-
-    var cmd: String
-    var args: [String]?
-
-    init(cmd: String, args: [String], parser: ParserProtocol? = nil) {
-        //self.init()
-        self.cmd = cmd
-        self.args = args
-
-
-        self.parser = parser!
-
+    init(parameters: ScoreCommandParameterProtocol) {
+        self.parameters = parameters
     }
 
     func runCommand() -> (output: [String], error: [String], exitCode: Int32) {
-        return runCommand(cmd, args: args)
-    }
-
-    func runCommand(cmd: String, args: [String]?) -> (output: [String], error: [String], exitCode: Int32) {
 
         var output : [String] = []
         var error : [String] = []
 
-        let task = NSTask()
+        let task = Task()
 
-        task.launchPath = cmd
-        task.arguments = args
+        task.launchPath = parameters.alignCommand
+        task.arguments = parameters.alignArgs
 
-        let stdout = NSPipe()
+        let stdout = Pipe()
         task.standardOutput = stdout
-        let stderr = NSPipe()
+        let stderr = Pipe()
         task.standardError = stderr
 
         task.launch()
 
         let outdata = stdout.fileHandleForReading.readDataToEndOfFile()
-        if var string = String.fromCString(UnsafePointer(outdata.bytes)) {
-            string = string.stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet())
-            output = string.componentsSeparatedByString("\n")
+        if var string = String(validatingUTF8: UnsafePointer((outdata as NSData).bytes)) {
+            string = string.trimmingCharacters(in: CharacterSet.newlines)
+            output = string.components(separatedBy: "\n")
         }
 
         let errdata = stderr.fileHandleForReading.readDataToEndOfFile()
-        if var string = String.fromCString(UnsafePointer(errdata.bytes)) {
-            string = string.stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet())
-            error = string.componentsSeparatedByString("\n")
+        if var string = String(validatingUTF8: UnsafePointer((errdata as NSData).bytes)) {
+            string = string.trimmingCharacters(in: CharacterSet.newlines)
+            error = string.components(separatedBy: "\n")
         }
 
         task.waitUntilExit()

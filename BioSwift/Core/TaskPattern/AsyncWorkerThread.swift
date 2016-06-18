@@ -32,24 +32,33 @@ protocol WorkerThreadProtocol: Command {
 }
 
 class AsyncWorkerThread: WorkerThreadProtocol {
+    private var runAsync: Bool = true
 
-    func execute() {
+    init() {    }
+
+
+    func execute(_ receiver: Any) {
         // FIXME: Make it work for Linux
-        #if os(Linux)
+#if os(Linux)
             self.runInBackground()
-        #else
-        if #available(OSX 10.10, *) {
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
-                self.runInBackground()
-            })
+#else
+        if runAsync {
+            if #available(OSX 10.10, *) {
+                DispatchQueue.global(attributes: .qosDefault).async(execute: {
+                    print("Async task's invoked...")
+                    self.runInBackground()
+                })
+            } else {
+                assertionFailure("FATAL ERROR: It requires OSX 10.10")
+            };
         } else {
-            assertionFailure("FATAL ERROR: It requires OSX 10.10")
-        };
-        #endif
+            self.runInBackground()
+        }
+#endif
     }
 
     func runInBackground() {
-        assertionFailure("FATAL ERROR: This function shold not be reached here!")
+        assertionFailure("FATAL ERROR: This function should not be reached!")
     }
 }
 
@@ -58,9 +67,10 @@ class TaskWorker: AsyncWorkerThread {
 
     var task: TaskProtocol
 
-    init(task: TaskProtocol) {
+    init(task: TaskProtocol, runAsync: Bool = true) {
         self.task = task
-
+        super.init()
+        self.runAsync = runAsync
     }
 
     override func runInBackground() {

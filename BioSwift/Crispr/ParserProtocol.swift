@@ -18,16 +18,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-///
-/// Parser using design patterns.
-/// Ideas from
-/// http://programmers.stackexchange.com/questions/187464/generic-file-parser-design-in-java-using-the-strategy-pattern
-/// https://code.msdn.microsoft.com/File-parser-using-design-81632e92
-///
 
 ///
 /// ParseProtocol
 ///
 protocol ParserProtocol {
-    func parse(fileName: String?)
+    func parse(_ fileName: String?)
+}
+
+///
+/// FormatterProtocol
+///
+protocol InputFormatterProtocol {
+    func write(_ fileName: String?, ontargets: [String]) -> Bool
+    // func importExport<I, E>(input: String) -> String {
+    //  let i = I(input)
+    //  i.parse<E>()
+    //  return output
+    //}
 }

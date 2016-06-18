@@ -21,47 +21,65 @@
 
 import Foundation
 
-
 ///
 /// Implements Mediator design for Task
 ///
 class TaskMediator {
 
-    var task: TaskProtocol
+    var tasks: [TaskProtocol] = []
 
     init(task: TaskProtocol) {
-        self.task = task
+        self.tasks.append(task)
+        initialise()
+    }
+
+    init(tasks: [TaskProtocol]) {
+        self.tasks = tasks
         initialise()
     }
 
     private func initialise() {
-        self.task.successCommand = RelayCommand(action: success/*, canExecute: canExecute*/)
-        self.task.failCommand = RelayCommand(action: fail/*, canExecute: canExecute*/)
-        self.task.progressCommand = RelayCommand(action: progress/*, canExecute: canExecute*/)
+        for var task in tasks {
+            print("Initialise task: \(task.name)")
+            task.successCommand = RelayCommand(action: success/*, canExecute: canExecute*/)
+            task.failCommand = RelayCommand(action: fail/*, canExecute: canExecute*/)
+            task.progressCommand = RelayCommand(action: progress/*, canExecute: canExecute*/)
+        }
     }
 
     ///
     /// Not using Threads
     ///
-    func runTask() {
-        task.run()
+    func runTasks() {
+        for task in tasks {
+            task.run()
+        }
     }
 
     /// Using Threads
     func initWorkerAndRunTask() {
-        let worker = TaskWorker(task: self.task)
-        worker.execute()
+        for task in tasks {
+            print("TASK: \(task.name)")
+            let worker = TaskWorker(task: task)
+            worker.execute(task)
+        }
     }
 
-    func success() {
+    func success(_ receiver: Any) {
         print("Success ")
     }
 
-    func fail() {
+    func fail(_ receiver: Any) {
         print("Fail")
     }
 
-    func progress() {
-        print("Progress \(task.progress)")
+    func progress(_ receiver: Any) {
+        
+        guard let currentTask = receiver as? TaskProtocol else {
+            fatalError("Receiver is not a TaskProtocol")
+        }
+        
+        print("Progress \(currentTask.progress), \(currentTask.name)")
+
     }
 }

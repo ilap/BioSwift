@@ -26,11 +26,11 @@ import Foundation
 ///
 public class BioSwiftFileUtil {
 
-    let fileManager: NSFileManager
+    let fileManager: FileManager
 
 
     public init() {
-        fileManager = NSFileManager.defaultManager()
+        fileManager = FileManager.default()
     }
 
     ///
@@ -39,17 +39,17 @@ public class BioSwiftFileUtil {
     /// False - exist but it's not a directory
     /// nil - Do not exits.
     ///
-    public func isDirectory(path: String) -> Bool? {
+    public func isDirectory(_ path: String) -> Bool? {
         var isDir: ObjCBool = false
 
-        if fileManager.fileExistsAtPath(path, isDirectory: &isDir) {
+        if fileManager.fileExists(atPath: path, isDirectory: &isDir) {
             return Bool(isDir)
         } else {
             return nil
         }
     }
 
-    private func hasPreDefinedSuffix(file: String, suffixes: [FileExtensions]) -> Bool {
+    private func hasPreDefinedSuffix(_ file: String, suffixes: [FileExtensions]) -> Bool {
         var result = false
 
         if suffixes.isEmpty {
@@ -68,7 +68,7 @@ public class BioSwiftFileUtil {
     ///
     /// TODO: implement extensions
     ///
-    public func getFilesFromPath(path: String, extensions: [FileExtensions] = FileExtensions.allValues) throws -> [String]  {
+    public func getFilesFromPath(_ path: String, extensions: [FileExtensions] = FileExtensions.allValues) throws -> [String]  {
 
         var result: [String] = []
         //let fileManager = NSFileManager.defaultManager()
@@ -77,7 +77,7 @@ public class BioSwiftFileUtil {
             if isDir {
                 //let enumerator:NSDirectoryEnumerator = fileManager.enumeratorAtPath(source)
                 //while let element = enumerator?.nextObject() as? String {
-                let files = try fileManager.contentsOfDirectoryAtPath(path)
+                let files = try fileManager.contentsOfDirectory(atPath: path)
                 for file in files {
                     //Add all files but direcotries from the path...
                     // Handle Unix hidden files..
@@ -90,7 +90,7 @@ public class BioSwiftFileUtil {
                         //print("ITIS FILE: \(fileName)")
                         result.append(fileName)
                     } else {
-                        throw BioSwiftError.FileError("File \"\(file)\" does not conform the requirements e.g. Fasta file /w  \(extensions) extension")
+                        throw BioSwiftError.fileError("File \"\(file)\" does not conform the requirements e.g. Fasta file /w  \(extensions) extension")
                     }
                 }
 
@@ -104,6 +104,4 @@ public class BioSwiftFileUtil {
 
         return result
     }
-    
-
 }

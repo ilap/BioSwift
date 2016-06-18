@@ -47,7 +47,7 @@ public class SandboxAsyncWorkerTask<T,V> {
 
     }
 
-    public func execute(param: T) {
+    public func execute(_ param: T) {
         print("EXECUTE")
         guard let _ = self.backgroundTask else {
             // TODO: Throw error
@@ -61,12 +61,12 @@ public class SandboxAsyncWorkerTask<T,V> {
 
         #if os(OSX)
         if #available(OSX 10.10, *) {
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+            DispatchQueue.global(attributes: .qosDefault).async(execute: {
                 print("ASYNC STARTED")
                 let result = self.backgroundTask!(param: param)
 
                 if let _ = self.postTask {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.postTask?(param: result)
                     })
                 }
@@ -104,7 +104,7 @@ public class SandboxTaskWorker: SandboxAsyncWorkerTask<String, Int> {
         self.execute("Nothing")
     }
 
-    func longRunFunc(param: String) -> Int {
+    func longRunFunc(_ param: String) -> Int {
         print("TASK IS RUNNUNG")
         task.run()
         return 0

@@ -35,14 +35,12 @@ public class BioSwiftParserTests: XCTestCase {
     }
 #else
 
-    let testBundle = NSBundle(forClass: BioSwiftParserTests.self)
-
-    override func setUp() {
+    override public func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
-    override func tearDown() {
+    override public func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
@@ -50,7 +48,7 @@ public class BioSwiftParserTests: XCTestCase {
     func testPerformanceExample() {
         // This is an example of a performance test case.
 
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }
@@ -60,6 +58,7 @@ public class BioSwiftParserTests: XCTestCase {
 
     func testParsingCasOffinderOutput() {
 #if !os(Linux)
+        let testBundle = Bundle(for: BioSwiftParserTests.self)
         let fileName = testBundle.pathForResource("Resources/ParsersTest/result", ofType: "bwt")
 #else
         let fileName = "./Resources/ParsersTest/result.bwt"
@@ -68,14 +67,23 @@ public class BioSwiftParserTests: XCTestCase {
         let facade = OffTargetParserManagerFacade<OfftargetProtocol>()
 
         do {
-            try facade.parseFile(fileName)
-            for result in (facade.parser?.results)! {
-                print("ITEM: \(result.guideRNA)")
+            if let results = try facade.parseFile(fileName) {
+                for result in results {
+
+                    print("ITEM: \(result.guideRNA)")
+                }
+            } else {
+                print("NO ANY RESULT")
             }
         } catch let error {
             print ("BIOSWIFT ERROR:: \(error)")
         }
 
     }
+
+    func testBowtieParsing() {
+
+    }
+
 }
 

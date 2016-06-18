@@ -26,7 +26,11 @@ import Foundation
 // Benchmarking short sequence mapping tools - All Exisiting tool
 // http://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-184
 
-public class SeqRecord {
+public func ==(lhs: SeqRecord, rhs: SeqRecord) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+
+public class SeqRecord: Hashable {
     var _gc_content : Bool = true
     var _bases : [String:Int]? = nil
     var initialised : Bool {
@@ -89,8 +93,14 @@ public class SeqRecord {
             self.path = path
         }
     }
+
+    public var hashValue: Int {
+        get {
+            return self.id.hashValue
+        }
+    }
     
-    func append (sequence: String) {
+    func append (_ sequence: String) {
         
         seq.sequence += sequence
     }

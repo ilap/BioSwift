@@ -37,19 +37,19 @@ public class BioSwiftSequenceTests: XCTestCase {
     }
 #else
 
-    override func setUp() {
+    override public func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
-    override func tearDown() {
+    override public func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }
@@ -58,14 +58,14 @@ public class BioSwiftSequenceTests: XCTestCase {
     func testOnTargetsInSequence() {
                               // 0123456789012345678901
         var seq = Seq(sequence: "ACGTACGTACGGGCTGAGACGT")
-        var pams = ["NGG", "NAG"]
+        var pams = ["NGG"]//, "NAG"]
         
         var res = seq.getOnTargets(pams, start: 0, end: Int(seq.length))
 
-        assert (res == nil || res!.sort() == [9, 10, 15, -13].sort())
+        assert (res == nil || res!.sorted() == [9, 10, 15, -13].sorted())
 
         res = seq.getOnTargets(pams.map { $0.reverseComplement() }, start: 0, end: Int(seq.length))
-        assert (res == nil || res!.sort() == [-9, -10, -15, 13].sort())
+        assert (res == nil || res!.sorted() == [-9, -10, -15, 13].sorted())
         
                           // 012345678901234567
         seq = Seq(sequence: "ATTCCAGAGCAATCCCGT")
@@ -73,7 +73,7 @@ public class BioSwiftSequenceTests: XCTestCase {
         
         res = seq.getOnTargets(pams, start: 0, end: Int(seq.length))
         print ("RES: \(res)")
-        assert (res == nil || res!.sort() == [0, 7, 8])
+        assert (res == nil || res!.sorted() == [0, 7, 8])
 
         
                           // 0123456789012345678901

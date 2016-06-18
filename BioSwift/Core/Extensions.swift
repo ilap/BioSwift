@@ -38,22 +38,22 @@ public enum FileExtensions: String, CustomStringConvertible {
     }
 }
 
-public enum BioSwiftError: ErrorType, CustomStringConvertible  {
-    case FileError(String)
-    case FastaError(String)
-    case NucleotideError(String)
-    case ParserError(String)
+public enum BioSwiftError: ErrorProtocol, CustomStringConvertible  {
+    case fileError(String)
+    case fastaError(String)
+    case nucleotideError(String)
+    case parserError(String)
 
     public var description: String {
         get {
             switch (self) {
-            case .FileError(let message):
+            case .fileError(let message):
                 return message
-            case .FastaError(let message):
+            case .fastaError(let message):
                 return message
-            case .NucleotideError(let message):
+            case .nucleotideError(let message):
                 return message
-            case .ParserError(let message):
+            case .parserError(let message):
                 return message
             }
         }
@@ -61,90 +61,90 @@ public enum BioSwiftError: ErrorType, CustomStringConvertible  {
 }
 
 enum Bases: Character {
-    case A = "A"
-    case C = "C"
-    case G = "G"
-    case T = "T"
-    case U = "U"
-    case R = "R"
-    case Y = "Y"
-    case K = "K"
-    case M = "M"
-    case S = "S"
-    case W = "W"
-    case B = "B"
-    case D = "D"
-    case H = "H"
-    case V = "V"
-    case N = "N"
+    case a = "A"
+    case c = "C"
+    case g = "G"
+    case t = "T"
+    case u = "U"
+    case r = "R"
+    case y = "Y"
+    case k = "K"
+    case m = "M"
+    case s = "S"
+    case w = "W"
+    case b = "B"
+    case d = "D"
+    case h = "H"
+    case v = "V"
+    case n = "N"
     case hyphen = "-"
 
 
 
     var complement: Bases {
         switch self {
-        case A: return T
-        case C: return G
-        case G: return C
-        case T: return A
-        case R: return Y
-        case Y: return R
+        case a: return t
+        case c: return g
+        case g: return c
+        case t: return a
+        case r: return y
+        case y: return r
         // TODO: not supported yet case W: return "W"
 
-        case N: return N
+        case n: return n
         //FIXME: Add other values
-        default: return N
+        default: return n
         }
     }
-    static let allValues = [A, C, G, T, R, Y, /* TODO: not suppoerted yet W, */ N]
+    static let allValues = [a, c, g, t, r, y, /* TODO: not suppoerted yet W, */ n]
 
-    static func getBase(baseString: String) -> Bases {
+    static func getBase(_ baseString: String) -> Bases {
         switch (baseString) {
-        case "AG": return R
-        case "CT": return Y
+        case "AG": return r
+        case "CT": return y
         // FIXME:
-        default:  return N
+        default:  return n
         }
     }
     
     var baseASCII: UInt8 {
         switch self {
-        case A: return 65
-        case C: return 67
-        case G: return 71
-        case T: return 84
-        case R: return 82
-        case Y: return 89
+        case a: return 65
+        case c: return 67
+        case g: return 71
+        case t: return 84
+        case r: return 82
+        case y: return 89
         // TODO: not supported yet case W: return 87
-        case N: return 78
+        case n: return 78
         //FIXME: Add other values
         default: return 0
         }
     }
     var baseBinary: UInt8 {
         switch self {
-        case A: return 0b01000001 // Mask out 1
-        case C: return 0b01000011 // Mask out 2
-        case G: return 0b01000111 // Mask out 4
-        case T: return 0b01000100 // Mask out 0
-        case R: return 0b01000010 // NO MASK
-        case Y: return 0b01001001 // NO MASK
+        case a: return 0b01000001 // Mask out 1
+        case c: return 0b01000011 // Mask out 2
+        case g: return 0b01000111 // Mask out 4
+        case t: return 0b01000100 // Mask out 0
+        case r: return 0b01000010 // NO MASK
+        case y: return 0b01001001 // NO MASK
         // TODO: not supported yet case W: return 0b01000111 // Mask out 4
-        case N: return 0b01001110 // Maks out 8
+        case n: return 0b01001110 // Maks out 8
         //FIXME: Add other values
         default: return 0
         }
     }
     var baseHexa: UInt8 {
         switch self {
-        case A: return 0x41
-        case C: return 0x43
-        case G: return 0x47
-        case T: return 0x54
-        case R: return 0x52
-        case Y: return 0x59
+        case a: return 0x41
+        case c: return 0x43
+        case g: return 0x47
+        case t: return 0x54
+        case r: return 0x52
+        case y: return 0x59
         // TODO: not supported yet case W: return 0x57
-        case N: return 0x4e
+        case n: return 0x4e
         //FIXME: Add other values
         default: return 0
         }
@@ -155,7 +155,7 @@ enum Bases: Character {
 extension String {
 
     func reverseComplement() -> String {
-        let result = self.characters.reverse().map { _complement($0)! }
+        let result = self.characters.reversed().map { _complement($0)! }
         return String(result)
     }
 
@@ -165,7 +165,7 @@ extension String {
         return String(result)
     }
 
-    func _complement(nucleotide: Character?) -> Character? {
+    func _complement(_ nucleotide: Character?) -> Character? {
 
         let result = Bases(rawValue: nucleotide!)
         assert (result != nil, "BIOSWITT ERROR: Nucleotide \(nucleotide) is not found!")
@@ -174,7 +174,7 @@ extension String {
     }
     
     subscript (i: Int) -> Character {
-        return self[self.startIndex.advancedBy(i)]
+        return self[self.characters.index(self.startIndex, offsetBy: i)]
     }
     
     subscript (i: Int) -> String {
@@ -182,11 +182,18 @@ extension String {
     }
     
     subscript (r: Range<Int>) -> String {
-        let start = startIndex.advancedBy(r.startIndex)
-        let end = start.advancedBy(r.endIndex - r.startIndex)
+        let start = characters.index(startIndex, offsetBy: r.lowerBound)
+        let end = characters.index(start, offsetBy: r.upperBound - r.lowerBound)
         return self[Range(start ..< end)]
     }
 
+    
+    subscript (r: CountableClosedRange<Int>) -> String {
+        let start = characters.index(startIndex, offsetBy: r.lowerBound)
+        let end = characters.index(start, offsetBy: r.upperBound - r.lowerBound)
+        //let end = String.CharacterView.
+        return self[Range(start ..< end)]
+    }
     
    /* // ~16sec for 4 million bases
    public var baseContents: [String:Int] {
@@ -205,12 +212,12 @@ extension String {
 }
 
 extension Double {
-    public func format(format: String) -> String {
+    public func format(_ format: String) -> String {
         return String(format: "%\(format)f", self)
     }
 }
 
-public func += <T> (inout lhs: [T:Int], rhs: [T:Int]) {
+public func += <T> (lhs: inout [T:Int], rhs: [T:Int]) {
     for (k, i) in rhs {
         lhs[k] = (lhs[k] ?? 0) + i
     }

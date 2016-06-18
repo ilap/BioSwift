@@ -35,7 +35,7 @@ public class Seq {
         set {
             if initialised {
                 if newValue == false {
-                    _sequence!.dealloc(Int(strlen(_sequence!) + 1))
+                    _sequence!.deallocateCapacity(Int(strlen(_sequence!)) + 1)
                     _sequence = nil
                 }
                 return
@@ -115,13 +115,13 @@ public class Seq {
         return d
     }
     
-    func getPAMsMask(pamSequences: [String], senseStrand: Bool = true) -> [(String, Int, Int, Bool)] {
+    func getPAMsMask(_ pamSequences: [String], senseStrand: Bool = true) -> [(String, Int, Int, Bool)] {
 
         var result: [(String, Int,Int, Bool)] = []
         
         // Temporary buffer
-        let maskBuf = UnsafeMutablePointer<UInt8>.alloc(8)
-        let pamBuf = UnsafeMutablePointer<UInt8>.alloc(8)
+        let maskBuf = UnsafeMutablePointer<UInt8>(allocatingCapacity: 8)
+        let pamBuf = UnsafeMutablePointer<UInt8>(allocatingCapacity: 8)
         // Reset it
         UnsafeMutablePointer<Int>(maskBuf)[0] = 0x0
         UnsafeMutablePointer<Int>(pamBuf)[0] = 0x0
@@ -130,7 +130,7 @@ public class Seq {
             //debugPrint("\(__FILE__):\(__LINE__) PAM Sequence is: \(pamSequence)")
             
             // Only N is supported yet as it's hard to mask out the others such as W (A,T and U), R(A,G)
-            let maskChar = Bases.N.baseASCII
+            let maskChar = Bases.n.baseASCII
                 
             // UnsafeMutablePointer<Int8>
             let pamMask = UnsafeMutablePointer<UInt8>(strdup(pamSequence))
@@ -139,13 +139,13 @@ public class Seq {
             var i = 0
 
         
-            while pamMask[i] != 0 {
-                if pamMask[i] == maskChar {
+            while pamMask?[i] != 0 {
+                if pamMask?[i] == maskChar {
                     //print("HEUREKA: \(i) : \(pamMask[i])")
-                    maskedPAM[i] = 0x0
-                    pamMask[i] = 0x0
+                    maskedPAM?[i] = 0x0
+                    pamMask?[i] = 0x0
                 } else {
-                    pamMask[i] = 0xFF
+                    pamMask?[i] = 0xFF
                 }
                 i += 1
             }
@@ -159,18 +159,21 @@ public class Seq {
         return result
     }
     
-    public func getOnTargets(pamSequences: [String], start: Int, end: Int) -> [Int]? {
+    
+    public func getOnTargets(_ pamSequences: [String], start: Int, end: Int) -> [Int]? {
         
         guard let seq = self.cSequence else { return nil }
         let pamLength = pamSequences.first?.characters.count
 
-        assert(start >= 0 && end <= self.length && start < (end - pamLength!))
+        
+        assert(start >= 0 && end <= self.length && start < (end - pamLength!),
+               "Start is smaller then End or invalid values for start and end.")
         
         var onTargets: [Int]? = []
         
         // Initialise on array.
         // Temporary buffer
-        let buf = UnsafeMutablePointer<Int>.alloc(1)
+        let buf = UnsafeMutablePointer<Int>(allocatingCapacity: 1)
         // Reset it
         UnsafeMutablePointer<Int>(buf)[0] = 0x0
         
@@ -200,7 +203,6 @@ public class Seq {
                         location = -i
                     }
                     onTargets?.append(Int(location))
-                    
                 }    
             }
         }
@@ -222,9 +224,9 @@ public class Seq {
         return String(self[i] as Character)
     }
     
-    public subscript (r: Range<Int>) -> String {
-        let start = r.startIndex
-        let end = start.advancedBy(r.endIndex - r.startIndex)
+    public subscript (r: CountableClosedRange<Int>) -> String {
+        let start = r.lowerBound
+        let end = start.advanced(by: r.upperBound - r.lowerBound)
         return self.sequence[Range(start ..< end)]
 
     }
