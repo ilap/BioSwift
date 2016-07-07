@@ -12,9 +12,12 @@ import Foundation
 class DesignParameters: DesignParameterProtocol {
     var seedLength: Int = 10
     var spacerLength: Int = 20
-    var pamLength: Int = 3
-    var cutOffset: Int = 4
+    
+    var senseCutOffset: Int? = 4
+    var antiSenseCutOffset: Int? = 4
+
     var targetOffset: Int = 0
+    var pamLength: Int = 3
 
 }
 
