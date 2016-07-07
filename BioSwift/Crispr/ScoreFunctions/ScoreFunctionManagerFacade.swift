@@ -55,7 +55,7 @@ class ScoreFunctionManagerFacade {
     }
     
     private func initialise() {
-        for (genome, targets) in sources {
+        for (_, _) in sources {
             //tasks.append(ScoreTaskWorker())
             // let worker = ScoreFunctionWorker(task: task, scoreFunction: scoreFunction)
             // worker.execute(task)

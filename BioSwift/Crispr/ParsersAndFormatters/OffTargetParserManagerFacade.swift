@@ -30,16 +30,15 @@ public class OffTargetParserManagerFacade<T> {
 
     public func parseFile(parser: ParserProtocol?, _ fileName: String?) throws -> [T]? {
         if let _ = fileName, let _ = parser {
-            let parser = try parser as! GenericParser<T>?
-            parser!.parse(fileName!)
-            if !parser!.results.isEmpty {
-                return parser!.results
-            } else {
-                return nil
+            if let parser = parser as! GenericParser<T>? {
+                parser.parse(fileName!)
+                if !parser.results.isEmpty {
+                    return parser.results
+
+                }
             }
-        } else {
-            return nil
         }
+        return nil
     }
 
     public func parseFile(_ fileName: String?) throws -> [T]? {
