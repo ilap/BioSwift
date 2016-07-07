@@ -22,6 +22,16 @@
 		EE17EA171D06F9CC005ADCD4 /* GenericParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE17EA0C1D06F9CC005ADCD4 /* GenericParser.swift */; };
 		EE17EA181D06F9CC005ADCD4 /* GenericParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE17EA0C1D06F9CC005ADCD4 /* GenericParser.swift */; };
 		EE20FEA61CF9C8AF0035148F /* runTestsOnLinux.sh in Resources */ = {isa = PBXBuildFile; fileRef = EE20FEA51CF9C8AF0035148F /* runTestsOnLinux.sh */; };
+		EE223BE01D15C7D9006B4E9F /* StreamWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BDF1D15C7D9006B4E9F /* StreamWriter.swift */; };
+		EE223BE11D15C7D9006B4E9F /* StreamWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BDF1D15C7D9006B4E9F /* StreamWriter.swift */; };
+		EE223BE31D15C99F006B4E9F /* StreamInputFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BE21D15C99F006B4E9F /* StreamInputFormatter.swift */; };
+		EE223BE41D15C99F006B4E9F /* StreamInputFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BE21D15C99F006B4E9F /* StreamInputFormatter.swift */; };
+		EE223BE61D15CB4B006B4E9F /* OnTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BE51D15CB4B006B4E9F /* OnTarget.swift */; };
+		EE223BE71D15CB4B006B4E9F /* OnTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BE51D15CB4B006B4E9F /* OnTarget.swift */; };
+		EE223BE91D15CC0A006B4E9F /* CasOffinderInputFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BE81D15CC0A006B4E9F /* CasOffinderInputFormatter.swift */; };
+		EE223BEA1D15CC0A006B4E9F /* CasOffinderInputFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BE81D15CC0A006B4E9F /* CasOffinderInputFormatter.swift */; };
+		EE223BEC1D15D60B006B4E9F /* ScoreInputFormatterManagerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BEB1D15D60B006B4E9F /* ScoreInputFormatterManagerFacade.swift */; };
+		EE223BED1D15D60B006B4E9F /* ScoreInputFormatterManagerFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE223BEB1D15D60B006B4E9F /* ScoreInputFormatterManagerFacade.swift */; };
 		EE2D456A1CF9A106004BDB4C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2D45691CF9A106004BDB4C /* main.swift */; };
 		EE3196631CC288650038756C /* BioSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = EE3196621CC288650038756C /* BioSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EE31966A1CC288650038756C /* BioSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE31965F1CC288650038756C /* BioSwift.framework */; };
@@ -47,18 +57,15 @@
 		EE7621141CF218CA00F13281 /* SeqRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7621031CF1A42A00F13281 /* SeqRecord.swift */; };
 		EE7621151CF218CD00F13281 /* SeqIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7621041CF1A42A00F13281 /* SeqIO.swift */; };
 		EE7621161CF218D100F13281 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE76210B1CF1A54F00F13281 /* FileUtils.swift */; };
-		EE7A0A071CF8B81D00E5CBF4 /* ParserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A0A061CF8B81D00E5CBF4 /* ParserProtocol.swift */; };
-		EE7A0A081CF8B81D00E5CBF4 /* ParserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A0A061CF8B81D00E5CBF4 /* ParserProtocol.swift */; };
+		EE7743C11D26AA15000DB4CF /* MockDesignData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7743C01D26AA15000DB4CF /* MockDesignData.swift */; };
+		EE7A0A071CF8B81D00E5CBF4 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A0A061CF8B81D00E5CBF4 /* Protocols.swift */; };
+		EE7A0A081CF8B81D00E5CBF4 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A0A061CF8B81D00E5CBF4 /* Protocols.swift */; };
 		EE8503581CF4E18900554115 /* BioSwiftParseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503571CF4E18900554115 /* BioSwiftParseTests.swift */; };
 		EEA09F7D1D075208005F638A /* ScoreCommands in Resources */ = {isa = PBXBuildFile; fileRef = EEA09F7C1D075208005F638A /* ScoreCommands */; };
 		EEA7B4CD1CF646A30068138A /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = EEA7B4CC1CF646A30068138A /* Resources */; };
 		EEB198B91D147D6F00025670 /* ModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2B2DCE1D0EBD9C00D4E343 /* ModelProtocol.swift */; };
 		EEB198BA1D147D7000025670 /* ModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2B2DCE1D0EBD9C00D4E343 /* ModelProtocol.swift */; };
 		EEE4D35C1CF724A5006A979F /* BioSwiftTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE4D35B1CF724A5006A979F /* BioSwiftTaskTests.swift */; };
-		EEE844A31D06FB32001DEB7C /* CasOffinderInputFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE844A21D06FB32001DEB7C /* CasOffinderInputFormatter.swift */; };
-		EEE844A41D06FB32001DEB7C /* CasOffinderInputFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE844A21D06FB32001DEB7C /* CasOffinderInputFormatter.swift */; };
-		EEE844A61D06FC89001DEB7C /* GenericFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE844A51D06FC89001DEB7C /* GenericFormatter.swift */; };
-		EEE844A71D06FC89001DEB7C /* GenericFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE844A51D06FC89001DEB7C /* GenericFormatter.swift */; };
 		EEE8FAB91CFC49D3000BE4EE /* BowtieScoreFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE8FAB81CFC49D3000BE4EE /* BowtieScoreFunction.swift */; };
 		EEE8FABA1CFC49D3000BE4EE /* BowtieScoreFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE8FAB81CFC49D3000BE4EE /* BowtieScoreFunction.swift */; };
 		EEE8FABE1CFC5715000BE4EE /* Offtarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE352FC51CF98F7D0081354E /* Offtarget.swift */; };
@@ -69,6 +76,8 @@
 		EEE8FAC71CFC6247000BE4EE /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE352FD61CF990000081354E /* Command.swift */; };
 		EEE8FAC81CFC62F6000BE4EE /* TaskMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE352FD81CF990000081354E /* TaskMediator.swift */; };
 		EEE8FAC91CFC630E000BE4EE /* AsyncWorkerThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE352FD51CF990000081354E /* AsyncWorkerThread.swift */; };
+		EEFA844E1D1A718B00AEF093 /* CasOffinderScoreFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA844D1D1A718B00AEF093 /* CasOffinderScoreFunction.swift */; };
+		EEFA844F1D1A718B00AEF093 /* CasOffinderScoreFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFA844D1D1A718B00AEF093 /* CasOffinderScoreFunction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,8 +99,16 @@
 		EE17EA0B1D06F9CC005ADCD4 /* BowtieOutputParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BowtieOutputParser.swift; path = Crispr/ParsersAndFormatters/BowtieOutputParser.swift; sourceTree = "<group>"; };
 		EE17EA0C1D06F9CC005ADCD4 /* GenericParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GenericParser.swift; path = Crispr/ParsersAndFormatters/GenericParser.swift; sourceTree = "<group>"; };
 		EE20FEA51CF9C8AF0035148F /* runTestsOnLinux.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = runTestsOnLinux.sh; sourceTree = "<group>"; };
+		EE223BDF1D15C7D9006B4E9F /* StreamWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StreamWriter.swift; path = Core/StreamWriter.swift; sourceTree = "<group>"; };
+		EE223BE21D15C99F006B4E9F /* StreamInputFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StreamInputFormatter.swift; path = Crispr/ParsersAndFormatters/StreamInputFormatter.swift; sourceTree = "<group>"; };
+		EE223BE51D15CB4B006B4E9F /* OnTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnTarget.swift; sourceTree = "<group>"; };
+		EE223BE81D15CC0A006B4E9F /* CasOffinderInputFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CasOffinderInputFormatter.swift; path = Crispr/ParsersAndFormatters/CasOffinderInputFormatter.swift; sourceTree = "<group>"; };
+		EE223BEB1D15D60B006B4E9F /* ScoreInputFormatterManagerFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreInputFormatterManagerFacade.swift; path = Crispr/ParsersAndFormatters/ScoreInputFormatterManagerFacade.swift; sourceTree = "<group>"; };
 		EE2B2DCE1D0EBD9C00D4E343 /* ModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelProtocol.swift; path = Crispr/ModelProtocol.swift; sourceTree = "<group>"; };
 		EE2D45691CF9A106004BDB4C /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		EE2D55241D18573800E4A5E8 /* Sandbox.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = Sandbox.playground; path = Playgrounds/Sandbox.playground; sourceTree = "<group>"; };
+		EE2D55261D18573800E4A5E8 /* TaskTest.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = TaskTest.playground; path = Playgrounds/TaskTest.playground; sourceTree = "<group>"; };
+		EE2D55271D18573800E4A5E8 /* VisitorPatternForFormatter.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = VisitorPatternForFormatter.playground; path = Playgrounds/VisitorPatternForFormatter.playground; sourceTree = "<group>"; };
 		EE31965F1CC288650038756C /* BioSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BioSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE3196621CC288650038756C /* BioSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BioSwift.h; sourceTree = "<group>"; };
 		EE3196641CC288650038756C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -112,15 +129,15 @@
 		EE7621041CF1A42A00F13281 /* SeqIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SeqIO.swift; path = Core/SeqIO.swift; sourceTree = "<group>"; };
 		EE76210B1CF1A54F00F13281 /* FileUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileUtils.swift; path = Utils/FileUtils.swift; sourceTree = "<group>"; };
 		EE76210F1CF2078E00F13281 /* CrisprUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CrisprUtils.swift; path = Utils/CrisprUtils.swift; sourceTree = "<group>"; };
-		EE7A0A061CF8B81D00E5CBF4 /* ParserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParserProtocol.swift; path = Crispr/ParserProtocol.swift; sourceTree = "<group>"; };
+		EE7743C01D26AA15000DB4CF /* MockDesignData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDesignData.swift; sourceTree = "<group>"; };
+		EE7A0A061CF8B81D00E5CBF4 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Protocols.swift; path = Crispr/Protocols.swift; sourceTree = "<group>"; };
 		EE8503571CF4E18900554115 /* BioSwiftParseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioSwiftParseTests.swift; sourceTree = "<group>"; };
 		EEA09F7C1D075208005F638A /* ScoreCommands */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ScoreCommands; path = ../../DesignGuide/Utils/BioTools/ScoreCommands; sourceTree = "<group>"; };
 		EEA7B4CC1CF646A30068138A /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 		EEE4D35B1CF724A5006A979F /* BioSwiftTaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioSwiftTaskTests.swift; sourceTree = "<group>"; };
-		EEE844A21D06FB32001DEB7C /* CasOffinderInputFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CasOffinderInputFormatter.swift; path = Crispr/ParsersAndFormatters/CasOffinderInputFormatter.swift; sourceTree = "<group>"; };
-		EEE844A51D06FC89001DEB7C /* GenericFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GenericFormatter.swift; path = Crispr/ParsersAndFormatters/GenericFormatter.swift; sourceTree = "<group>"; };
 		EEE8FAB81CFC49D3000BE4EE /* BowtieScoreFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BowtieScoreFunction.swift; path = Crispr/ScoreFunctions/BowtieScoreFunction.swift; sourceTree = "<group>"; };
 		EEE8FAC31CFC576A000BE4EE /* ScoreFunctionManagerFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreFunctionManagerFacade.swift; path = Crispr/ScoreFunctions/ScoreFunctionManagerFacade.swift; sourceTree = "<group>"; };
+		EEFA844D1D1A718B00AEF093 /* CasOffinderScoreFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CasOffinderScoreFunction.swift; path = Crispr/ScoreFunctions/CasOffinderScoreFunction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,9 +159,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE223BDE1D15C48B006B4E9F /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				EE17EA041D06F9BF005ADCD4 /* BowtieInputFormatter.swift */,
+				EE223BE81D15CC0A006B4E9F /* CasOffinderInputFormatter.swift */,
+				EE223BE21D15C99F006B4E9F /* StreamInputFormatter.swift */,
+				EE223BEB1D15D60B006B4E9F /* ScoreInputFormatterManagerFacade.swift */,
+			);
+			name = Formatters;
+			sourceTree = "<group>";
+		};
+		EE2D55281D18573800E4A5E8 /* PlayGrounds */ = {
+			isa = PBXGroup;
+			children = (
+				EE2D55241D18573800E4A5E8 /* Sandbox.playground */,
+				EE2D55261D18573800E4A5E8 /* TaskTest.playground */,
+				EE2D55271D18573800E4A5E8 /* VisitorPatternForFormatter.playground */,
+			);
+			name = PlayGrounds;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		EE3196551CC288650038756C = {
 			isa = PBXGroup;
 			children = (
+				EE2D55281D18573800E4A5E8 /* PlayGrounds */,
 				EE3196611CC288650038756C /* BioSwift */,
 				EE31966D1CC288650038756C /* BioSwiftTests */,
 				EE3196601CC288650038756C /* Products */,
@@ -182,6 +222,7 @@
 				EEE4D35B1CF724A5006A979F /* BioSwiftTaskTests.swift */,
 				EE2D45691CF9A106004BDB4C /* main.swift */,
 				EE20FEA51CF9C8AF0035148F /* runTestsOnLinux.sh */,
+				EE7743C01D26AA15000DB4CF /* MockDesignData.swift */,
 			);
 			path = BioSwiftTests;
 			sourceTree = "<group>";
@@ -191,8 +232,7 @@
 			children = (
 				EE352FC51CF98F7D0081354E /* Offtarget.swift */,
 				EEE4D3501CF6FAB3006A979F /* ScoreFunctions */,
-				EE85035D1CF4EC8200554115 /* ParsersAndFormatters */,
-				EE7A0A061CF8B81D00E5CBF4 /* ParserProtocol.swift */,
+				EE7A0A061CF8B81D00E5CBF4 /* Protocols.swift */,
 				EE2B2DCE1D0EBD9C00D4E343 /* ModelProtocol.swift */,
 				EE4AC6F11D12B7B80073D2E1 /* DesignManager.swift */,
 			);
@@ -209,6 +249,7 @@
 				EE7621021CF1A42A00F13281 /* Seq.swift */,
 				EE7621031CF1A42A00F13281 /* SeqRecord.swift */,
 				EE7621041CF1A42A00F13281 /* SeqIO.swift */,
+				EE223BDF1D15C7D9006B4E9F /* StreamWriter.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -222,7 +263,7 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
-		EE85035D1CF4EC8200554115 /* ParsersAndFormatters */ = {
+		EE85035D1CF4EC8200554115 /* Parsers */ = {
 			isa = PBXGroup;
 			children = (
 				EE17EA071D06F9CC005ADCD4 /* OffTargetParserProvider.swift */,
@@ -231,20 +272,21 @@
 				EE17EA0A1D06F9CC005ADCD4 /* OffTargetParserFactory.swift */,
 				EE17EA0B1D06F9CC005ADCD4 /* BowtieOutputParser.swift */,
 				EE17EA0C1D06F9CC005ADCD4 /* GenericParser.swift */,
-				EE17EA041D06F9BF005ADCD4 /* BowtieInputFormatter.swift */,
-				EEE844A21D06FB32001DEB7C /* CasOffinderInputFormatter.swift */,
-				EEE844A51D06FC89001DEB7C /* GenericFormatter.swift */,
 			);
-			name = ParsersAndFormatters;
+			name = Parsers;
 			sourceTree = "<group>";
 		};
 		EEE4D3501CF6FAB3006A979F /* ScoreFunctions */ = {
 			isa = PBXGroup;
 			children = (
+				EE85035D1CF4EC8200554115 /* Parsers */,
+				EE223BDE1D15C48B006B4E9F /* Formatters */,
 				EEA09F7C1D075208005F638A /* ScoreCommands */,
 				EE352FC31CF98F6B0081354E /* ScoreFunctionTask.swift */,
 				EEE8FAB81CFC49D3000BE4EE /* BowtieScoreFunction.swift */,
+				EEFA844D1D1A718B00AEF093 /* CasOffinderScoreFunction.swift */,
 				EEE8FAC31CFC576A000BE4EE /* ScoreFunctionManagerFacade.swift */,
+				EE223BE51D15CB4B006B4E9F /* OnTarget.swift */,
 			);
 			name = ScoreFunctions;
 			sourceTree = "<group>";
@@ -323,6 +365,7 @@
 		EE3196561CC288650038756C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = org.ilap;
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Pal Dorogi";
@@ -382,8 +425,8 @@
 			files = (
 				EE7621101CF2078E00F13281 /* CrisprUtils.swift in Sources */,
 				EE4AC6F21D12B7B80073D2E1 /* DesignManager.swift in Sources */,
-				EEE844A61D06FC89001DEB7C /* GenericFormatter.swift in Sources */,
 				EE7621051CF1A42A00F13281 /* Extensions.swift in Sources */,
+				EEFA844E1D1A718B00AEF093 /* CasOffinderScoreFunction.swift in Sources */,
 				EEB198BA1D147D7000025670 /* ModelProtocol.swift in Sources */,
 				EE7621061CF1A42A00F13281 /* Seq.swift in Sources */,
 				EE7621071CF1A42A00F13281 /* SeqRecord.swift in Sources */,
@@ -394,17 +437,21 @@
 				EE17EA051D06F9BF005ADCD4 /* BowtieInputFormatter.swift in Sources */,
 				EE17EA0F1D06F9CC005ADCD4 /* OffTargetParserManagerFacade.swift in Sources */,
 				EE352FD41CF98FF70081354E /* SandboxAsyncWorkerTask.swift in Sources */,
+				EE223BE01D15C7D9006B4E9F /* StreamWriter.swift in Sources */,
+				EE223BEC1D15D60B006B4E9F /* ScoreInputFormatterManagerFacade.swift in Sources */,
 				EE17EA151D06F9CC005ADCD4 /* BowtieOutputParser.swift in Sources */,
 				EEE8FAC41CFC576A000BE4EE /* ScoreFunctionManagerFacade.swift in Sources */,
-				EEE844A31D06FB32001DEB7C /* CasOffinderInputFormatter.swift in Sources */,
 				EE352FC41CF98F6B0081354E /* ScoreFunctionTask.swift in Sources */,
 				EE352FC61CF98F7D0081354E /* Offtarget.swift in Sources */,
 				EE352FDC1CF990000081354E /* TaskMediator.swift in Sources */,
 				EE17EA111D06F9CC005ADCD4 /* CasOffinderOutputParser.swift in Sources */,
+				EE223BE31D15C99F006B4E9F /* StreamInputFormatter.swift in Sources */,
 				EE352FD91CF990000081354E /* AsyncWorkerThread.swift in Sources */,
+				EE223BE91D15CC0A006B4E9F /* CasOffinderInputFormatter.swift in Sources */,
 				EE17EA171D06F9CC005ADCD4 /* GenericParser.swift in Sources */,
 				EE76210C1CF1A54F00F13281 /* FileUtils.swift in Sources */,
-				EE7A0A071CF8B81D00E5CBF4 /* ParserProtocol.swift in Sources */,
+				EE7A0A071CF8B81D00E5CBF4 /* Protocols.swift in Sources */,
+				EE223BE61D15CB4B006B4E9F /* OnTarget.swift in Sources */,
 				EE17EA0D1D06F9CC005ADCD4 /* OffTargetParserProvider.swift in Sources */,
 				EE352FDB1CF990000081354E /* TaskProtocol.swift in Sources */,
 			);
@@ -414,26 +461,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE223BE11D15C7D9006B4E9F /* StreamWriter.swift in Sources */,
 				EE7621111CF2078E00F13281 /* CrisprUtils.swift in Sources */,
+				EE223BED1D15D60B006B4E9F /* ScoreInputFormatterManagerFacade.swift in Sources */,
 				EEE8FAC51CFC576A000BE4EE /* ScoreFunctionManagerFacade.swift in Sources */,
 				EE7621151CF218CD00F13281 /* SeqIO.swift in Sources */,
 				EE4AC6F31D12B7B80073D2E1 /* DesignManager.swift in Sources */,
+				EE223BE41D15C99F006B4E9F /* StreamInputFormatter.swift in Sources */,
+				EE223BE71D15CB4B006B4E9F /* OnTarget.swift in Sources */,
 				EEE4D35C1CF724A5006A979F /* BioSwiftTaskTests.swift in Sources */,
 				EEE8FAC81CFC62F6000BE4EE /* TaskMediator.swift in Sources */,
+				EE7743C11D26AA15000DB4CF /* MockDesignData.swift in Sources */,
 				EEE8FAC91CFC630E000BE4EE /* AsyncWorkerThread.swift in Sources */,
 				EEB198B91D147D6F00025670 /* ModelProtocol.swift in Sources */,
 				EE17EA141D06F9CC005ADCD4 /* OffTargetParserFactory.swift in Sources */,
 				EE8503581CF4E18900554115 /* BioSwiftParseTests.swift in Sources */,
+				EE223BEA1D15CC0A006B4E9F /* CasOffinderInputFormatter.swift in Sources */,
 				EE17EA161D06F9CC005ADCD4 /* BowtieOutputParser.swift in Sources */,
 				EE17EA101D06F9CC005ADCD4 /* OffTargetParserManagerFacade.swift in Sources */,
 				EE17EA061D06F9BF005ADCD4 /* BowtieInputFormatter.swift in Sources */,
 				EE7621131CF218C800F13281 /* Seq.swift in Sources */,
 				EE7621121CF218C500F13281 /* Extensions.swift in Sources */,
 				EEE8FABF1CFC571A000BE4EE /* ScoreFunctionTask.swift in Sources */,
-				EEE844A71D06FC89001DEB7C /* GenericFormatter.swift in Sources */,
+				EEFA844F1D1A718B00AEF093 /* CasOffinderScoreFunction.swift in Sources */,
 				EE17EA181D06F9CC005ADCD4 /* GenericParser.swift in Sources */,
 				EE7621141CF218CA00F13281 /* SeqRecord.swift in Sources */,
-				EEE844A41D06FB32001DEB7C /* CasOffinderInputFormatter.swift in Sources */,
 				EE17EA121D06F9CC005ADCD4 /* CasOffinderOutputParser.swift in Sources */,
 				EE2D456A1CF9A106004BDB4C /* main.swift in Sources */,
 				EE17EA0E1D06F9CC005ADCD4 /* OffTargetParserProvider.swift in Sources */,
@@ -443,7 +495,7 @@
 				EEE8FAC71CFC6247000BE4EE /* Command.swift in Sources */,
 				EE7621161CF218D100F13281 /* FileUtils.swift in Sources */,
 				EE31966F1CC288650038756C /* BioSwiftSequenceTests.swift in Sources */,
-				EE7A0A081CF8B81D00E5CBF4 /* ParserProtocol.swift in Sources */,
+				EE7A0A081CF8B81D00E5CBF4 /* Protocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,6 +611,7 @@
 				INFOPLIST_FILE = BioSwift/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.ilap.BioSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -580,6 +633,7 @@
 				INFOPLIST_FILE = BioSwift/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = org.ilap.BioSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
