@@ -60,8 +60,8 @@
 		EE7743C11D26AA15000DB4CF /* MockDesignData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7743C01D26AA15000DB4CF /* MockDesignData.swift */; };
 		EE7A0A071CF8B81D00E5CBF4 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A0A061CF8B81D00E5CBF4 /* Protocols.swift */; };
 		EE7A0A081CF8B81D00E5CBF4 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A0A061CF8B81D00E5CBF4 /* Protocols.swift */; };
+		EE7B68821D2E4401009AFE5F /* ScoreCommands in Resources */ = {isa = PBXBuildFile; fileRef = EE7B68811D2E4401009AFE5F /* ScoreCommands */; };
 		EE8503581CF4E18900554115 /* BioSwiftParseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8503571CF4E18900554115 /* BioSwiftParseTests.swift */; };
-		EEA09F7D1D075208005F638A /* ScoreCommands in Resources */ = {isa = PBXBuildFile; fileRef = EEA09F7C1D075208005F638A /* ScoreCommands */; };
 		EEA7B4CD1CF646A30068138A /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = EEA7B4CC1CF646A30068138A /* Resources */; };
 		EEB198B91D147D6F00025670 /* ModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2B2DCE1D0EBD9C00D4E343 /* ModelProtocol.swift */; };
 		EEB198BA1D147D7000025670 /* ModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2B2DCE1D0EBD9C00D4E343 /* ModelProtocol.swift */; };
@@ -131,8 +131,8 @@
 		EE76210F1CF2078E00F13281 /* CrisprUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CrisprUtils.swift; path = Utils/CrisprUtils.swift; sourceTree = "<group>"; };
 		EE7743C01D26AA15000DB4CF /* MockDesignData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDesignData.swift; sourceTree = "<group>"; };
 		EE7A0A061CF8B81D00E5CBF4 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Protocols.swift; path = Crispr/Protocols.swift; sourceTree = "<group>"; };
+		EE7B68811D2E4401009AFE5F /* ScoreCommands */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ScoreCommands; path = Resources/ScoreCommands; sourceTree = SOURCE_ROOT; };
 		EE8503571CF4E18900554115 /* BioSwiftParseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioSwiftParseTests.swift; sourceTree = "<group>"; };
-		EEA09F7C1D075208005F638A /* ScoreCommands */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ScoreCommands; path = ../../DesignGuide/Utils/BioTools/ScoreCommands; sourceTree = "<group>"; };
 		EEA7B4CC1CF646A30068138A /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 		EEE4D35B1CF724A5006A979F /* BioSwiftTaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioSwiftTaskTests.swift; sourceTree = "<group>"; };
 		EEE8FAB81CFC49D3000BE4EE /* BowtieScoreFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BowtieScoreFunction.swift; path = Crispr/ScoreFunctions/BowtieScoreFunction.swift; sourceTree = "<group>"; };
@@ -281,7 +281,7 @@
 			children = (
 				EE85035D1CF4EC8200554115 /* Parsers */,
 				EE223BDE1D15C48B006B4E9F /* Formatters */,
-				EEA09F7C1D075208005F638A /* ScoreCommands */,
+				EE7B68811D2E4401009AFE5F /* ScoreCommands */,
 				EE352FC31CF98F6B0081354E /* ScoreFunctionTask.swift */,
 				EEE8FAB81CFC49D3000BE4EE /* BowtieScoreFunction.swift */,
 				EEFA844D1D1A718B00AEF093 /* CasOffinderScoreFunction.swift */,
@@ -403,7 +403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEA09F7D1D075208005F638A /* ScoreCommands in Resources */,
+				EE7B68821D2E4401009AFE5F /* ScoreCommands in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
