@@ -26,32 +26,67 @@ import Foundation
 ///
 /// Big-O notations of Swift's Datastructures
 /// https://www.raywenderlich.com/123100/collection-data-structures-swift-2
+///
 public class CrisprUtil {
     
     var record: SeqRecord
+    var parameters: DesignParameterProtocol? = nil
+    
+    public var onTargets: [VisitableProtocol?] = []
     
     var seq: Seq
-    var usedPAMs: [String]
-    var allPAMs: [String]
+
+    //FIXME: var usedPAMs: [String]
+    //var allPAMs: [String]
     
-    var seedLength: Int = 10
-    var spacerLength: Int = 20
-    var pamLength: Int = 3
+    public var seedLength: Int = 10
+    public var spacerLength: Int = 20
+    public var pamLength: Int = 3
 
-    var maskedPAM: String = ""
-
-    public init(record: SeqRecord, usedPAMs: [String], allPAMs: [String] ) {
+    //var maskedPAM: String = ""
+    
+    public init(record: SeqRecord, parameters: DesignParameterProtocol) {
+        self.parameters = parameters
         self.record = record
         self.seq = self.record.seq
-        self.usedPAMs = usedPAMs
-        self.allPAMs = allPAMs
+        //self.allPAMs = parameters.pams.map { ($0?.sequence)! }
         
-        self.pamLength = self.usedPAMs[0].characters.count
-
-        self.maskedPAM = getMaskedPAM(allPAMs)
-
+        //self.pamLength = (self.allPAMs.first?.characters.count)!
+        
+        //self.maskedPAM = getMaskedPAM(self.allPAMs)
     }
 
+    public init(record: SeqRecord, allPAMs: [String] ) {
+        self.record = record
+        self.seq = self.record.seq
+        // FIXME: self.usedPAMs = usedPAMs
+        //self.allPAMs = allPAMs
+        
+        self.pamLength = allPAMs[0].characters.count
+
+        //self.maskedPAM = getMaskedPAM(allPAMs)
+
+    }
+    
+    public init(record: SeqRecord, allPAMs: [PAMProtocol?] ) {
+        self.record = record
+        self.seq = self.record.seq
+        
+        // FIXME: self.usedPAMs = usedPAMs
+        ////self.allPAMs = allPAMs.map {
+         //   $0!.sequence
+        //}
+        
+        //self.pamLength = self.allPAMs[0].characters.count
+        //self.maskedPAM = getMaskedPAM(self.allPAMs)
+    }
+
+    ////private func getMaskedPAM(_ pamsToMask: [PAMProtocol?]) -> String {
+    //   return getMaskedPAM(pamsToMask.map {
+    //           $0!.sequence
+    //   })
+    //}
+    
     private func getMaskedPAM(_ pamsToMask: [String]) -> String {
         let length = pamsToMask.first?.characters.count
 
@@ -81,6 +116,59 @@ public class CrisprUtil {
 
         return result
     }
+    
+    
+    func getPAMsMaskFromPAM(_ pams: [PAMProtocol?], senseStrand: Bool = true, reverseComplement: Bool = false) -> [(PAMProtocol?, Int, Int, Bool)] {
+        
+        var result: [(PAMProtocol?, Int,Int, Bool)] = []
+        
+        // Temporary buffer
+        let maskBuf = UnsafeMutablePointer<UInt8>(allocatingCapacity: 8)
+        let pamBuf = UnsafeMutablePointer<UInt8>(allocatingCapacity: 8)
+        // Reset it
+        UnsafeMutablePointer<Int>(maskBuf)[0] = 0x0
+        UnsafeMutablePointer<Int>(pamBuf)[0] = 0x0
+        
+        var pamSequence = ""
+        for pam in pams {
+            //debugPrint("\(__FILE__):\(__LINE__) PAM Sequence is: \(pamSequence)")
+            
+            // Only N is supported yet as it's hard to mask out the others such as W (A,T and U), R(A,G)
+            let maskChar = Bases.n.baseASCII
+            
+            // UnsafeMutablePointer<Int8>
+            
+            if reverseComplement {
+                pamSequence = (pam.map {$0.sequence}?.reverseComplement())!
+            } else {
+                pamSequence = pam.map {$0.sequence}!
+            }
+            let pamMask = UnsafeMutablePointer<UInt8>(strdup(pamSequence))
+            let maskedPAM = UnsafeMutablePointer<UInt8>(strdup(pamSequence))
+            
+            var i = 0
+            
+            
+            while pamMask?[i] != 0 {
+                if pamMask?[i] == maskChar {
+                    //print("HEUREKA: \(i) : \(pamMask[i])")
+                    maskedPAM?[i] = 0x0
+                    pamMask?[i] = 0x0
+                } else {
+                    pamMask?[i] = 0xFF
+                }
+                i += 1
+            }
+            
+            memcpy(pamBuf, maskedPAM, i)
+            memcpy(maskBuf, pamMask, i)
+            
+            result.append((pam, UnsafeMutablePointer<Int>(pamBuf)[0], UnsafeMutablePointer<Int>(maskBuf)[0], senseStrand))
+        }
+        
+        return result
+    }
+
     
     func getPAMsMask(_ pamSequences: [String], senseStrand: Bool = true) -> [(String, Int, Int, Bool)] {
         
@@ -125,9 +213,220 @@ public class CrisprUtil {
         
         return result
     }
-    
 
-    public func getOnTargets(_ pamSequences: [String], start: Int, end: Int) -> [Int]? {
+    /**
+     Retrieve On targets based on the selected PAMs found between the start and 
+     end of the design target.
+     
+     - Parameter pams: PAMs for ontargets.
+     - Parameter start: start location of the design target.
+     - Parameter end: end location of the design target (start + length).
+     
+     - Returns: The found on targets (loci of spacer+PAM or PAM+spacer).
+    The results are the **location** of **on targets** and **NOT** the location of the
+     **PAMs**
+     
+     - Note: Point editing is not supported yet. Only range is supported.
+     */
+    public func getPAMOnTargets(_ pams: [PAMProtocol?], start: Int, end: Int) -> [VisitableProtocol?]? {
+
+        
+        guard let seq = seq.cSequence else { return nil }
+        let pamLength = parameters?.pamLength
+        
+        assert(start >= 0 && end <= self.seq.length && start < (end - pamLength!),
+               "Start is smaller then End or invalid values for start and end.")
+        
+        assert(pamLength <= 8,
+               "PAM Length must be smaller than 8 in 64 bit system.")
+        
+        self.onTargets = []
+        
+        // Initialise on array.
+        // Temporary buffer
+        let buf = UnsafeMutablePointer<Int>(allocatingCapacity: 1)
+        UnsafeMutablePointer<Int>(buf)[0] = 0x0
+        
+        let seq_buf = UnsafeMutablePointer<Int8>(allocatingCapacity: spacerLength + 1)
+        // Reset it
+        UnsafeMutablePointer<Int8>(seq_buf)[spacerLength] = 0x0
+        
+        //let pamSequences = pams.map { $0!.sequence }
+        
+        let maskedPAMs = getPAMsMaskFromPAM(pams) +
+            getPAMsMaskFromPAM(pams, senseStrand: false, reverseComplement: true)
+        
+        var loci = 0
+        
+        var strand = "-"
+        for i in start...(end - pamLength!) {
+            let seq = seq + i
+            var tseq = seq
+            // 1. Get the potential PAM from the sequence
+            strncpy(UnsafeMutablePointer<Int8>(buf), seq, pamLength!)
+            // 2. Go through all the masked PAMs
+            for (pam, maskedPam, mask, senseStrand) in maskedPAMs {
+                // 3. The the NOT XOR to check whether it's PAM or not. For exammple
+                // maskedPam ("NAG") -> "AG"
+                // mask -> "0x00FFFF"
+                // sequense & mask must be equal to maskedPam
+                let seqBits = mask & buf[0]
+                
+                //print ("MASK: \(String(mask,radix:16)), BUF: \(String(buf[0],radix:16)), BUF: \(String(buf[0]))")
+                if seqBits == maskedPam {
+                    // TODO:
+                    let onTarget = RNAOnTarget()
+                    
+                    onTarget.score = (pam?.survival)!
+                    onTarget.strand = strand
+                    onTarget.length = spacerLength
+                    
+                    if senseStrand {
+                        loci = i - spacerLength
+                        strand = "+"
+                        tseq -= spacerLength
+                    } else {
+                        loci = -i
+                        strand = "-"
+                        tseq += pamLength!
+                    }
+                    
+                    
+                    // Name is the sequence name and guide RNA loci
+                    onTarget.name = self.record.id + "_" + String(loci)
+                    onTarget.position = loci
+                    
+                    // PAM is the pam sequence in the sense/antisense strand
+                    let pam = String(cString: UnsafeMutablePointer<Int8>(buf))
+                    
+                    UnsafeMutablePointer<Int8>(seq_buf)[spacerLength] = 0x0
+                    strncpy(UnsafeMutablePointer<Int8>(seq_buf), tseq, spacerLength)
+                    let seq = String(cString: UnsafeMutablePointer<Int8>(seq_buf))
+                    
+                    if senseStrand {
+                        onTarget.sequence = seq
+                        onTarget.pam = pam
+                    } else {
+                        //TODO: Generalise the sense/antisense strands
+                        onTarget.sequence = seq.reverseComplement()
+                        onTarget.pam = pam.reverseComplement()
+                    }
+                   
+                    #if DEBUG
+                        var pre = onTarget.pam
+                        var post = onTarget.sequence
+                        
+                        if onTarget.strand == "-" {
+                            let temp = pre
+                            pre = post
+                            post = temp
+                        }
+                        
+                        print ("Prospective on target (\(pre):\(post)) found on \"\(strand)\" strand at loci: \(abs(loci))")
+                    #endif
+
+                    self.onTargets.append(onTarget)
+                    
+                }
+            }
+        }
+        
+        print("\"\(self.onTargets.count)\" prospective ontargets found...")
+        
+        if self.onTargets.isEmpty {
+            return nil
+        } else {
+            return self.onTargets
+        }
+        
+    }
+    
+   /* public func getOnTargetsX(_ pamSequences: [String], start: Int, end: Int) -> [VisitableProtocol?]? {
+        
+        guard let seq = seq.cSequence else { return nil }
+        let pamLength = pamSequences.first?.characters.count
+        
+        
+        assert(start >= 0 && end <= self.seq.length && start < (end - pamLength!),
+               "Start is smaller then End or invalid values for start and end.")
+        
+        assert(pamLength <= 8,
+               "PAM Length must be smaller than 8 in 64 bit system.")
+
+        self.onTargets = []
+        
+        // Initialise on array.
+        // Temporary buffer
+        let buf = UnsafeMutablePointer<Int>(allocatingCapacity: 1)
+        UnsafeMutablePointer<Int>(buf)[0] = 0x0
+        
+        let seq_buf = UnsafeMutablePointer<Int8>(allocatingCapacity: spacerLength + 1)
+        // Reset it
+        UnsafeMutablePointer<Int8>(seq_buf)[spacerLength] = 0x0
+
+        
+        
+        let maskedPAMs = getPAMsMask(pamSequences) +
+            getPAMsMask(pamSequences.map { $0.reverseComplement() }, senseStrand: false)
+        
+        var location = 0
+        var strand = "-"
+        for i in start...(end - pamLength!) {
+            let seq = seq + i
+            var tseq = seq
+            // 1. Get the potential PAM from the sequence
+            strncpy(UnsafeMutablePointer<Int8>(buf), seq, pamLength!)
+            // 2. Go through all the masked PAMs
+            for (_, maskedPam, mask, senseStrand) in maskedPAMs {
+                // 3. The the NOT XOR to check whether it's PAM or not. For exammple
+                // maskedPam ("NAG") -> "AG"
+                // mask -> "0x00FFFF"
+                // sequense & mask must be equal to maskedPam
+                let seqBits = mask & buf[0]
+                
+                //print ("MASK: \(String(mask,radix:16)), BUF: \(String(buf[0],radix:16)), BUF: \(String(buf[0]))")
+                if seqBits == maskedPam {
+                    // TODO: 
+                    
+                    if senseStrand {
+                        location = i - spacerLength
+                        strand = "+"
+                        tseq -= spacerLength
+                    } else {
+                        location = -i
+                        strand = "-"
+                        tseq += pamLength!
+                    }
+                    let onTarget = RNAOnTarget()
+                    onTarget.name = self.record.id
+                    onTarget.pam = String(cString: UnsafeMutablePointer<Int8>(buf))
+                    UnsafeMutablePointer<Int8>(seq_buf)[spacerLength] = 0x0
+                    
+                    strncpy(UnsafeMutablePointer<Int8>(seq_buf), tseq, spacerLength)
+                    
+                    onTarget.sequence = String(cString: UnsafeMutablePointer<Int8>(seq_buf))
+                    debugPrint ("HEUREKAXX: location: \(location), Strand: \(strand), PAM: \(onTarget.pam):\(onTarget.sequence)")
+                    onTarget.length = spacerLength
+                    onTarget.position = location
+                    onTarget.strand = strand
+                    
+                    self.onTargets.append(onTarget)
+                    
+                }
+            }
+        }
+        
+        if self.onTargets.isEmpty {
+            return nil
+        } else {
+            return self.onTargets
+        }
+        
+    }
+
+    */
+
+   public func getOnTargetsLocation(_ pamSequences: [String], start: Int, end: Int) -> [Int]? {
         
         guard let seq = seq.cSequence else { return nil }
         let pamLength = pamSequences.first?.characters.count
@@ -182,6 +481,8 @@ public class CrisprUtil {
         }
         
     }
+ 
+
 
     func getScoredOfftargets(_ targetLoci: Int, targetLength: Int, scoringFunction: ScoringFunction? = nil) {
 
@@ -189,8 +490,9 @@ public class CrisprUtil {
             scoringFunction!.runOn(record)
         }
     }
+
     
-    private func printGuideRNAs(_ rnaTargets: [Int], name: String? = nil, stream: NSOutputStream?) {
+    private func printGuideRNAs(_ rnaTargets: [Int], name: String? = nil) {
         
         var organismName = ""
         if let _ = name {
@@ -231,10 +533,9 @@ public class CrisprUtil {
         //print(result.joinWithSeparator("\n"))
         
     }
-    
 
     
-    public func writeOntargetsAsFastaFile(_ usedPAMs: [String], start: Int, end: Int) -> String? {
+   /* public func XwriteOntargetsAsFastaFile(_ usedPAMs: [String], start: Int, end: Int) -> String? {
         
           var result: String?
         
@@ -264,7 +565,7 @@ public class CrisprUtil {
             print("FATAL ERROR: " + String(strerror(errno)))
         }
         
-        let ontargets = getOnTargets(usedPAMs, start: start, end: end)
+        let ontargets = getOnTargetsLocation(usedPAMs, start: start, end: end)
         
         writeGuideRNAToURL(url!, rnaTargets: ontargets!, name: record.id)
  
@@ -339,7 +640,7 @@ public class CrisprUtil {
         //dump(result)
         //print(result.joinWithSeparator("\n"))
         
-    }
+    }*/
 }
 
 

@@ -22,6 +22,9 @@
 import Foundation
 
 public class GenericParser<T>: ParserProtocol {
+    
+    //FIXME: Use global configuration
+    public var maxMismatches: Int = 6
     //public typealias T = OfftargetProtocol
 
     var results: [T] = []
@@ -33,6 +36,10 @@ public class GenericParser<T>: ParserProtocol {
     public func convertToObject(_ records: [String]) throws -> T? {
         assertionFailure("BIOSWIFT ERROR: this method should not be called directly!")
         return nil
+    }
+    
+    init() {
+        
     }
 
     private func lineToArray(_ line: String) -> [String]? {

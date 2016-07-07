@@ -21,6 +21,32 @@
 
 import Foundation
 
+
+public protocol DesignParameterProtocol {
+    /// The user's parameters.
+    ///
+    
+    var seedLength: Int { get set }
+    var spacerLength: Int { get set }
+    
+    /// Cut sites on the strands, one cut site means nickase
+    /// Different cut offset means sticky ends
+    /// Same cut offset means blunt ends
+
+    /// Cut site on the sense strand
+    var senseCutOffset: Int? { get set }
+    
+    /// Cut site on the anti sense strand
+    var antiSenseCutOffset: Int? { get set }
+
+    var targetOffset: Int { get set }
+    /// calculated PAM length
+    var pamLength: Int { get set }
+    
+    
+    //var pams: [PAMProtocol?] { get set }
+}
+
 public protocol PAMProtocol {
     var id: Int? { get set }
     var nuclease_id: Int { get set }
@@ -37,6 +63,8 @@ public protocol NucleaseProtocol  {
     var antisense_cut_offset: Int { get set }
     var downstream_target: Bool { get set }
     var descr: String { get set }
+    
+    var pams: [PAMProtocol] { get }
 }
 
 
@@ -52,7 +80,7 @@ public protocol DesignSourceProtocol {
 public protocol DesignTargetProtocol {
     var id: Int? { get set }
     
-    var sesign_source_id: Int { get set }
+    var design_source_id: Int { get set }
     var design_application_id: Int { get set }
     var name: String  { get set }
     
@@ -70,8 +98,15 @@ public protocol DesignApplicationProtocol {
     var descr: String  { get set }
 }
 
+public protocol OnTargetProtocol {
+    var sequence: String { get set }
+    var pam: String { get set }
+    var strand: String { get set }
+    var position: Int { get set }
+    var length: Int { get set }
+}
 
-public protocol RNAOntargetProtocol {
+public protocol RNATargetProtocol {
     var id: Int? { get set }
     var model_target_id: Int { get set }
     var nuclease_id: Int { get set }

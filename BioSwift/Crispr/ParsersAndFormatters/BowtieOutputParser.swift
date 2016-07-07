@@ -41,7 +41,7 @@ public class BowtieOutputParser: GenericParser<OfftargetProtocol> {
             offtarget.direction = records[5]
             offtarget.mismatches = Int(records[6]) ?? Int.min
             // TODO: Fix the scoring.
-            offtarget.score = 1 - Float(offtarget.mismatches!) / Float((offtarget.guideRNA?.characters.count)!)
+            offtarget.homology = 1 - Float(offtarget.mismatches!) / Float((offtarget.guideRNA?.characters.count)!)
 
             return offtarget
 

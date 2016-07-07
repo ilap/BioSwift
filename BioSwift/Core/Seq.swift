@@ -115,7 +115,7 @@ public class Seq {
         return d
     }
     
-    func getPAMsMask(_ pamSequences: [String], senseStrand: Bool = true) -> [(String, Int, Int, Bool)] {
+    /*func getPAMsMask(_ pamSequences: [String], senseStrand: Bool = true) -> [(String, Int, Int, Bool)] {
 
         var result: [(String, Int,Int, Bool)] = []
         
@@ -214,6 +214,7 @@ public class Seq {
         }
 
     }
+    */
     
     public subscript (i: Int) -> Character {
         guard let ch = self.cSequence else { return Character(UnicodeScalar(0)) }

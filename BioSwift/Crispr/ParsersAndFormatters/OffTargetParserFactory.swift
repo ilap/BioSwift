@@ -20,9 +20,10 @@
  */
 
 /// FIXME: Change it to generic e.g. get rid of OffTargetParserType
-protocol GenericParserFactory {
+protocol GenericFactory {
     associatedtype T
-    func getParser(_ parser: OffTargetParserType) throws -> T
+    func getParser(_ parser: RNATargetParserType) throws -> T
+    func getFormatter(_ formatter: RNATargetParserType, path: String?) throws -> T
 }
 
 
@@ -35,15 +36,31 @@ protocol GenericParserFactory {
 /// FIXME: Change it to a generic parser factory and get rid of all the 
 /// dependenies.
 ///
-public class OffTargetParserFactory<T>:  GenericParserFactory {
+public class RNATargetFactory<T>:  GenericFactory {
 
-    var parsers: [OffTargetParserType:ParserProtocol] = [:]
-
+    var parsers: [RNATargetParserType:ParserProtocol] = [:]
+    var formatters: [RNATargetParserType:VisitorProtocol] = [:]
+    
     init() {
         initialise()
     }
 
-    func getParser(_ parser: OffTargetParserType) throws -> T {
+    func getFormatter(_ formatter: RNATargetParserType, path: String?) throws -> T {
+        
+        
+        if let result = formatters[formatter] {
+            return result as! T
+        } else {
+            formatters[formatter] = ScoreInputFormatterProvider.factory(formatter, path: path)
+            if let result = formatters[formatter] {
+                return result as! T
+            } else {
+                throw BioSwiftError.parserError("BIOSWIFT ERROR: no parser  \"\(formatter)\" in parsers (\(formatters))!")
+            }
+        }
+    }
+    
+    func getParser(_ parser: RNATargetParserType) throws -> T {
 
 
         if let result = parsers[parser] {
@@ -52,11 +69,11 @@ public class OffTargetParserFactory<T>:  GenericParserFactory {
             throw BioSwiftError.parserError("BIOSWIFT ERROR: no parser  \"\(parser)\" in parsers (\(parsers))!")
         }
     }
-
+    
     private func initialise() {
         // Use Abstract factory helper to initialise all factories
-        for parserType in OffTargetParserType.allValues {
-            parsers[parserType] = OffTargetParserProvider.factory(parserType)
+        for parserType in RNATargetParserType.allValues {
+            parsers[parserType] = ScoreOutputParserProvider.factory(parserType)
         }
     }
 }

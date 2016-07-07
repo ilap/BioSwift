@@ -38,8 +38,12 @@ public class SeqIO {
             }
             
             if line[0] == ">" {
-                let idx = line.characters.index(of: " ")
-                let id = line[line.characters.index(after: line.startIndex) ..< idx!]
+                var id = ""
+                if let idx = line.characters.index(of: " ") {
+                    id = line[line.characters.index(after: line.startIndex) ..< idx]
+                } else {
+                    id = line
+                }
                 
                 if hasRecord {
                     (records.last! as SeqRecord?)!.initialised = true

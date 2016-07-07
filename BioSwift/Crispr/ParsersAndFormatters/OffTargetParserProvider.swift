@@ -21,8 +21,8 @@
 ///
 /// Helper factory for GenericParsers
 ///
-enum OffTargetParserProvider {
-    static func factory(_ type: OffTargetParserType) -> ParserProtocol {
+enum ScoreOutputParserProvider {
+    static func factory(_ type: RNATargetParserType) -> ParserProtocol {
         switch type {
         case .CasOffinder:
             return CasOffinderOutputParser()
@@ -37,15 +37,15 @@ enum OffTargetParserProvider {
 ///
 /// Helper factory for GenericParsers
 ///
-enum InputFormatterProvider {
-    static func factory(_ type: OffTargetParserType) -> InputFormatterProtocol {
+enum ScoreInputFormatterProvider {
+    static func factory(_ type: RNATargetParserType, path: String?) -> VisitorProtocol  {
         switch type {
         case .CasOffinder:
-            return CasOffinderInputFormatter()
+            return CasOffinderInputFormatter(path: path)!
         case .Bowtie:
-            return BowtieInputFormatter()
+            return BowtieInputFormatter(path: path)!
         default:
-            return BowtieInputFormatter()
+            return BowtieInputFormatter(path: path)!
         }
     }
 }
@@ -53,7 +53,7 @@ enum InputFormatterProvider {
 ///
 /// Available OffTarget parsers
 ///
-enum OffTargetParserType: String {
+enum RNATargetParserType: String {
     case CasOffinder = "Cas-Offinder parser"
     // TODO: case CasOffinderOld = "Cas Offinder Old format parser"
     case BWA = "BWA Parser"
@@ -73,7 +73,7 @@ enum OffTargetParserType: String {
         }
     }
 
-    static func getTypeFromExtension (_ ext: String) ->  OffTargetParserType? {
+    static func getTypeFromExtension (_ ext: String) ->  RNATargetParserType? {
         switch ext {
         case "cof": return CasOffinder
         case "bwa": return BWA

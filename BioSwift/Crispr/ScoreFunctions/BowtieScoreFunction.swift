@@ -21,50 +21,47 @@
 
 import Foundation
 
-protocol Target {
-    var loci: Int { get set }
+public protocol XTargetProtocol {
+    //var loci: Int { get set }
+    //var endLoci: Int { get set }
+
+    var sequence: String { get set }
+    var pam: String { get set }
+    var name: String { get set }
+    var strand: String { get set }
+    var position: Int { get set }
     var length: Int { get set }
-    var endLoci: Int { get set }
 }
 
-protocol ScoreFunctionProtocol {
+protocol XScoreFunctionProtocol {
 //    associatedtype T
     var parser: ParserProtocol { get set }
-    var formatter: InputFormatterProtocol { get set }
+    var formatter: VisitorProtocol { get set }
 //    func score(genome: SeqRecord, guideRNAs: [String], maskedPam: String,) -> [T]?
 }
 
-protocol ScoreCommandParameterProtocol {
+protocol XScoreCommandParameterProtocol {
     
-    var buildCommand: String { get set }
-    var alignCommand: String { get set }
-    
-    var buildArgs: [String] { get set }
-    var alignArgs: [String] { get set }
+    var command: String { get set }
+    var args: [String] { get set }
     
     var sourceFile: String { get set }
     var inputFile: String  { get set }
     var outputFile: String  { get set }
-    var indexPostfix: String { get set }
-    
 
-    
     func parseCommand() -> String
 }
 
-class AbstractCommandParameters: ScoreCommandParameterProtocol {
+class XAbstractCommandParameters: ScoreCommandParameterProtocol {
     let bundle = Bundle(for: AbstractCommandParameters.self)
     
-    var buildCommand: String = ""
-    var alignCommand: String = ""
-    
-    var buildArgs: [String] = []
-    var alignArgs: [String] = []
+    var command: String = ""
+    var args: [String] = []
     
     var sourceFile: String
     var inputFile: String
     var outputFile: String
-    var indexPostfix: String = "_idx"
+
     
     var commandArgs: String = ""
     var extraArgs: String = ""
@@ -98,23 +95,21 @@ class BowtieCommandParameters: AbstractCommandParameters {
     
     override func initialise() {
 #if !os(Linux)
-        self.buildCommand = "bowtie-build-s_linux_64"
-        self.alignCommand = "bowtie-align-s_linux_64"
+        self.command = "bowtie-align-s_linux_64"
 #else
-    self.buildCommand = "bowtie-build-s_macos"
-    self.alignCommand = "bowtie-align-s_macos"
+    self.command = "bowtie-align-s_macos"
 #endif
-        if let basename = try? URL(fileURLWithPath: self.sourceFile).deletingPathExtension().lastPathComponent {
-            self.indexPostfix = basename! + "_bowtie" + self.indexPostfix
-        }
-        self.buildCommand = "\(bundle)/\(buildCommand)"
-        self.buildArgs.append("-f \(self.sourceFile) \(self.indexPostfix)")
-        self.alignCommand = "\(bundle)/\(buildCommand)"
-        self.alignArgs.append("-c -f \(self.indexPostfix) -f \(self.inputFile)")
+        //if let basename = try? URL(fileURLWithPath: self.sourceFile).deletingPathExtension().lastPathComponent {
+        //    self.indexPostfix = basename! + "_bowtie" + self.indexPostfix
+        //}
+        //self.command = "\(bundle)/\(buildCommand)"
+        //self.args.append("-f \(self.sourceFile) \(self.indexPostfix)")
+        self.command = "\(bundlePath)/\(command)"
+        //self.args.append("-c -f \(self.indexPostfix) -f \(self.inputFile)")
     }
 }
 
-class BowtieInputFormatter: InputFormatterProtocol {
+/* class BowtieInputFormatter: InputFormatterProtocol {
 private var fileDescriptor: Int32 = -1
     
     var initialised: Bool {
@@ -270,6 +265,7 @@ private var fileDescriptor: Int32 = -1
     }
 
 }
+*/
 
 class BowtieScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
     
@@ -290,12 +286,12 @@ class BowtieScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
     }
     
     var parser: ParserProtocol
-    var formatter: InputFormatterProtocol
+    var formatter: VisitorProtocol
     var parameters: ScoreCommandParameterProtocol
 
     init(sourceFile: String, inputFile: String, outputFile: String) {
         self.parser = BowtieOutputParser()
-        self.formatter = BowtieInputFormatter()
+        self.formatter = BowtieInputFormatter(path: inputFile)!
         self.parameters = BowtieCommandParameters(sourceFile: sourceFile, inputFile: inputFile, outputFile: outputFile)
     }
     

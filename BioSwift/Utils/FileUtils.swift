@@ -104,4 +104,31 @@ public class BioSwiftFileUtil {
 
         return result
     }
+    
+    public class func makeTempFile(template: String, path: String? = nil, body: @noescape (FileHandle, URL) throws -> Void) rethrows {
+        
+        var dir: String = NSTemporaryDirectory()
+        
+        if let _ = path {
+            dir = path!
+        }
+        
+        let url: NSURL? = NSURL(fileURLWithPath: dir).appendingPathComponent(template)
+        
+        var buf = [Int8](repeating: 0, count: Int(PATH_MAX))
+        
+        url?.getFileSystemRepresentation(&buf, maxLength: buf.count)
+        
+        let fd = mkstemp(&buf)
+        
+        if fd != -1 {
+            
+            let fileURL = URL(fileURLWithFileSystemRepresentation: buf, isDirectory: false, relativeToURL: nil)
+            
+            defer {
+                unlink(&buf)
+            }
+            try body(FileHandle(fileDescriptor: fd, closeOnDealloc: true), fileURL)
+        }
+    }
 }

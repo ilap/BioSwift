@@ -22,10 +22,24 @@
 import Foundation
 
 public class OffTargetParserManagerFacade<T> {
-    let factory: OffTargetParserFactory<ParserProtocol?>
+    let factory: RNATargetFactory<ParserProtocol?>
 
     init() {
-        self.factory = OffTargetParserFactory<ParserProtocol?>()
+        self.factory = RNATargetFactory<ParserProtocol?>()
+    }
+
+    public func parseFile(parser: ParserProtocol?, _ fileName: String?) throws -> [T]? {
+        if let _ = fileName, let _ = parser {
+            let parser = try parser as! GenericParser<T>?
+            parser!.parse(fileName!)
+            if !parser!.results.isEmpty {
+                return parser!.results
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
     }
 
     public func parseFile(_ fileName: String?) throws -> [T]? {
@@ -46,14 +60,18 @@ public class OffTargetParserManagerFacade<T> {
         }
     }
 
-    func getParserType(_ fileName: String) -> OffTargetParserType? {
+    func getParserType(_ fileName: String) -> RNATargetParserType? {
 
         let ext = NSString(string: fileName).pathExtension
 
-        if let type = OffTargetParserType.getTypeFromExtension(ext) {
+        if let type = RNATargetParserType.getTypeFromExtension(ext) {
             return type
         } else {
             return nil
         }
+    }
+    
+    func scoreResults() {
+        
     }
 }

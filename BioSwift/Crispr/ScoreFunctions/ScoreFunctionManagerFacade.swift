@@ -42,12 +42,12 @@ class ScoreFucntionTask2: TaskProtocol {
 
 
 class ScoreFunctionManagerFacade {
-    var sources: [SeqRecord:[Target]] = [:]
+    var sources: [SeqRecord:[TargetProtocol]] = [:]
     var tasks: [TaskProtocol] = []
     
     var scoreFunction: ScoreFunctionProtocol? = nil
 
-    init(scoreFunction: ScoreFunctionProtocol, sources: [SeqRecord:[Target]], allPAMs: [String], usedPAMs: [String], seedLength: Int, spacerLength: Int) {
+    init(scoreFunction: ScoreFunctionProtocol, sources: [SeqRecord:[TargetProtocol]], allPAMs: [String], usedPAMs: [String], seedLength: Int, spacerLength: Int) {
         self.scoreFunction = scoreFunction
         self.sources = sources
         

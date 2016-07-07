@@ -25,16 +25,20 @@ import Foundation
 /// Implements Mediator design for Task
 ///
 class TaskMediator {
+    
+    var isThreadable: Bool
 
     var tasks: [TaskProtocol] = []
 
-    init(task: TaskProtocol) {
+    init(task: TaskProtocol, isThreadable: Bool = false) {
         self.tasks.append(task)
+        self.isThreadable = isThreadable
         initialise()
     }
 
-    init(tasks: [TaskProtocol]) {
+    init(tasks: [TaskProtocol], isThreadable: Bool = false) {
         self.tasks = tasks
+        self.isThreadable = isThreadable
         initialise()
     }
 
@@ -48,25 +52,24 @@ class TaskMediator {
     }
 
     ///
-    /// Not using Threads
+    ///
     ///
     func runTasks() {
         for task in tasks {
-            task.run()
-        }
-    }
+            if isThreadable {
+                print("TASK IN THREAD: \(task.name)")
+                let worker = TaskWorker(task: task)
+                worker.execute(task)
+            } else {
+                print("TASK IN NON-THREAD: \(task.name)")
+                task.run()
+            }
 
-    /// Using Threads
-    func initWorkerAndRunTask() {
-        for task in tasks {
-            print("TASK: \(task.name)")
-            let worker = TaskWorker(task: task)
-            worker.execute(task)
         }
     }
 
     func success(_ receiver: Any) {
-        print("Success ")
+        print("Success \(receiver) ")
     }
 
     func fail(_ receiver: Any) {

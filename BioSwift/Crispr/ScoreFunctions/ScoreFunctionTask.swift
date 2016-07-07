@@ -39,10 +39,9 @@ class ScoreFunctionTask: TaskProtocol {
         print("VAR SF: ", self.parameters.sourceFile)
         print("VAR OF: ", self.parameters.outputFile)
         print("VAR IF: ", self.parameters.inputFile)
-        print("VAR AC: ", self.parameters.alignCommand)
-        print("VAR AA: ", self.parameters.alignArgs)
-        print("VAR BC: ", self.parameters.buildCommand)
-        print("VAR BA: ", self.parameters.buildArgs)
+        print("VAR AC: ", self.parameters.command)
+        print("VAR AA: ", self.parameters.args)
+
     }
 
     init(parameters: ScoreCommandParameterProtocol) {
@@ -56,8 +55,8 @@ class ScoreFunctionTask: TaskProtocol {
 
         let task = Task()
 
-        task.launchPath = parameters.alignCommand
-        task.arguments = parameters.alignArgs
+        task.launchPath = parameters.command
+        task.arguments = parameters.args
 
         let stdout = Pipe()
         task.standardOutput = stdout
@@ -67,22 +66,23 @@ class ScoreFunctionTask: TaskProtocol {
         task.launch()
 
         let outdata = stdout.fileHandleForReading.readDataToEndOfFile()
-        if var string = String(validatingUTF8: UnsafePointer((outdata as NSData).bytes)) {
+        if var string = String(data: outdata, encoding: String.Encoding.ascii)  {
             string = string.trimmingCharacters(in: CharacterSet.newlines)
             output = string.components(separatedBy: "\n")
+            
         }
-
-        let errdata = stderr.fileHandleForReading.readDataToEndOfFile()
-        if var string = String(validatingUTF8: UnsafePointer((errdata as NSData).bytes)) {
+        
+        let errdata = stderr.fileHandleForReading.availableData
+        if var string = String(data: errdata, encoding: String.Encoding.ascii)  {
             string = string.trimmingCharacters(in: CharacterSet.newlines)
             error = string.components(separatedBy: "\n")
+            
         }
+
 
         task.waitUntilExit()
         let status = task.terminationStatus
         
         return (output, error, status)
     }
-    
-
 }
