@@ -22,28 +22,30 @@
 import Foundation
 
 
-public protocol DesignParameterProtocol {
+public protocol DesignParameterProtocol : class {
+    
+    ///
     /// The user's parameters.
     ///
-    
     var seedLength: Int { get set }
     var spacerLength: Int { get set }
+    var targetOffset: Int { get set }
+    
     
     /// Cut sites on the strands, one cut site means nickase
     /// Different cut offset means sticky ends
     /// Same cut offset means blunt ends
-
     /// Cut site on the sense strand
+    /// Must be filled when the Endonuclease is ready
     var senseCutOffset: Int? { get set }
     
     /// Cut site on the anti sense strand
     var antiSenseCutOffset: Int? { get set }
 
-    var targetOffset: Int { get set }
     /// calculated PAM length
     var pamLength: Int { get set }
     
-    
+    //FIXME: Currently not used.
     //var pams: [PAMProtocol?] { get set }
 }
 
@@ -101,6 +103,7 @@ public protocol DesignApplicationProtocol {
 public protocol OnTargetProtocol {
     var sequence: String { get set }
     var pam: String { get set }
+    var pamAffinity: Float { get set }
     var strand: String { get set }
     var position: Int { get set }
     var length: Int { get set }

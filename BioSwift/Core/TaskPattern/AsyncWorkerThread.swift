@@ -31,13 +31,13 @@ protocol WorkerThreadProtocol: Command {
     func runInBackground()
 }
 
-class AsyncWorkerThread: WorkerThreadProtocol {
+public class AsyncWorkerThread: WorkerThreadProtocol {
     private var runAsync: Bool = true
 
     init() {    }
 
 
-    func execute(_ receiver: Any) {
+    public func execute(_ receiver: Any) {
         // FIXME: Make it work for Linux
 #if os(Linux)
             self.runInBackground()
@@ -63,11 +63,11 @@ class AsyncWorkerThread: WorkerThreadProtocol {
 }
 
 
-class TaskWorker: AsyncWorkerThread {
+public class TaskWorker: AsyncWorkerThread {
 
-    var task: TaskProtocol
+    public var task: TaskProtocol
 
-    init(task: TaskProtocol, runAsync: Bool = true) {
+    public init(task: TaskProtocol, runAsync: Bool = true) {
         self.task = task
         super.init()
         self.runAsync = runAsync

@@ -33,16 +33,16 @@ public class BowtieOutputParser: GenericParser<OfftargetProtocol> {
             // Assume it's a CasOffinder parser.
             // FIXME: throw error if the array is malformed.
             // Also use some validation instead of invalid data
-            let offtarget = Offtarget()
+            let offtarget = Offtarget2()
 
-            offtarget.guideRNA = records[4]
+            /*offtarget.guideRNA = records[4]
             offtarget.modelOrganism = records[2]
             offtarget.rnaPosition = Int(records[3]) ?? Int.min
             offtarget.direction = records[5]
             offtarget.mismatches = Int(records[6]) ?? Int.min
             // TODO: Fix the scoring.
-            offtarget.homology = 1 - Float(offtarget.mismatches!) / Float((offtarget.guideRNA?.characters.count)!)
-
+            offtarget.score = 1 - Double(offtarget.mismatches!) / Float((offtarget.guideRNA?.characters.count)!)
+            */
             return offtarget
 
         } else {
@@ -51,7 +51,7 @@ public class BowtieOutputParser: GenericParser<OfftargetProtocol> {
     }
 
     override public func parse(_ fileName: String? = nil) {
-        print("Cas-Offinder Read")
+        //XXX: ilap print("Cas-Offinder Read")
         super.parse(fileName)
         
         

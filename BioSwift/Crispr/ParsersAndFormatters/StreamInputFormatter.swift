@@ -73,4 +73,9 @@ public class StreamInputFormatter: VisitorProtocol {
         // FIXME: Throw and error as this code should not be reachead..
         assertionFailure("This code should not be reachead" + #file + ":" + String(#line))
     }
+
+    public func visit(parent: VisitableProtocol) {
+        // FIXME: Throw and error as this code should not be reachead..
+        assertionFailure("This code should not be reachead" + #file + ":" + String(#line))
+    }
 }

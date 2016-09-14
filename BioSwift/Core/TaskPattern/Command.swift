@@ -57,7 +57,7 @@ class RelayCommand2<T>: Command2 {
 ///
 /// Command Design Pattern implelmented in Swift
 ///
-protocol Command {
+public protocol Command {
     func execute(_ receiver: Any) -> Void
 }
 

@@ -40,7 +40,6 @@ class ScoreFucntionTask2: TaskProtocol {
 }
 
 
-
 class ScoreFunctionManagerFacade {
     var sources: [SeqRecord:[TargetProtocol]] = [:]
     var tasks: [TaskProtocol] = []

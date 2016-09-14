@@ -53,25 +53,20 @@ import Foundation
  Reference: http://www.rgenome.net/cas-offinder/portable
  */
 class CasOffinderInputFormatter: StreamInputFormatter {
-    /*class FinalTarget: VisitableProtocol {
-        var text: String = "$$$$$END"
-        func accept(visitor: VisitorProtocol) {
-            visitor.visit(footerPart: self)
-        }
-    }*/
-    
     
     override func visit(headerPart: VisitableProtocol) {
         message = headerPart.text
     }
     
     override func visit(bodyPart: VisitableProtocol) {
+
         if bodyPart is RNAOnTarget {
             let ontarget = bodyPart as! RNAOnTarget
             //message = ">" + ontarget.name + "-" + String(ontarget.position) + "-" + String(ontarget.length)
-            let pam = String(repeating: "N" as Character, count: ontarget.pam.characters.count)
-
-            message = ontarget.sequence + pam + " 5"
+            let pam = String(repeating: "N" as Character, count: (ontarget.pam?.characters.count)!)
+            
+            // FIXME: The "7" shoudl come form parameter
+            message = ontarget.sequence! + pam + " 7"
         } else {
             message = bodyPart.text
         }
@@ -95,8 +90,6 @@ class CasOffinderInitialSequence: VisitableProtocol {
     
     init(genome: String, spacerLength: Int, maskedPAM: String) {
         self.genome = genome
-        
-        let maskedPAM = "NRG"
         
         self.spacer = String(repeating: "N" as Character, count: spacerLength)
                         + maskedPAM

@@ -44,7 +44,7 @@ func ~> <T> ( background: () -> T, main: (result: T) -> ()) {
 }
 
 
-protocol TaskProtocol {
+public protocol TaskProtocol {
     var name: String { get }
     var progress: Int { get set }
     var messages: [String] { get set }

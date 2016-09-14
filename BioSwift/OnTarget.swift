@@ -22,25 +22,31 @@
 import Foundation
 
 public class RNAOnTarget: TargetProtocol, VisitableProtocol {
-    public var sequence: String = "CTGAAATGTTATGGTTGGSG"
-    public var pam: String = "CGG"
-    public var name: String = "ID1234"
-    public var strand: String = "+"
+    public var sequence: String? = "CTGAAATGTTATGGTTGGSG"
+    public var complement: String? = "CTGAAATGTTATGGTTGGSG"
     
+    public var pam: String? = "CGG"
+    public var speciesName: String? = "ID1234"
+
     // Position
     // + strand --> ^SPACER|PAM
     // - strand --> ^PAM|SPACER --> reversce Compl
-    public var position: Int = 145000
-    public var length: Int = 20
+    public var strand: String? = "+"
     
-    public var score: Float = 0.7
+    
+
+    public var location: Int? = 145000
+    public var length: Int? = 20
+    
+    public var score: Double? = 0.7
+    public var querySequence: String? = ""
     
     public var text: String {
         get {
-            return sequence
+            return sequence!
         }
         set {
-            sequence = newValue
+            sequence! = newValue
         }
     }
     

@@ -57,20 +57,24 @@ public class BioSwiftParserTests: XCTestCase {
 #endif
 
     func testParsingCasOffinderOutput() {
-#if !os(Linux)
+    /// #1. Generate Score inputfile
+    #if !os(Linux)
         let testBundle = Bundle(for: BioSwiftParserTests.self)
-        let fileName = testBundle.pathForResource("Resources/ParsersTest/result", ofType: "bwt")
-#else
-        let fileName = "./Resources/ParsersTest/result.bwt"
-#endif
+        let fileName = testBundle.pathForResource("./Resources/Genomes/sequence1", ofType: "fa")
+        //let fileName = testBundle.pathForResource( "/Users/ilap/Developer/Dissertation//BioSwift/BioSwiftTests/Resources/Genomes/sequence2", ofType: "fa")
+
+    #else
+        let fileName = "./Resources/Genomes/sequence1.fa"
+        #endif
+        
         // FileParserFacade facade = new FileParserFacade();
-        let facade = OffTargetParserManagerFacade<OfftargetProtocol>()
+        let facade = OffTargetParserManagerFacade<TargetProtocol>()
 
         do {
             if let results = try facade.parseFile(fileName) {
                 for result in results {
 
-                    print("ITEM: \(result.guideRNA!), \(result.querySequence) \(result.homology)")
+                    print("ITEM: \(result.sequence), \(result.querySequence) \(result.score)")
                 }
             } else {
                 print("NO ANY RESULT")
@@ -128,12 +132,14 @@ public class BioSwiftParserTests: XCTestCase {
         /// #1. Generate Score inputfile
         #if !os(Linux)
             let testBundle = Bundle(for: BioSwiftParserTests.self)
-            let fileName = testBundle.pathForResource("./Resources/Genomes/sequence1", ofType: "fa")
+            //let fileName = testBundle.pathForResource("./Resources/Genomes/sequence1", ofType: "fa")
+            let fileName =  "/Users/ilap/Developer/Dissertation//BioSwift/BioSwiftTests/Resources/Genomes/sequence2.fa"
+
         #else
             let fileName = "./Resources/Genomes/sequence1.fa"
         #endif
         
-        let designSources = MockDesignSource.getDesignSources(path: fileName!)
+        let designSources = MockDesignSource.getDesignSources(path: fileName)
         
         print(designSources.map {
             $0?.path
@@ -153,14 +159,32 @@ public class BioSwiftParserTests: XCTestCase {
         
         let ontargets = ds.getOntargets(pams: usedPAMs)
         
-        let scoreTask = CasOffinderScoreFunction(source: designSources.first!, target: designTargets.first!, ontargets: ontargets!, parameters: parameters)
+        let scoreTask = CasOffinderScoreFunction(sequenceFile: (designSources.first!?.path)!, target: designTargets.first!, ontargets: ontargets!, pams: allPAMs, parameters: parameters)
         
-        let scoreTaskMediator = TaskMediator(task: scoreTask)
+        let scoreTaskMediator = TaskMediator(task: scoreTask, isThreadable: false)
         
         scoreTaskMediator.runTasks()
         
-        print("RESULT \(scoreTask.results)")
-        
+        for guide in scoreTask.ontargets {
+            let i = guide as! RNAOnTarget
+            var s = i.sequence
+            var ss = "*"
+            var c = i.complement
+            var cc = " "
+            
+            if i.strand == "-" {
+                s = i.complement
+                c = i.sequence
+                ss = " "
+                cc = "*"
+            }
+            print("")
+            print("+:\t\t\(ss)\(s!)")
+            let prec = String(format: "%.5f%", i.score!)
+            print("\(prec):\(i.location!)\t\t ||||||||||||||||||||\t\(i.speciesName!)")
+            print("-:\t\t\(cc)\(c!)")
+            print("")
+        }
     }
 }
 
@@ -194,17 +218,20 @@ class MockDesignSourceAdapter {
     private func initialise() {
         let record = (designSource as! DesignSourceModelProtocol?)?.seqRecord
         self.crisprUtil = CrisprUtil(record: record!, parameters: designParameters)
+        //XXX: ilap print("RECIRD \(record?.id) \(record?.seq[0...10]) \(record?.length)")
     }
     
     func getOntargets(pams: [PAMProtocol?]) -> [VisitableProtocol?]? {
         var result: [VisitableProtocol?] = []
-        
+        //XXXXXX: print ("XXXXXX: "  + #function + ": pams \(pams) \n \(pams.map { $0?.sequence})\n:")
+
         for target in designTargets {
             let start = (target?.location)! - (target?.offset)!
             let end = start + (target?.length)! + 2 * (target?.offset)!
-
+            print (#function + ": pams \(pams) \n \(pams.map { $0?.sequence})\n: start \(start) end \(end)")
+            
             let r = self.crisprUtil?.getPAMOnTargets(pams, start: start, end: end)
-        
+
             result += r!
         }
         

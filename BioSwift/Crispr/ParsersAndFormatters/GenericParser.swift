@@ -24,7 +24,7 @@ import Foundation
 public class GenericParser<T>: ParserProtocol {
     
     //FIXME: Use global configuration
-    public var maxMismatches: Int = 6
+    public var maxMismatches: Int = 7
     //public typealias T = OfftargetProtocol
 
     var results: [T] = []

@@ -51,7 +51,7 @@ public class StreamWriter {
         
             fileName = path!
             
-            let fileManager = FileManager.default()
+            let fileManager = FileManager.default
             
             if !fileManager.fileExists(atPath: path!) || !append {
                 fileManager.createFile(atPath: path!, contents:nil, attributes:nil)
@@ -117,7 +117,7 @@ public class StreamWriter {
         if result == nil {
             return nil
         }
-        let fm = FileManager.default()
+        let fm = FileManager.default
         let tempDirectoryPath = fm.string(withFileSystemRepresentation: result!, length: Int(strlen(result)))
         
         return tempDirectoryPath

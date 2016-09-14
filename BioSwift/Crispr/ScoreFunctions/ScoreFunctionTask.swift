@@ -21,19 +21,24 @@
 
 import Foundation
 
-class ScoreFunctionTask: TaskProtocol {
-    var name: String = "ScoreFunctionTask"
-    var progress: Int = 0
-    var messages: [String] = []
+public class ScoreFunctionTask: TaskProtocol {
+    public var name: String = "ScoreFunctionTask"
+    public var progress: Int = 0
+    public var messages: [String] = []
 
-    var successCommand: Command? = nil
-    var failCommand: Command? = nil
-    var progressCommand: Command? = nil
+    public var successCommand: Command? = nil
+    public var failCommand: Command? = nil
+    public var progressCommand: Command? = nil
 
 
-    var parameters: ScoreCommandParameterProtocol
+    public var parameters: ScoreCommandParameterProtocol
     
-    func run() {
+    public func run() {
+        // DEBUG: ilap
+        // depugPring()
+    }
+    
+    func debugPrint() {
         print("PRINT COMMANDS AND ARGS")
         print("=======================")
         print("VAR SF: ", self.parameters.sourceFile)
@@ -41,14 +46,13 @@ class ScoreFunctionTask: TaskProtocol {
         print("VAR IF: ", self.parameters.inputFile)
         print("VAR AC: ", self.parameters.command)
         print("VAR AA: ", self.parameters.args)
-
     }
 
-    init(parameters: ScoreCommandParameterProtocol) {
+    public init(parameters: ScoreCommandParameterProtocol) {
         self.parameters = parameters
     }
 
-    func runCommand() -> (output: [String], error: [String], exitCode: Int32) {
+    public func runCommand() -> (output: [String], error: [String], exitCode: Int32) {
 
         var output : [String] = []
         var error : [String] = []

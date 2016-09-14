@@ -30,7 +30,7 @@ public class BioSwiftFileUtil {
 
 
     public init() {
-        fileManager = FileManager.default()
+        fileManager = FileManager.default
     }
 
     ///
@@ -103,6 +103,13 @@ public class BioSwiftFileUtil {
         }
 
         return result
+    }
+    
+    public class func generateTempFileName() -> String? {
+        let directory = NSTemporaryDirectory()
+        let fileName = NSUUID().uuidString
+    
+        return NSURL.fileURL(withPathComponents: [directory, fileName])?.path
     }
     
     public class func makeTempFile(template: String, path: String? = nil, body: @noescape (FileHandle, URL) throws -> Void) rethrows {

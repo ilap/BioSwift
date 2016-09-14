@@ -24,44 +24,41 @@ import Foundation
 ///
 /// Implements Mediator design for Task
 ///
-class TaskMediator {
+public class TaskMediator {
     
-    var isThreadable: Bool
+    public var isThreadable: Bool
 
-    var tasks: [TaskProtocol] = []
+    public var tasks: [TaskProtocol] = []
 
-    init(task: TaskProtocol, isThreadable: Bool = false) {
+    public init(task: TaskProtocol, isThreadable: Bool = false) {
         self.tasks.append(task)
         self.isThreadable = isThreadable
         initialise()
     }
 
-    init(tasks: [TaskProtocol], isThreadable: Bool = false) {
+    public init(tasks: [TaskProtocol], isThreadable: Bool = false) {
         self.tasks = tasks
         self.isThreadable = isThreadable
         initialise()
     }
 
-    private func initialise() {
+    public func initialise() {
         for var task in tasks {
-            print("Initialise task: \(task.name)")
+            // DEBUG: print("Initialise task: \(task.name)")
             task.successCommand = RelayCommand(action: success/*, canExecute: canExecute*/)
             task.failCommand = RelayCommand(action: fail/*, canExecute: canExecute*/)
             task.progressCommand = RelayCommand(action: progress/*, canExecute: canExecute*/)
         }
     }
 
-    ///
-    ///
-    ///
-    func runTasks() {
+    public func runTasks() {
         for task in tasks {
             if isThreadable {
-                print("TASK IN THREAD: \(task.name)")
+                //XXX: ilap print("TASK IN THREAD: \(task.name)")
                 let worker = TaskWorker(task: task)
                 worker.execute(task)
             } else {
-                print("TASK IN NON-THREAD: \(task.name)")
+                //XXX: ilap print("TASK IN NON-THREAD: \(task.name)")
                 task.run()
             }
 
@@ -69,11 +66,12 @@ class TaskMediator {
     }
 
     func success(_ receiver: Any) {
-        print("Success \(receiver) ")
+        //FIXME:
+        //DEBUG: print("Success \(receiver) ")
     }
 
     func fail(_ receiver: Any) {
-        print("Fail")
+        print("Fail... \(receiver)")
     }
 
     func progress(_ receiver: Any) {

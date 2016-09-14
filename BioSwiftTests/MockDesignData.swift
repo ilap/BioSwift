@@ -29,12 +29,14 @@ class MockPAM: PAMProtocol {
     
     static var pams: [PAMProtocol?] = []
     
-    init (sequence: String, survival: Float) {
+    init (sequence: String, survival: Double) {
         self.sequence = sequence
-        self.survival = survival
+        self.survival = Float(survival)
     }
     
     static func getPAMs() -> [PAMProtocol?] {
+        // pams.append(MockPAM(sequence: "NGAN", survival: 0.70 ))
+        // pams.append(MockPAM(sequence: "NGGN", survival: 0.70))
         pams.append(MockPAM(sequence: "NGG", survival: 0.68 ))
         pams.append(MockPAM(sequence: "NAG", survival: 0.0132 ))
         pams.append(MockPAM(sequence: "NGA", survival: 0.002 ))
@@ -66,7 +68,8 @@ class MockDesignTarget: DesignTargetProtocol {
     }
     
     static func getDesignTargets() -> [DesignTargetProtocol?] {
-        designTargets.append(MockDesignTarget(name:  "100-200", location:  100, length:  100, offset: 20))
+        designTargets.append(MockDesignTarget(name:  "20-120", location:  20, length:  100, offset: 20))
+        //designTargets.append(MockDesignTarget(name:  "100-200", location:  100, length:  100, offset: 20))
         //designTargets.append(MockDesignTarget(name:  "400-500", location:  400, length:  500, offset: 30))
         //designTargets.append(MockDesignTarget(name: "2000-2200", location: 2000, length: 200, offset: 40))
         //designTargets.append(MockDesignTarget(name: "3000-3100", location: 3000, length: 100, offset: 50))

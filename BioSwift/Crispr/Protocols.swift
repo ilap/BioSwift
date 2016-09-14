@@ -27,18 +27,6 @@ public protocol ParserProtocol {
     func parse(_ fileName: String?)
 }
 
-///
-/// FormatterProtocol
-///
-protocol XXXInputFormatterProtocol {
-    func write(_ fileName: String?, ontargets: [String]) -> Bool
-    // func importExport<I, E>(input: String) -> String {
-    //  let i = I(input)
-    //  i.parse<E>()
-    //  return output
-    //}
-}
-
 
 ///
 /// Visitor Design pattern
@@ -49,7 +37,10 @@ public protocol VisitorProtocol {
     func visit(headerPart: VisitableProtocol)
     func visit(bodyPart: VisitableProtocol)
     func visit(footerPart: VisitableProtocol)
+    func visit(parent: VisitableProtocol)
 }
+
+
 
 
 public protocol VisitableProtocol {

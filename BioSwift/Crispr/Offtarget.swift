@@ -21,6 +21,9 @@
 
 
 public protocol OfftargetProtocol {
+    var ontarget: OnTargetProtocol? { get set }
+    
+    // Properties
     var querySequence: String? { get set }
     var guideRNA: String? { get set }
     var modelOrganism: String? { get set }
@@ -30,7 +33,7 @@ public protocol OfftargetProtocol {
     var seedMismatches: Int? { get set }
     
     // How the qurey sequnce homologues to the guide/spacer RNA. 
-    var homology: Float? { get set }
+    var score: Double? { get set }
 }
 
 
@@ -38,8 +41,14 @@ protocol OfftargetResultProtocol: OfftargetProtocol {
     var errorMessages: [String] { get set }
 }
 
-
-class Offtarget: OfftargetResultProtocol {
+class Offtarget2: OfftargetResultProtocol {
+    var sequence: String = ""
+    var pam: String = ""
+    
+    var guideSequence: String = ""
+    var guidePam: String = ""
+    
+    var ontarget: OnTargetProtocol? = nil
     var querySequence: String? = nil
     var guideRNA: String? = nil
     var modelOrganism: String? = nil
@@ -47,8 +56,29 @@ class Offtarget: OfftargetResultProtocol {
     var direction: String? = nil
     var mismatches: Int? = nil
     var seedMismatches: Int? = nil
-    var homology: Float? = nil
+    var score: Double? = nil
 
+    var errorMessages: [String] = []
+}
+
+
+protocol TargetResultProtocol: TargetProtocol {
+    var errorMessages: [String] { get set }
+}
+
+class Offtarget: TargetResultProtocol {
+
+    var sequence: String? = ""
+    var complement: String? = ""
+    var pam: String? = ""
+    var speciesName: String? = ""
+    var strand: String? = ""
+    var location: Int? = -1
+    var length: Int? = 0
+    var score: Double? = 0
+    
+    var querySequence: String? = ""
+    
     var errorMessages: [String] = []
 }
 

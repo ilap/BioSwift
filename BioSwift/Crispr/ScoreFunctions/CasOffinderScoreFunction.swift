@@ -22,27 +22,30 @@
 import Foundation
 
 public protocol TargetProtocol {
-    //var loci: Int { get set }
-    //var endLoci: Int { get set }
-    
-    var sequence: String { get set }
-    var pam: String { get set }
-    var name: String { get set }
-    var strand: String { get set }
-    var position: Int { get set }
-    var length: Int { get set }
-    
-    var score: Float { get set }
+
+    var sequence: String? { get set }
+    var complement: String? { get set }
+    var pam: String? { get set }
+    var speciesName: String? { get set }
+    var strand: String? { get set }
+    var location: Int? { get set }
+    var length: Int? { get set }
+    var score: Double? { get set }
+
+    // Store the query sequence on which the sequence is compared
+    // e.g. score based on this comparison
+    var querySequence: String? { get set }
+
 }
 
-protocol ScoreFunctionProtocol {
+public protocol ScoreFunctionProtocol {
     //    associatedtype T
     var parser: ParserProtocol { get set }
     var formatter: VisitorProtocol { get set }
     //    func score(genome: SeqRecord, guideRNAs: [String], maskedPam: String,) -> [T]?
 }
 
-protocol ScoreCommandParameterProtocol {
+public protocol ScoreCommandParameterProtocol {
     
     var command: String { get set }
     var args: [String] { get set }
@@ -70,13 +73,19 @@ class AbstractCommandParameters: ScoreCommandParameterProtocol {
         self.sourceFile = sourceFile
         self.inputFile = inputFile
         self.outputFile = outputFile
-        
+
         
 
 #if !os(Linux)
-    bundlePath = Bundle(for: AbstractCommandParameters.self).resourcePath! + "/Resources/ScoreCommands/"
+    if let _ = NSClassFromString("XCTest") {
+        self.bundlePath = Bundle(for: AbstractCommandParameters.self).resourcePath! + "/Resources/ScoreCommands/"
+    } else {
+        self.bundlePath = Bundle(for: AbstractCommandParameters.self).resourcePath! + "/ScoreCommands/"
+    }
+    //XXX: ilap print("\n\nPAAAAAAAAAATH \(bundlePath)\n\n\n")
+    
 #else
-    bundlePath = "./ScoreCommands"
+        self.bundlePath = "./ScoreCommands"
 #endif
         
         
@@ -109,7 +118,7 @@ class CasOffinderCommandParameters: AbstractCommandParameters {
         
         args = [inputFile, computeMethod, outputFile]
         
-        print("SCOREFUNC: \(command) ... \(args)")
+        //DEBUG print("SCOREFUNC: \(command) ... \(args)")
     }
 }
 
@@ -119,58 +128,59 @@ class CasOffinderCommandParameters: AbstractCommandParameters {
 /// = Source/Genome sequence File
 /// = ScoreParameters: max mismatch, seed mismatch. etc.
 /// Result: scored Offtargets.
-
-class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
-    var parser: ParserProtocol
-    var formatter: VisitorProtocol
+public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
+    public var parser: ParserProtocol
+    public var formatter: VisitorProtocol
     
-    var ontargets: [VisitableProtocol?]
-    var results: [OfftargetProtocol] = []
+    public var ontargets: [VisitableProtocol?]
+    public var results: [TargetProtocol] = []
     
     var sequenceFile: String
     
-    let spacerLength = 20
-    let maskedPAM = "NGG"
-    let scoreInputFile = "/tmp/INPUT"
-    let scoreOutputFile = "/tmp/OUTPUT.cof"
+    var spacerLength = 0 //20
+    var maskedPAM = ""
+    var scoreInputFile = ""
+    var scoreOutputFile = ""
+    
+    var sequenceDir = ""
+    
+    let pams: [PAMProtocol?]
     
     
     private (set) var isDone : Int32 = 0
     
-    var name: String = "CasOffinder Score Task"
-    var progress: Int = 0
-    var messages: [String] = []
+    public var name: String = "CasOffinder Score Task"
+    public var progress: Int = 0
+    public var messages: [String] = []
     
-    var successCommand: Command? = nil
-    var failCommand: Command? = nil
-    var progressCommand: Command? = nil
+    public var successCommand: Command? = nil
+    public var failCommand: Command? = nil
+    public var progressCommand: Command? = nil
     
-    init(source: DesignSourceProtocol?, target: DesignTargetProtocol?, ontargets: [VisitableProtocol?], parameters: DesignParameterProtocol?) {
+    public init(sequenceFile: String /*, source: DesignSourceProtocol?*/, target: DesignTargetProtocol?, ontargets: [VisitableProtocol?], pams: [PAMProtocol?], parameters: DesignParameterProtocol?) {
     
-    //init(sequenceFile: String, ontargets: [VisitableProtocol?], targetStart: Int?, targetEnd: Int?) {
+
+        self.sequenceFile = sequenceFile
+        self.scoreInputFile = BioSwiftFileUtil.generateTempFileName()!
+        self.scoreOutputFile = BioSwiftFileUtil.generateTempFileName()!
         
-        self.sequenceFile = source!.path //sequenceFile
+        self.scoreInputFile = "/tmp/INPUT"
+        self.scoreOutputFile = "/tmp/OUTPUT.cof"
+        
+        self.pams = pams
+        maskedPAM = CrisprUtil.computeMaskedPAM(pams: self.pams)
+        spacerLength = (parameters?.spacerLength)!
+
         self.ontargets = ontargets
         
-        //let start = target!.location
-        //let end = start + target!.length
-        
-        //self.parser = CasOffinderOutputParser(targetStart: start, targetEnd: end)
-        
-        self.parser = CasOffinderOutputParser(designTarget: target, designParameters: parameters) //Start: start, targetEnd: end)
-        
-        
-
-        self.formatter = CasOffinderInputFormatter(path: scoreInputFile)!
-        
-        //self.parameters = CasOffinderCommandParameters(sourceFile: sourceFile, inputFile: inputFile, outputFile: outputFile)
+        parser = CasOffinderOutputParser(designTarget: target, designParameters: parameters)
+        formatter = CasOffinderInputFormatter(path: scoreInputFile)!
     }
     
-    
-    
-    func run() {
+     
+    public func run() {
         
-        print("\(name) is Running formatter file: \((formatter as! CasOffinderInputFormatter).fileName)")
+        // DEBUG: print("\(name) is Running formatter file: \((formatter as! CasOffinderInputFormatter).fileName)")
         
         let initial = CasOffinderInitialSequence(genome: sequenceFile, spacerLength: spacerLength, maskedPAM: maskedPAM)
         
@@ -187,56 +197,102 @@ class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
         
         let sf = ScoreFunctionTask(parameters: parameters)
         
-        sf.run()
+        //sf.progressCommand =
+        //sf.run()
         
         var stdout: [String] = []
         var stderr: [String] = []
         var err: Int32 = 0
+        //DEBUG: sf.debugPrint()
         (stdout, stderr, err) = sf.runCommand()
         
         if err == 0 {
-            print("Aggregating Ontargets")
+            print("Aggregating Ontargets...")
             if aggregateOnTargets() {
                 successCommand?.execute(self)
+            } else {
+                failCommand?.execute(self)
             }
-            print("HEUREKA")
-            print("ERROR")
-            print(stderr)
-            print("OUTPUT)")
-            print(stdout)
         } else {
-            print("Scoring Ontargets has failed...")
             failCommand?.execute(self)
-            print("ERROR")
-            print(stderr)
-            print("OUTPUT)")
-            print(stdout)
-            return
         }
         
+         // Clean the output file.
+        let fileManager = FileManager.default
+        do {
+           // try fileManager.removeItem(atPath: scoreInputFile)
+           // try fileManager.removeItem(atPath: scoreOutputFile)
+        } catch let error as NSError {
+            print("Cannot delete score output file: \(error)")
+        }
+
     }
     
     private func aggregateOnTargets() -> Bool {
-        let parserFacade = OffTargetParserManagerFacade<OfftargetProtocol>()
+        let parserFacade = OffTargetParserManagerFacade<TargetProtocol>()
         
         do {
             if let results = try parserFacade.parseFile(parser: parser, scoreOutputFile) {
                 self.results = results
                 
-                for result in self.results {
+                let res_len = results.count
+                
+                var idx = 0
+
+                
+                var off_affinity = 0.0
+                var off_pam = ""
+                var off_score = 0.0
+                var off_seq = ""
+                
+                var on_seq = ""
+                
+                for (xx, offtarget) in self.results.enumerated() {
                     
-                    print("ITEM: \(result.guideRNA!), \(result.querySequence) \(result.homology)")
+                    on_seq = (ontargets[idx]?.text)!
+                    
+                    // FIXME: it is assumed that the ontargets are ordered
+                    // It won't work if the output is not ordered.
+                    var ontarget = ontargets[idx] as! TargetProtocol
+                    
+                    if off_pam != offtarget.pam {
+                        off_pam = offtarget.pam!
+                        
+                        if let pam = CrisprUtil.getCompatibleCanonicalPAM(pams: pams, realPAM: offtarget.pam!) {
+                            off_affinity = Double(pam.survival)
+                        } else {
+                            
+                            off_affinity = ontarget.score!
+                            // FIXME: If wrong PAM is found then use largest affinity.
+                            //assertionFailure("\n\nUnconform canonical PAM has detected at location \(offtarget.location)!\n" +
+                             //   "Only \"N\", \"R\", \"A\", \"G\", \"C\" and \"T\" are supported" +
+                             //   "OffTargeet PAM: \(offtarget.pam!); Guide PAMs: \(String(pams.map { $0!.sequence}))\n\n")
+                        }
+                    }
+                    
+                    off_score =  off_score + offtarget.score! * off_affinity
+                    
+                   // print("\(xx)::\(res_len):: \(ontarget.pam!) \(ontarget.score!) --- \(offtarget.pam!)  \///(offtarget.score!)  :::::: \(off_affinity)")
+                    off_seq = offtarget.querySequence!
+                    
+                    //XXX: ilap print("Guide: \(on_seq): Off \(off_seq): obj \(ontarget.sequence):off:\(offtarget.score!) - on: - \(off_score) \(off_affinity)")
+                    if on_seq != off_seq || xx == res_len - 1  {
+                        idx = idx + 1
+                        ontarget.score! = ontarget.score!/(ontarget.score!+off_score)
+                        //XXX: ilap print("AAAAAA \(on_seq) \(xx) score \(ontarget.score) --- \(off_score): \(ontarget.sequence)")
+                        off_score = 0.0
+                    }
+                    
+                    //XXX: ilap //print("ITEM: \(result.sequence!), \(result.querySequence) \(result.score)")
                 }
+
             } else {
-                print("NO ANY RESULT")
+                print("No Any Result")
+                return false
             }
         } catch let error {
-            print ("BIOSWIFT ERROR:: \(error)")
+            print ("BioSwift Error: \(error)")
         }
-        
         return true
     }
-    
 }
-
-

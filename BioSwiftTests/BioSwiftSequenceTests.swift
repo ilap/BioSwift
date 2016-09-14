@@ -60,7 +60,7 @@ public class BioSwiftSequenceTests: XCTestCase {
         var seq = Seq(sequence: "ACGTACGTACGGGCTGAGACGT")
         var pams = ["NGG"]//, "NAG"]
         var rec = SeqRecord(id: "test", seq: seq)
-        var cu = CrisprUtil(record: rec, allPAMs: pams)
+        var cu = CrisprUtil(record: rec,  parameters: DesignParameters())
         
         // var res = seq.getOnTargets(pams, start: 0, end: Int(seq.length))
         var res = cu.getOnTargetsLocation(pams, start: 0, end: Int(seq.length))
@@ -70,14 +70,14 @@ public class BioSwiftSequenceTests: XCTestCase {
 
         res = cu.getOnTargetsLocation(pams.map { $0.reverseComplement() }, start: 0, end: Int(seq.length))
         rec = SeqRecord(id: "test", seq: seq)
-        cu = CrisprUtil(record: rec, allPAMs: pams)
+        cu = CrisprUtil(record: rec,  parameters: DesignParameters())
         assert (res == nil || res!.sorted() == [-9, -10, -15, 13].sorted())
         
                           // 012345678901234567
         seq = Seq(sequence: "ATTCCAGAGCAATCCCGT")
         pams = ["NTTNNA", "ANNAAT", "GCNNTC"]
         rec = SeqRecord(id: "test", seq: seq)
-        cu = CrisprUtil(record: rec, allPAMs: pams)
+        cu = CrisprUtil(record: rec, parameters: DesignParameters())
         
         res = cu.getOnTargetsLocation(pams, start: 0, end: Int(seq.length))
         print ("RES: \(res)")
@@ -87,7 +87,7 @@ public class BioSwiftSequenceTests: XCTestCase {
                           // 0123456789012345678901
         seq = Seq(sequence: "ACGTACGTACATACTGATACGT")
         rec = SeqRecord(id: "test", seq: seq)
-        cu = CrisprUtil(record: rec, allPAMs: pams)
+        cu = CrisprUtil(record: rec, parameters: DesignParameters())
         
         res = cu.getOnTargetsLocation(pams, start: 0, end: Int(seq.length))
         assert(res == nil)
@@ -124,8 +124,8 @@ public class BioSwiftSequenceTests: XCTestCase {
         //let usedPAMs = ["NGG"]
         let allPAMs = ["NGG", "NGA", "NAG", "NAA"]
 
-        let crisprUtil = CrisprUtil(record: record, allPAMs: allPAMs)
-        crisprUtil.getScoredOfftargets(onTargetLoci, targetLength: onTargetLength)
+        ////let crisprUtil = CrisprUtil(record: record, parameters: allPAMs)
+        //crisprUtil.getScoredOfftargets(onTargetLoci, targetLength: onTargetLength)
 
 
         //print("MASKEDlllll PAM: \(crisprUtil.maskedPAM)")

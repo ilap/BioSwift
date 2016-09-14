@@ -33,8 +33,8 @@ public class BowtieInputFormatter: StreamInputFormatter {
     
     override public func visit(bodyPart: VisitableProtocol) {
         let ontarget = bodyPart as! RNAOnTarget
-        message = ">" + ontarget.name + "-" + String(ontarget.position) + "-" + String(ontarget.length)
-        message = ontarget.sequence + ontarget.pam
+        message = ">" + ontarget.speciesName! + "-" + String(ontarget.location!) + "-" + String(ontarget.length!)
+        message = ontarget.sequence! + ontarget.pam!
     }
     
     override public func visit(footerPart: VisitableProtocol) {
