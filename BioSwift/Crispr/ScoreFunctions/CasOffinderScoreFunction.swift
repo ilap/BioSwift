@@ -23,20 +23,30 @@ import Foundation
 
 public protocol TargetProtocol {
 
+    var sourceName: String? { get set }
+    
     var sequence: String? { get set }
     var complement: String? { get set }
     var pam: String? { get set }
-    var speciesName: String? { get set }
+    
+    // On-target sequence
+    // Store the query sequence on which the sequence is compared
+    // e.g. score based on this comparison
+    var guideSequence: String? { get set }
+    var guidePam: String? { get set }
+
     var strand: String? { get set }
     var location: Int? { get set }
     var length: Int? { get set }
     var score: Double? { get set }
 
-    // Store the query sequence on which the sequence is compared
-    // e.g. score based on this comparison
-    var querySequence: String? { get set }
-
+    // These below are currently not used
+    var mismatch: Int? { get set }
+    var seedMismatch: Int? { get set }
 }
+
+
+
 
 public protocol ScoreFunctionProtocol {
     //    associatedtype T
@@ -176,7 +186,6 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
         parser = CasOffinderOutputParser(designTarget: target, designParameters: parameters)
         formatter = CasOffinderInputFormatter(path: scoreInputFile)!
     }
-    
      
     public func run() {
         
@@ -207,7 +216,7 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
         (stdout, stderr, err) = sf.runCommand()
         
         if err == 0 {
-            print("Aggregating Ontargets...")
+            //XXX print("Aggregating Ontargets...")
             if aggregateOnTargets() {
                 successCommand?.execute(self)
             } else {
@@ -229,6 +238,90 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
     }
     
     private func aggregateOnTargets() -> Bool {
+        
+        let parserFacade = OffTargetParserManagerFacade<TargetProtocol>()
+        
+        var offtargets: [TargetProtocol]? = nil
+        
+        do {
+            offtargets = try parserFacade.parseFile(parser: parser, scoreOutputFile)
+            if offtargets != nil {
+                self.results = offtargets!
+            } else {
+                return false
+            }
+        } catch let error {
+            print ("BioSwift Error: \(error)")
+            return false
+        }
+        
+        var on_idx = 0
+        var sum_score = 0.0
+        var on_len = ontargets.count - 1
+        var off_pam = ""
+        var ontarget: TargetProtocol? = nil
+        
+        for (off_idx, offtarget) in self.results.enumerated() {
+            
+            // FIXME: it is assumed that the ontargets are ordered
+            // It won't work if the output is not ordered.
+            ontarget = ontargets[on_idx] as! TargetProtocol
+            let off_seq = offtarget.guideSequence!
+            
+            // Skipp the missing ondtargets
+            // It's assumed that the Cas-Officner output is always ordered.
+            
+            while on_idx < on_len && ontarget?.sequence != off_seq {
+                if sum_score == 0.0 {
+                    ontarget?.score = 1.0
+                } else {
+                    //XXX: ilap print("Ontarget score: \(ontarget?.score)")
+                    ontarget?.score! = (ontarget?.score!)!/((ontarget?.score!)!+sum_score)
+                    sum_score = 0.0
+                }
+                // print("WW: \(ons[idx][0]):\(off[0])")
+                on_idx += 1
+                ontarget = ontargets[on_idx] as! TargetProtocol
+            }
+            
+            var affinity = ontarget?.score!
+            
+            if off_pam != offtarget.pam {
+                off_pam = offtarget.pam!
+                
+                // FIXME: If wrong PAM is found then use largest affinity.
+                //assertionFailure("\n\nUnconform canonical PAM has detected at location \(offtarget.location)!\n" +
+                //   "Only \"N\", \"R\", \"A\", \"G\", \"C\" and \"T\" are supported" +
+                //   "OffTargeet PAM: \(offtarget.pam!); Guide PAMs: \(String(pams.map { $0!.sequence}))\n\n")
+                //
+                if let pam = CrisprUtil.getCompatibleCanonicalPAM(pams: pams, realPAM: offtarget.pam!) {
+                    affinity = Double(pam.survival)
+                }
+            }
+            
+            
+            sum_score =  sum_score + offtarget.score! * affinity!
+            //XXX: ilap print("--: \(ontarget?.sequence!):\(offtarget.sequence!) - \(sum_score) - \(offtarget.score!):\(affinity!)")
+        }
+        
+        //print("XXXXX: \(i)")
+        ontarget?.score! = (ontarget?.score!)!/((ontarget?.score!)!+sum_score)
+
+
+        //print("SSS \(idx) \(len)")
+        if on_idx < on_len {
+            for i in on_idx...on_len {
+                //XXX: ilap print("XXXXX: \(i)")
+                ontarget = ontargets[i] as! TargetProtocol
+                ontarget?.score! = 1.0
+            }
+        }
+        
+        return true
+
+    }
+    
+    private func aggregateOnTargets2() -> Bool {
         let parserFacade = OffTargetParserManagerFacade<TargetProtocol>()
         
         do {
@@ -238,7 +331,7 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
                 let res_len = results.count
                 
                 var idx = 0
-
+                
                 
                 var off_affinity = 0.0
                 var off_pam = ""
@@ -265,17 +358,17 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
                             off_affinity = ontarget.score!
                             // FIXME: If wrong PAM is found then use largest affinity.
                             //assertionFailure("\n\nUnconform canonical PAM has detected at location \(offtarget.location)!\n" +
-                             //   "Only \"N\", \"R\", \"A\", \"G\", \"C\" and \"T\" are supported" +
-                             //   "OffTargeet PAM: \(offtarget.pam!); Guide PAMs: \(String(pams.map { $0!.sequence}))\n\n")
+                            //   "Only \"N\", \"R\", \"A\", \"G\", \"C\" and \"T\" are supported" +
+                            //   "OffTargeet PAM: \(offtarget.pam!); Guide PAMs: \(String(pams.map { $0!.sequence}))\n\n")
                         }
                     }
                     
                     off_score =  off_score + offtarget.score! * off_affinity
                     
-                   // print("\(xx)::\(res_len):: \(ontarget.pam!) \(ontarget.score!) --- \(offtarget.pam!)  \///(offtarget.score!)  :::::: \(off_affinity)")
-                    off_seq = offtarget.querySequence!
+                    // print("\(xx)::\(res_len):: \(ontarget.pam!) \(ontarget.score!) --- \(offtarget.pam!)  \///(offtarget.score!)  :::::: \(off_affinity)")
+                    off_seq = offtarget.guideSequence!
                     
-                    //XXX: ilap print("Guide: \(on_seq): Off \(off_seq): obj \(ontarget.sequence):off:\(offtarget.score!) - on: - \(off_score) \(off_affinity)")
+                    print("Guide: \(on_seq): Off \(off_seq): obj \(ontarget.sequence):off:\(offtarget.score!) - on: - \(off_score) \(off_affinity)")
                     if on_seq != off_seq || xx == res_len - 1  {
                         idx = idx + 1
                         ontarget.score! = ontarget.score!/(ontarget.score!+off_score)
@@ -285,10 +378,15 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
                     
                     //XXX: ilap //print("ITEM: \(result.sequence!), \(result.querySequence) \(result.score)")
                 }
-
+                
             } else {
-                print("No Any Result")
-                return false
+                //print("No Any Offtarget in the result")
+                for ontarget in ontargets {
+                    var ot = ontarget as! TargetProtocol
+                    //means no any offtarget for this guide candidate
+                    ot.score = 1.0
+                }
+                return true
             }
         } catch let error {
             print ("BioSwift Error: \(error)")
