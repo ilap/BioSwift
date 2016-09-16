@@ -29,10 +29,10 @@ import Foundation
 public class ScoreInputFormatterManagerFacade {
     let factory: RNATargetFactory<VisitorProtocol?>
     
-    private var visitableOntargers: [VisitableProtocol?]
+    private var visitableOntargets: [VisitableProtocol?]
     
     init(onTargets: [VisitableProtocol?]) {
-        self.visitableOntargers = onTargets
+        self.visitableOntargets = onTargets
         self.factory = RNATargetFactory<VisitorProtocol?>()
     }
     
@@ -41,7 +41,7 @@ public class ScoreInputFormatterManagerFacade {
     }
     
     func accept(visitor: VisitorProtocol) {
-        for part in visitableOntargers {
+        for part in visitableOntargets {
             part?.accept(visitor: visitor)
         }
     }

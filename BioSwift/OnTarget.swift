@@ -21,26 +21,38 @@
 
 import Foundation
 
-public class RNAOnTarget: TargetProtocol, VisitableProtocol {
+
+public class RNATarget: TargetProtocol, VisitableProtocol {
+    public var sourceName: String? = "ID1234"
+    
     public var sequence: String? = "CTGAAATGTTATGGTTGGSG"
     public var complement: String? = "CTGAAATGTTATGGTTGGSG"
-    
     public var pam: String? = "CGG"
-    public var speciesName: String? = "ID1234"
 
+    // On-target sequence
+    // Store the query sequence on which the sequence is compared
+    // e.g. score based on this comparison
+    public var guideSequence: String? = nil
+    public var guidePam: String? = nil
+    
     // Position
     // + strand --> ^SPACER|PAM
-    // - strand --> ^PAM|SPACER --> reversce Compl
-    public var strand: String? = "+"
-    
+    // - strand --> ^PAM|SPACER --> compl
+    public var strand: String? = nil
     
 
-    public var location: Int? = 145000
-    public var length: Int? = 20
+    public var location: Int? = nil
+    public var length: Int? = nil
     
-    public var score: Double? = 0.7
-    public var querySequence: String? = ""
+    public var score: Double? = nil
+
+    // These below are currently not used
+    public var mismatch: Int? = nil
+    public var seedMismatch: Int? = nil
     
+    //
+    // Visitor protocol
+    //
     public var text: String {
         get {
             return sequence!

@@ -186,7 +186,7 @@ public class CrisprUtil {
         let pamLength = parameters.pamLength
         
         assert(start >= 0 && end <= self.record.seq.length && start < (end - parameters.pamLength),
-               "Start is smaller then End or invalid values for start and end.")
+               "Start is smaller then End or invalid values for start and end \(end), \(pamLength).\n")
         
         assert(pamLength <= 8,
                "PAM Length must be smaller than 8 in 64 bit system.")
@@ -195,9 +195,9 @@ public class CrisprUtil {
         
         // Initialise on array.
         // Temporary buffer
-        let buf = UnsafeMutablePointer<Int>(allocatingCapacity: 1)
+        let buf = UnsafeMutablePointer<Int>(allocatingCapacity: 2)
         UnsafeMutablePointer<Int>(buf)[0] = 0x0
-        
+        UnsafeMutablePointer<Int>(buf)[1] = 0x0
         let seq_buf = UnsafeMutablePointer<Int8>(allocatingCapacity: parameters.spacerLength + 1)
         // Reset it
         UnsafeMutablePointer<Int8>(seq_buf)[parameters.spacerLength] = 0x0
@@ -210,6 +210,7 @@ public class CrisprUtil {
         var loci = 0
         
         var strand = "-"
+        
         for i in start...(end - pamLength) {
             let seq = seq + i
             var tseq = seq
@@ -230,7 +231,7 @@ public class CrisprUtil {
                 //print ("MASK: \(String(mask,radix:16)), BUF: \(String(buf[0],radix:16)), BUF: \(String(buf[0]))")
                 if seqBits == maskedPam {
                     // TODO:
-                    let onTarget = RNAOnTarget()
+                    let onTarget = RNATarget()
                     
                     onTarget.score = Double((pam?.survival)!)
                     
@@ -249,7 +250,7 @@ public class CrisprUtil {
                     onTarget.strand = strand
                     
                     // Name is the sequence name and guide RNA loci
-                    onTarget.speciesName = self.record.id // + "_" + String(loci)
+                    onTarget.sourceName = self.record.id // + "_" + String(loci)
                     onTarget.location = loci
                     
                     // PAM is the pam sequence in the sense/antisense strand
@@ -280,7 +281,7 @@ public class CrisprUtil {
                             post = temp
                         }
                         
-                        // DEBUG print ("Prospective on target (\(pre):\(post)) found on \"\(strand)\" strand at loci: \(abs(loci))")
+                        // debugPrint ("Prospective on target (\(pre):\(post)) found on \"\(strand)\" strand at loci: \(abs(loci))")
                     #endif
 
                     self.onTargets.append(onTarget)
@@ -292,6 +293,7 @@ public class CrisprUtil {
         // DEBUG print("\"\(self.onTargets.count)\" prospective ontargets found...")
         
         if self.onTargets.isEmpty {
+            // Means no any guide RNA candidate in the Target
             return nil
         } else {
             return self.onTargets
@@ -326,7 +328,6 @@ public class CrisprUtil {
      FIXME: It does not work like this kind of canonical PAMs: NGAN and NGNG.
      */
     class func computeMaskedPAM(pams: [PAMProtocol?]) -> String {
-        //XXX: ilap print("DEEEEETAILS....... \(pams)")
         // Need to build the canonical PAM for Cas-Offinder.
         let pam_len = (pams[0]?.sequence.characters.count)! - 1
         
@@ -384,7 +385,7 @@ public class CrisprUtil {
         
         
         assert(start >= 0 && end <= self.record.seq.length && start < (end - pamLength!),
-               "Start is smaller then End or invalid values for start and end.")
+               "Start is smaller then End or invalid values for start and end \(end), \(pamLength).\n")
         
         var onTargets: [Int]? = []
         
@@ -397,7 +398,7 @@ public class CrisprUtil {
         
         let maskedPAMs = getPAMsMask(pamSequences) +
             getPAMsMask(pamSequences.map { $0.reverseComplement() }, senseStrand: false)
-        
+    
         var location = 0
         for i in start...(end - pamLength!) {
             let seq = seq + i

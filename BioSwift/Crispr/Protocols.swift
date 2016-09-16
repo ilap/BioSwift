@@ -23,7 +23,6 @@
 /// ParseProtocol
 ///
 public protocol ParserProtocol {
-    var maxMismatches: Int { get set }
     func parse(_ fileName: String?)
 }
 
@@ -39,9 +38,6 @@ public protocol VisitorProtocol {
     func visit(footerPart: VisitableProtocol)
     func visit(parent: VisitableProtocol)
 }
-
-
-
 
 public protocol VisitableProtocol {
     var text: String { get set }

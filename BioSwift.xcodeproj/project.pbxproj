@@ -43,8 +43,6 @@
 		EE352FDA1CF990000081354E /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE352FD61CF990000081354E /* Command.swift */; };
 		EE352FDB1CF990000081354E /* TaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE352FD71CF990000081354E /* TaskProtocol.swift */; };
 		EE352FDC1CF990000081354E /* TaskMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE352FD81CF990000081354E /* TaskMediator.swift */; };
-		EE4AC6F21D12B7B80073D2E1 /* DesignManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4AC6F11D12B7B80073D2E1 /* DesignManager.swift */; };
-		EE4AC6F31D12B7B80073D2E1 /* DesignManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4AC6F11D12B7B80073D2E1 /* DesignManager.swift */; };
 		EE7621051CF1A42A00F13281 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7621011CF1A42A00F13281 /* Extensions.swift */; };
 		EE7621061CF1A42A00F13281 /* Seq.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7621021CF1A42A00F13281 /* Seq.swift */; };
 		EE7621071CF1A42A00F13281 /* SeqRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7621031CF1A42A00F13281 /* SeqRecord.swift */; };
@@ -120,7 +118,6 @@
 		EE352FD61CF990000081354E /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Command.swift; path = Core/TaskPattern/Command.swift; sourceTree = "<group>"; };
 		EE352FD71CF990000081354E /* TaskProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskProtocol.swift; path = Core/TaskPattern/TaskProtocol.swift; sourceTree = "<group>"; };
 		EE352FD81CF990000081354E /* TaskMediator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskMediator.swift; path = Core/TaskPattern/TaskMediator.swift; sourceTree = "<group>"; };
-		EE4AC6F11D12B7B80073D2E1 /* DesignManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DesignManager.swift; path = Crispr/DesignManager.swift; sourceTree = "<group>"; };
 		EE51263A1D3C9E370068561A /* Sandbox.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = Sandbox.playground; path = BioSwift/PlayGrounds/Sandbox.playground; sourceTree = "<group>"; };
 		EE51263B1D3C9E370068561A /* TaskTest.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = TaskTest.playground; path = BioSwift/PlayGrounds/TaskTest.playground; sourceTree = "<group>"; };
 		EE51263C1D3C9E370068561A /* VisitorPatternForFormatter.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = VisitorPatternForFormatter.playground; path = BioSwift/PlayGrounds/VisitorPatternForFormatter.playground; sourceTree = "<group>"; };
@@ -237,7 +234,6 @@
 				EEE4D3501CF6FAB3006A979F /* ScoreFunctions */,
 				EE7A0A061CF8B81D00E5CBF4 /* Protocols.swift */,
 				EE2B2DCE1D0EBD9C00D4E343 /* ModelProtocol.swift */,
-				EE4AC6F11D12B7B80073D2E1 /* DesignManager.swift */,
 			);
 			name = Crispr;
 			sourceTree = "<group>";
@@ -427,7 +423,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE7621101CF2078E00F13281 /* CrisprUtils.swift in Sources */,
-				EE4AC6F21D12B7B80073D2E1 /* DesignManager.swift in Sources */,
 				EE7621051CF1A42A00F13281 /* Extensions.swift in Sources */,
 				EEFA844E1D1A718B00AEF093 /* CasOffinderScoreFunction.swift in Sources */,
 				EEB198BA1D147D7000025670 /* ModelProtocol.swift in Sources */,
@@ -470,7 +465,6 @@
 				EE8F2FA91D86B04D00926541 /* BioSwiftCrisprUtilTests.swift in Sources */,
 				EEE8FAC51CFC576A000BE4EE /* ScoreFunctionManagerFacade.swift in Sources */,
 				EE7621151CF218CD00F13281 /* SeqIO.swift in Sources */,
-				EE4AC6F31D12B7B80073D2E1 /* DesignManager.swift in Sources */,
 				EE223BE41D15C99F006B4E9F /* StreamInputFormatter.swift in Sources */,
 				EE223BE71D15CB4B006B4E9F /* OnTarget.swift in Sources */,
 				EEE4D35C1CF724A5006A979F /* BioSwiftTaskTests.swift in Sources */,

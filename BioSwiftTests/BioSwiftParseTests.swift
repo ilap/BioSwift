@@ -218,7 +218,6 @@ class MockDesignSourceAdapter {
     private func initialise() {
         let record = (designSource as! DesignSourceModelProtocol?)?.seqRecord
         self.crisprUtil = CrisprUtil(record: record!, parameters: designParameters)
-        //XXX: ilap print("RECIRD \(record?.id) \(record?.seq[0...10]) \(record?.length)")
     }
     
     func getOntargets(pams: [PAMProtocol?]) -> [VisitableProtocol?]? {

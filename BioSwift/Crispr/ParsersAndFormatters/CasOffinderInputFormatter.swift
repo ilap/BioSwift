@@ -60,12 +60,12 @@ class CasOffinderInputFormatter: StreamInputFormatter {
     
     override func visit(bodyPart: VisitableProtocol) {
 
-        if bodyPart is RNAOnTarget {
-            let ontarget = bodyPart as! RNAOnTarget
+        if bodyPart is RNATarget {
+            let ontarget = bodyPart as! RNATarget
             //message = ">" + ontarget.name + "-" + String(ontarget.position) + "-" + String(ontarget.length)
             let pam = String(repeating: "N" as Character, count: (ontarget.pam?.characters.count)!)
             
-            // FIXME: The "7" shoudl come form parameter
+            // FIXME: The "7" should come form parameter
             message = ontarget.sequence! + pam + " 7"
         } else {
             message = bodyPart.text

@@ -92,7 +92,6 @@ class AbstractCommandParameters: ScoreCommandParameterProtocol {
     } else {
         self.bundlePath = Bundle(for: AbstractCommandParameters.self).resourcePath! + "/ScoreCommands/"
     }
-    //XXX: ilap print("\n\nPAAAAAAAAAATH \(bundlePath)\n\n\n")
     
 #else
         self.bundlePath = "./ScoreCommands"
@@ -174,9 +173,6 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
         self.scoreInputFile = BioSwiftFileUtil.generateTempFileName()!
         self.scoreOutputFile = BioSwiftFileUtil.generateTempFileName()!
         
-        self.scoreInputFile = "/tmp/INPUT"
-        self.scoreOutputFile = "/tmp/OUTPUT.cof"
-        
         self.pams = pams
         maskedPAM = CrisprUtil.computeMaskedPAM(pams: self.pams)
         spacerLength = (parameters?.spacerLength)!
@@ -212,7 +208,6 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
         var stdout: [String] = []
         var stderr: [String] = []
         var err: Int32 = 0
-        //DEBUG: sf.debugPrint()
         (stdout, stderr, err) = sf.runCommand()
         
         if err == 0 {
@@ -229,8 +224,8 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
          // Clean the output file.
         let fileManager = FileManager.default
         do {
-           // try fileManager.removeItem(atPath: scoreInputFile)
-           // try fileManager.removeItem(atPath: scoreOutputFile)
+           try fileManager.removeItem(atPath: scoreInputFile)
+           try fileManager.removeItem(atPath: scoreOutputFile)
         } catch let error as NSError {
             print("Cannot delete score output file: \(error)")
         }
@@ -275,11 +270,9 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
                 if sum_score == 0.0 {
                     ontarget?.score = 1.0
                 } else {
-                    //XXX: ilap print("Ontarget score: \(ontarget?.score)")
                     ontarget?.score! = (ontarget?.score!)!/((ontarget?.score!)!+sum_score)
                     sum_score = 0.0
                 }
-                // print("WW: \(ons[idx][0]):\(off[0])")
                 on_idx += 1
                 ontarget = ontargets[on_idx] as! TargetProtocol
             }
@@ -298,10 +291,8 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
                     affinity = Double(pam.survival)
                 }
             }
-            
-            
+
             sum_score =  sum_score + offtarget.score! * affinity!
-            //XXX: ilap print("--: \(ontarget?.sequence!):\(offtarget.sequence!) - \(sum_score) - \(offtarget.score!):\(affinity!)")
         }
         
         //print("XXXXX: \(i)")
@@ -311,7 +302,6 @@ public class CasOffinderScoreFunction: ScoreFunctionProtocol, TaskProtocol  {
         //print("SSS \(idx) \(len)")
         if on_idx < on_len {
             for i in on_idx...on_len {
-                //XXX: ilap print("XXXXX: \(i)")
                 ontarget = ontargets[i] as! TargetProtocol
                 ontarget?.score! = 1.0
             }

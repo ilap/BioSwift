@@ -159,7 +159,6 @@ extension String {
         return String(result)
     }
 
-
     public func complement() -> String {
         let result = self.characters.map { _complement($0)! }
         return String(result)

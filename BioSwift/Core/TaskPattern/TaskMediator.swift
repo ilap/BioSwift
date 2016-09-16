@@ -54,11 +54,9 @@ public class TaskMediator {
     public func runTasks() {
         for task in tasks {
             if isThreadable {
-                //XXX: ilap print("TASK IN THREAD: \(task.name)")
                 let worker = TaskWorker(task: task)
                 worker.execute(task)
             } else {
-                //XXX: ilap print("TASK IN NON-THREAD: \(task.name)")
                 task.run()
             }
 
@@ -71,7 +69,7 @@ public class TaskMediator {
     }
 
     func fail(_ receiver: Any) {
-        print("Fail... \(receiver)")
+        print("Failed  function: \(receiver)")
     }
 
     func progress(_ receiver: Any) {

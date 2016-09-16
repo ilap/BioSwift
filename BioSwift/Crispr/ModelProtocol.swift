@@ -45,8 +45,8 @@ public protocol DesignParameterProtocol : class {
     /// calculated PAM length
     var pamLength: Int { get set }
     
-    //FIXME: Currently not used.
-    //var pams: [PAMProtocol?] { get set }
+    /// Max mismatches, currently 5
+    var maxMismtach: Int { get set }
 }
 
 public protocol PAMProtocol {
@@ -100,14 +100,6 @@ public protocol DesignApplicationProtocol {
     var descr: String  { get set }
 }
 
-public protocol OnTargetProtocol {
-    var sequence: String { get set }
-    var pam: String { get set }
-    var pamAffinity: Float { get set }
-    var strand: String { get set }
-    var position: Int { get set }
-    var length: Int { get set }
-}
 
 public protocol RNATargetProtocol {
     var id: Int? { get set }

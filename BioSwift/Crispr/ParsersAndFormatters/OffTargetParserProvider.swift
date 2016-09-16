@@ -29,7 +29,7 @@ enum ScoreOutputParserProvider {
         case .Bowtie:
             return BowtieOutputParser()
         default:
-            return BowtieOutputParser()
+            return CasOffinderOutputParser()
         }
     }
 }

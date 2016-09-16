@@ -20,11 +20,11 @@
  */
 
 
-public class BowtieOutputParser: GenericParser<OfftargetProtocol> {
+public class BowtieOutputParser: GenericParser<TargetProtocol> {
     //gi|349596987|gb|CP002905.1|:+:249965-249987     +       gi|349596987|gb|CP002905.1|     189488  ATTTCTTCCAGGAAGCTACGTGA IIIIIIIIIIIIIIIIIIIIIII 1
     private let recordCount = 7
 
-    override public func convertToObject(_ records: [String]) throws -> OfftargetProtocol? {
+    override public func convertToObject(_ records: [String]) throws -> TargetProtocol? {
 
         // We should certain that the array has at leas one element, but we
         // cannot be sure whether it's malformed or not.
@@ -33,7 +33,7 @@ public class BowtieOutputParser: GenericParser<OfftargetProtocol> {
             // Assume it's a CasOffinder parser.
             // FIXME: throw error if the array is malformed.
             // Also use some validation instead of invalid data
-            let offtarget = Offtarget2()
+            let offtarget = RNATarget()
 
             /*offtarget.guideRNA = records[4]
             offtarget.modelOrganism = records[2]
@@ -51,7 +51,6 @@ public class BowtieOutputParser: GenericParser<OfftargetProtocol> {
     }
 
     override public func parse(_ fileName: String? = nil) {
-        //XXX: ilap print("Cas-Offinder Read")
         super.parse(fileName)
         
         

@@ -99,7 +99,7 @@ public class BioSwiftFileUtil {
             }
         } else {
             //TODO Throw an error.
-            assertionFailure("Error parsing file or directory.: \"\(path)\"")
+            throw  BioSwiftError.fileError("Error parsing file or directory.: '\(path)'")
         }
 
         return result

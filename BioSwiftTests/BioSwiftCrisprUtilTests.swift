@@ -62,7 +62,6 @@ class BioSwiftCrisprUtilTests: XCTestCase {
         let realPAM = "AGA"
         
         let result = CrisprUtil.getCompatibleCanonicalPAM(pams: pams, realPAM: realPAM)
-        //XXX: ilap //print ("AAAAAAAAAAAAAAAAAAA \(result?.sequence)")
         assert (result?.sequence != "NGA")
         
     }

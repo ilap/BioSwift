@@ -51,6 +51,7 @@ public class CasOffinderOutputParser: GenericParser<TargetProtocol> {
     init(designTarget: DesignTargetProtocol?, designParameters: DesignParameterProtocol?) {
         self.designTarget = designTarget
         self.designParameters = designParameters
+
         super.init()
     }
     
@@ -81,30 +82,25 @@ public class CasOffinderOutputParser: GenericParser<TargetProtocol> {
         // Also use some validation instead of invalid data
             
         // GGCCGACCTGTCGCTGACGCNNN chr8 49679    GGgCatCCTGTCGCaGACaCAGG + 5
-        let offtarget = Offtarget()
-        //let mismatches = Int(array[5]) ?? Int.min
-
-
+        let offtarget = RNATarget()
 
         offtarget.length = array[3].characters.count
         let sequence = array[3][0...designParameters!.spacerLength]
         offtarget.sequence = sequence.uppercased()
         offtarget.pam = array[3][designParameters!.spacerLength...offtarget.length!]
-        offtarget.querySequence = array[0][0...designParameters!.spacerLength]
+        offtarget.guideSequence = array[0][0...designParameters!.spacerLength]
         
-        offtarget.speciesName = array[1]
+        offtarget.sourceName = array[1]
         offtarget.strand = array[4]
         offtarget.location = Int(array[2]) ?? Int.min
 
         // FIXME: Seed is currently not used
-        // In the final fersion the seed part of the gRNA do not have penalty.
+        // In the final version the seed part of the gRNA do not have penalty.
         // let seed = array[3][designParameters!.spacerLength-designParameters!.seedLength...designParameters!.spacerLength]
-
             
         // if mismatech 0, then we do not needt to do anything
         offtarget.score = 1.0 //Assume 100% homology
         offtarget.score = computeOfftargetScore(sequence: sequence, initialScore: offtarget.score!)
-
             
         // DEBUG print ("score \(offtarget.score): SEQ \(offtarget.sequence): PAM: \(offtarget.pam)::\(offtarget.score), SL \(designParameters!.seedLength)")
         return offtarget
@@ -117,7 +113,7 @@ public class CasOffinderOutputParser: GenericParser<TargetProtocol> {
         var score = initialScore
         
         for (idx, base) in sequence.characters.enumerated() {
-            // 97 means lowercase
+            // 97 or greater means lowercase
             let s = String(base).unicodeScalars
             
             if s[s.startIndex].value >= 97 {
@@ -128,8 +124,6 @@ public class CasOffinderOutputParser: GenericParser<TargetProtocol> {
         return score
     }
     override public func parse(_ fileName: String? = nil) {
-        //XXX: ilap print("Cas-Offinder Read")
         super.parse(fileName)
-        //XXX: ilap print("Parsing is done")
     }
 }

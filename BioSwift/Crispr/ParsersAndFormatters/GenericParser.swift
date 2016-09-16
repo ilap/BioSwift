@@ -23,10 +23,6 @@ import Foundation
 
 public class GenericParser<T>: ParserProtocol {
     
-    //FIXME: Use global configuration
-    public var maxMismatches: Int = 7
-    //public typealias T = OfftargetProtocol
-
     var results: [T] = []
     private var fileName: String? = nil
     public var separator: String = "\t"
